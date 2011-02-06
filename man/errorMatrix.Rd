@@ -1,9 +1,9 @@
 \name{errorMatrix}
 \alias{errorMatrix}
-\title{Check which rows of a data...}
+\title{Check which rows of data...}
 \usage{errorMatrix(edtmatrix, dat)
 }
-\description{Check which rows of a \code{data.frame} violate which constraints}
+\description{Check which rows of \code{data.frame dat} violate which constraints}
 \details{This function can be used as an input for automatic corrections methods.
 This method will fail if \code{edtmatrix} contains variables that are not available in \code{dat}}
 \seealso{listErrors}
@@ -12,9 +12,9 @@ This method will fail if \code{edtmatrix} contains variables that are not availa
 \item{dat}{\code{data.frame} with data that should be checked}
 }
 \examples{# Using character vector to define contraints
-em <- editmatrix(editrules=c( "x+3*y==2*z"
-                            , "x==z"
-                            )
+em <- editmatrix(c( "x+3*y==2*z"
+                  , "x==z"
+                  )
                 )
                 
 dat <- data.frame( x = c(0,2,1)

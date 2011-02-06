@@ -1,12 +1,12 @@
 \name{listErrors}
 \alias{listErrors}
-\title{Lists which rows of a data...}
+\title{Lists which rows of data...}
 \usage{listErrors(edtmatrix, dat)
 }
-\description{Lists which rows of a \code{data.frame} violate which constraints}
+\description{Lists which rows of \code{data.frame dat} violate which constraints}
 \details{This function can be used as an input for automatic corrections methods.}
 \seealso{errorMatrix}
-\value{a list where per row a \code{integer} vector of the constraints that are violated}
+\value{a list with per row a \code{integer} vector of the constraints that are violated}
 \arguments{\item{edtmatrix}{\code{\link{editmatrix}} containing the constraints for \code{dat}}
 \item{dat}{\code{data.frame} with data that should be checked}
 }
