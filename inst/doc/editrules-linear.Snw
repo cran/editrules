@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{Linear edit manipulation and error localization with the editrules package}
+%\VignetteIndexEntry{Manipulation of linear edits and error localization with the editrules package}
 \documentclass[11pt, fleqn, a4paper]{article}
 \usepackage[english]{babel}
 \usepackage{amsmath, amssymb}
@@ -47,19 +47,24 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-{\em This vignette is not completely finished. Version 1.0 of the package will have
-the full vignette.}
 This paper is the first of two papers describing the editrules package. The
 current paper is concerned with the treatment of numerical data under linear
 constraints, while the accompanying paper \citep{loo:2011b} is concerned with
 constrained categorical and mixed data. The {\tt editrules} package is designed
-to offer user-friendly interface for edit definition, manipulation and
+to offer a user-friendly interface for edit definition, manipulation and
 checking. The package offers functionality for error localization based on the
 paradigm of Fellegi and Holt and a flexible interface to binary programming
 based on the choice point paradigm.  Lower-level functions include echelon
 transformation of linear systems, variable substitution and a fast
 Fourier-Motzkin elimination routine. We describe theory, implementation and
 give examples of package usage.
+
+This vignette is a near-literal transcript of \cite{jonge:2011}. The vignette
+is a living document which will be updated with the package while the reference
+corresponds to version {\sf 1.0}. 
+
+
+
 \end{abstract}
 
 <<echo=FALSE, keep.source=FALSE>>=
@@ -79,7 +84,7 @@ inequality relations which the variables in the records have to obey. Examples
 include equality restrictions imposed by financial balance accounts, positivity
 demands on certain variables or limits on the ratio of variables.
 
-Any such restriction is of the form
+Any such restriction can be written in the form
 \begin{equation}
 \label{edit}
 {\bf a}\cdot{\bf x} \odot b\textrm{ with }\odot\in\{<,\leq,=\},
@@ -87,7 +92,8 @@ Any such restriction is of the form
 where $\bf x$ is a numerical data record, ${\bf a}$, ${\bf x}\in \mathbb{R}^n$
 and $b\in \mathbb{R}$. In data editing literature, data restriction rules are
 referred to as {\em edits}, or {\em edit rules}\index{edit rules}\index{edit}.
-In this paper we will call edits, written in the form of Eq.\ \eqref{edit},
+In this paper we will call edits, written in the form of Eq.\ \eqref{edit}
+(specifically, without using $\geq$ or $>$),
 edits in {\em normal form}\index{edit rules!normal form}. 
 
 Large, complex surveys are often endowed with dozens or even hundreds of edit
@@ -126,7 +132,7 @@ loading the {\tt editrules} package.
 \section{Defining and checking numerical restrictions}
 
 \subsection{The {\tt editmatrix} object}
-For computational processing, a set of edits of the form 
+For computational processing, a general set of edits of the form
 \begin{equation}
 {\bf a}\cdot{\bf x} \odot b\textrm{ with }\odot\in\{<,\leq,=,\geq,>\},
 \label{nonnormaledit}
@@ -311,9 +317,9 @@ dat <- data.frame(
 violatedEdits(E,dat)
 @
 \caption{Checking which edits are violated for every record in a {\tt
-data.frame}.  The {\tt editmatrix} is the same as used in Fig.\ \ref{ReditmatrixDataframe}.
-The first record violates {\tt e1},{\tt e2} and {\tt e4}, the second
-record violates {\tt e1},{\tt e2}, and {\tt e5}.}
+data.frame}.  The {\tt editmatrix} is the same as used in Fig.\
+\ref{ReditmatrixDataframe}.  The first record violates {\tt e1}, {\tt e2} and
+{\tt e4}, the second record violates {\tt e1}, {\tt e2}, and {\tt e5}.}
 \label{violatedEdits}
 \end{Rcode}
 %
@@ -528,13 +534,15 @@ $A_{ij}<0$, the result is the removal of all rows with nonzero $A_{ij}$
 
 Mixed systems with linear restrictions of the form ${\bf a}\cdot {\bf x}\odot
 b$ with $\odot\in\{<,\leq,=\}$ can in principle be transformed to a form where
-every $\odot \in\{\leq\}$. However, it is more efficient to take the comparison
-operators into account when combining rows. In that case, new rules are derived
-by first solving the $j^{\rm th}$ variable from each equality and
-substituting them in each inequality. Next, inequalities are treated as stated
-before. When inequalities are combined where one comparison operator is $<$ and
-the other is $\leq$, it is not difficult to show that $<$ becomes the operator
-for the resulting inequality.
+every $\odot \in\{\leq\}$. Restricions with $\odot\in\{<\}$ 
+can be transformed to $\leq$ by subtracting a
+suitible small number from the right hand side of the inequation. However, it
+is more efficient to take the comparison operators into account when combining
+rows. In that case, new rules are derived by first solving the $j^{\rm th}$
+variable from each equality and substituting them in each inequality. Next,
+inequalities are treated as stated before. When inequalities are combined where
+one comparison operator is $<$ and the other is $\leq$, it is not difficult to
+show that $<$ becomes the operator for the resulting inequality.
 
 It is a basic result of the theory of linear inequalities that the system
 resulting from a single variable elimination is equivalent to the original
@@ -696,18 +704,18 @@ the search space increases as $2^n$ ($n$ the number of variables).
 \cite{waal:2003} and \cite{waal:2011} describe a branch-and-bound binary search
 algorithm which generates all minimal weight solutions.\index{branch-and-bound,
 for error localization} It works by generating the following binary tree: the
-root node contains $E$ and $\bf x$ and weight $w=0$.  Both left and right nodes
-receive a copy of the objects in their parents. In the left child node, $x_1$
-is assumed correct and its value is substituted in $E$. In the right child
-node, $x_1$ is assumed to contain an error and it is eliminated from $E$ by
-Fourier-Motzkin elimination. The weight $w$ in the right node is increased by
-$w_1$. Each child node gets a left and right child node where $x_2$ is
-substituted or eliminated, and so on until every variable has been treated.
-Every path from root to leaf represents one element of the search space. A
-branch is pruned when $E$ contains obvious inconsistencies, so no combinations
-not satisfying the condition in \eqref{fhproblem} are generated. If a solution
-with certain weight $w$ is found, branches developed later, receiving a higher
-weight are pruned as well.
+root node contains $E$ and $\bf x$ and weight $w=0$.  Both left and right child
+nodes of the root node receive a copy of the objects in their parent. In the
+left child node, $x_1$ is assumed correct and its value is substituted in $E$.
+In the right child node, $x_1$ is assumed to contain an error and it is
+eliminated from $E$ by Fourier-Motzkin elimination. The weight $w$ in the right
+node is increased by $w_1$. Each child node gets a left and right child node
+where $x_2$ is substituted or eliminated, and so on until every variable has
+been treated.  Every path from root to leaf represents one element of the
+search space. A branch is pruned when $E$ contains obvious inconsistencies, so
+no combinations not satisfying the condition in \eqref{fhproblem} are
+generated. If a solution with certain weight $w$ is found, branches developed
+later, receiving a higher weight are pruned as well.
 
 To clarify the above, in the next subsection we give two worked examples.
 Subsection \eqref{sbacktracker} describes a flexible binary search algorithm,
@@ -716,19 +724,6 @@ which we implemented to support general binary search problems. Subsection
 mentioned above.
 
 \subsection{Two examples}
-\begin{figure}
-\centering
-\includegraphics[width=0.495\textwidth]{diamond}
-\includegraphics[width=0.495\textwidth]{twodiamond}
-\caption{Graphic representation of edit rules and the allowed area. Left panel: a convex
-case, as defined by Eq.\ \eqref{E1}. Right panel: the non-convex unconnected case, as defined
-by Eq.\ \eqref{E2}. Gray areas indicate the valid record domain, black dots indicate erroneous records and 
-black arrows indicate the solution of the error localization problem, while the thin black lines
-show the range of solutions. The dotted arrows in the left panel indicate the range of directions in which
-the record (0,0) can move to reach the valid area.}
-\label{example1}
-\end{figure}
-
 To illustrate the binary search algorithm outlined above we will consider a
 simple two-dimensional example. The reader is encouraged to follow the
 reasoning below by checking the calculations using the {\sf R}-functions mentioned in
@@ -758,6 +753,20 @@ clear from the graph that the allowed values for  $y$ are between $1$ and $3$
 (indicated by the thin black vertical line in the diamond). The case $(x=0,y=0)$
 also violates $e_1$ and $e_2$ and can only be repaired by altering both $x$ and
 $y$, while the record $(x=-1,y=2)$ can be repaired by changing $x$ only.
+%
+\begin{figure}
+\centering
+\includegraphics[width=0.495\textwidth]{diamond}
+\includegraphics[width=0.495\textwidth]{twodiamond}
+\caption{Graphic representation of edit rules and the allowed area. Left panel: a convex
+case, as defined by Eq.\ \eqref{E1}. Right panel: the non-convex unconnected case, as defined
+by Eq.\ \eqref{E2}. Gray areas indicate the valid record domain, black dots indicate erroneous records and 
+black arrows indicate the solution of the error localization problem, while the thin black lines
+show the range of solutions. The dotted arrows in the left panel indicate the range of directions in which
+the record (0,0) can move to reach the valid area.}
+\label{example1}
+\end{figure}
+
 
 In the following we show that the binary search algorithm described in the
 previous subsection indeed solves the error localization problem for
