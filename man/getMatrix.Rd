@@ -1,11 +1,11 @@
-\name{getOps}
-\alias{getOps}
-\title{Returns the operator part of a linear (in)equality editmatrix E...}
-\usage{getOps(E)
+\name{getMatrix}
+\alias{getMatrix}
+\title{Returns the coefficient matrix of linear (in)equalities...}
+\usage{getMatrix(E)
 }
-\description{Returns the operator part of a linear (in)equality \code{editmatrix} E}
+\description{Returns the coefficient matrix of linear (in)equalities}
 \seealso{\code{\link{editmatrix}}}
-\value{\code{character} vector with the (in)equality operators.}
+\value{\code{numeric} vector \code{C}}
 \arguments{\item{E}{editmatrix}
 }
 \examples{E <- editmatrix(c( "x+3*y == 2*z"

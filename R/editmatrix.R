@@ -158,7 +158,7 @@ editmatrix <- function( editrules
          stop(paste("The edits could not be parsed. Parser returned\n",e$message))})   
    stopifnot(is.language(edts))
    
-   edit <- sapply(edts, deparse)
+   edit <- sapply(edts, deparse, width.cutoff=500)
    edit <- gsub(" * ","*", fixed=TRUE, edit)
    
 	if (is.null(name)){
@@ -195,11 +195,11 @@ editmatrix <- function( editrules
       for (i in 1:nrow(mat)){
          if (ops[i] == ">="){
             mat[i,] <- -mat[i,]
-            ops[i] <- "<"
+            ops[i] <- "<="
          }
          else if (ops[i] == ">"){
             mat[i,] <- -mat[i,]
-            ops[i] <- "<="
+            ops[i] <- "<"
          }
       }
    }
@@ -216,14 +216,57 @@ editmatrix <- function( editrules
 	names(ops) <- name
    names(C) <- name
    
+    neweditmatrix(
+        mat       = mat,
+        editrules = editrules,
+        edits     = edts,
+        ops       = ops,
+        C         = C)
+}
+
+#' Create an \code{editmatrix} object from its constituing attributes. 
+#'
+#' This function is for internal purposes, please use \code{\link{editmatrix}} for creating an editmatrix object.
+#' @param mat An object of class \code{matrix}
+#' @param editrules the editrules \code{data.frame}
+#' @param edits The parsed edits
+#' @param ops a character vector with the comparison operator of every edit.
+#' @param C \code{numeric} constant vector
+#' @return an S3 object of class \code{editmatrix} 
+neweditmatrix <- function(mat, editrules, edits, ops, C){
    structure( mat
-	         , class="editmatrix"
+            , class="editmatrix"
             , editrules=editrules
-            , edits = edts
+            , edits = edits
             , ops = ops
             , C = C
             )
 }
+
+
+# NOTE: cannot export subscript function directly because Roxygen removes backticks in export
+# directive. Added explicitly in build.bash
+
+#' Row index operator for \code{editmatrix}.
+#'
+#' Use this operator to select edits from an editmatrix object.
+#'
+#' @usage `[.editmatrix`(x,i,j,...)
+#' @param x an object of class \code{\link{editmatrix}}
+#' @param i the row index in the edit matrix
+#' @param j the column index in the edit matrix
+#' @param ... arguments to be passed to other methods. Currently ignored.
+#' @rdname editmatrix-subscript
+`[.editmatrix` <- function(x, i, j, ...){
+    neweditmatrix(
+        mat = as.matrix(x)[i, j, drop=FALSE],
+        editrules = editrules(x)[i, ,drop=FALSE],
+        edits = edits(x)[i],
+        ops = getOps(x)[i],
+        C   = getC(x)[i])
+}
+
+
 
 #' Check if object is an editmatrix
 #' 
@@ -369,7 +412,3 @@ print.editmatrix <- function(x, ...){
       , "\n"
       )
 }
-
-
-
-
