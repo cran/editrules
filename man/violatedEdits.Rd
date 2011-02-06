@@ -18,7 +18,7 @@ This method will fail if \code{E} contains variables that are not available in \
 \seealso{\code{\link{listViolatedEdits}}, \code{\link{checkRows}}}
 \value{a logical matrix where each row indicates which contraints are violated}
 \arguments{\item{E}{\code{\link{editmatrix}} containing the constraints for \code{dat}}
-\item{dat}{\code{data.frame} with data that should be checked}
+\item{dat}{\code{data.frame} with data that should be checked, if a named vector is supplied it will converted internally to a data.frame}
 \item{...}{further arguments that can be used by methods implementing this generic function}
 }
 \examples{# Using character vector to define contraints
