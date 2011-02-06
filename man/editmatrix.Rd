@@ -1,10 +1,10 @@
 \name{editmatrix}
 \alias{editmatrix}
 \title{Create an editmatrix}
-\usage{editmatrix(editrules, normalize=FALSE)
+\usage{editmatrix(editrules, normalize=TRUE)
 }
 \description{Transforms a list of R (in)equalities into an edit matrix.}
-\details{Transforms a list of R (in)equalities into an edit matrix with coefficients for each variable, and a constant (\code{C})
+\details{Transforms a list of R (in)equalities into an edit matrix with coefficients (\code{A}) for each variable, and a constant (\code{b})
 and operator (\code{ops}) for each edit rule.
 
 Each row in the resulting editmatrix represents an linear (in) equality.
@@ -32,7 +32,7 @@ i.e. \code{x == y}   results in  \code{c(x=1, y=-1)}
 and \code{x == y + w} results in \code{c(x=1, y=-1, w=-1)}
 
 By default the editmatrix is created using the comparison operators (\code{==,<=,>=,<,>}) in the edits. If option \code{normalize=TRUE} is used all 
-edits are transformed into an E == C, E < C or E <= C form, so that in the specification of the edit rules all inequalities can be mixed, 
+edits are transformed into an A == b, A < b or A <= b form, so that in the specification of the edit rules all inequalities can be mixed, 
 but the resulting matrix has similar sign.}
 \seealso{\code{\link{editrules}} \code{\link{as.editmatrix}}}
 \value{an object of class "editmatrix" which is a \code{matrix} with extra attributes}

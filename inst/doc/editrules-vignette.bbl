@@ -1,0 +1,57 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Farkas}{Farkas}{1902}]{farkas:1902}
+Farkas, G. (1902).
+\newblock {\"U}ber die theorie der einfachen ungleichungen.
+\newblock {\em Journal f\"ur die Reine und Angewandte Mathematik\/}~{\em 124},
+  1--27.
+
+\bibitem[\protect\citeauthoryear{Fellegi and Holt}{Fellegi and
+  Holt}{1976}]{fellegi:1976}
+Fellegi, I.~P. and D.~Holt (1976).
+\newblock A systematic approach to automatic edit and imputation.
+\newblock {\em Journal of the Americal Statistical Association\/}~{\em 71},
+  17--35.
+
+\bibitem[\protect\citeauthoryear{Kuhn}{Kuhn}{1956}]{kuhn:1956}
+Kuhn, H.~W. (1956).
+\newblock Solvability and consistency for linear equations and inequalities.
+\newblock {\em The American Mathematical Monthly\/}~{\em 63}, 217--232.
+
+\bibitem[\protect\citeauthoryear{{R Development Core Team}}{{R Development Core
+  Team}}{2011}]{R-core:2011}
+{R Development Core Team} (2011).
+\newblock {\em R: A Language and Environment for Statistical Computing}.
+\newblock Vienna, Austria: R Foundation for Statistical Computing.
+\newblock {ISBN} 3-900051-07-0.
+
+\bibitem[\protect\citeauthoryear{Scholtus}{Scholtus}{2008}]{scholtus:2008}
+Scholtus, S. (2008).
+\newblock Algorithms for correcting some obvious inconsistencies and rounding
+  errors in business survey data.
+\newblock Technical Report 08015, Statistics {N}etherlands, Den Haag.
+\newblock The papers are available in the inst/doc directory of the R package
+  or via the website of Statistics Netherlands.
+
+\bibitem[\protect\citeauthoryear{Scholtus}{Scholtus}{2009}]{scholtus:2009}
+Scholtus, S. (2009).
+\newblock Automatic correction of simple typing error in numerical data with
+  balance edits.
+\newblock Technical Report 09046, Statistics {N}etherlands, Den Haag.
+\newblock The papers are available in the inst/doc directory of the R package
+  or via the website of Statistics Netherlands.
+
+\bibitem[\protect\citeauthoryear{Schrijver}{Schrijver}{1998}]{schrijver:1998}
+Schrijver, A. (1998).
+\newblock {\em Theory of linear and integer programming}.
+\newblock Wiley-Interscience series in descrete mathematics and optimization.
+  New York: John Wiley and Sons.
+
+\bibitem[\protect\citeauthoryear{van~der Loo, de~Jonge, , and Scholtus}{van~der
+  Loo et~al.}{2011}]{loo:2011}
+van~der Loo, M., E.~de~Jonge, , and S.~Scholtus (2011).
+\newblock {\em deducorrect: Deductive correction of simple rounding, typing and
+  sign errors}.
+\newblock R package version 0.9-2.
+
+\end{thebibliography}

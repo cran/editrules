@@ -1,0 +1,15 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {2}Defining and checking numerical restrictions}{2}
+\contentsline {subsection}{\numberline {2.1}The {\tt editmatrix} object}{2}
+\contentsline {subsection}{\numberline {2.2}Basic manipulations and edit checking}{4}
+\contentsline {subsection}{\numberline {2.3}Obvious redundancy and infeasibility}{6}
+\contentsline {section}{\numberline {3}Manipulation of linear restrictions}{7}
+\contentsline {subsection}{\numberline {3.1}Value substitution}{8}
+\contentsline {subsection}{\numberline {3.2}Gaussian elimination}{8}
+\contentsline {subsection}{\numberline {3.3}Fourier-Motzkin elimination}{9}
+\contentsline {section}{\numberline {4}Error localization for numerical data}{9}
+\contentsline {subsection}{\numberline {4.1}The generalized Fellegi-Holt paradigm}{9}
+\contentsline {subsection}{\numberline {4.2}General binary search with the {\tt choicepoint} algorithm}{9}
+\contentsline {subsection}{\numberline {4.3}Error localization with {\tt cp.editmatrix}}{9}
+\contentsline {section}{\numberline {5}Conclusions}{9}
