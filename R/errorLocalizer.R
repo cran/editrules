@@ -15,11 +15,13 @@
 #' \item{w: The solution weight.} 
 #' \item{adapt: \code{logical} indicating whether a variable should be adapted (\code{TRUE}) or not}}
 #'
-#' Every subsequent call leads either to \code{NULL}, in which case all solutions have been found,
-#' or a new solution with a weight \code{w} not higher than the weight of the last found solution.
+#' Every subsequent call leads either to \code{NULL}, in which case either all solutions have been found,
+#' or \code{maxduration} was exceeded. The property \code{<backtracker>$maxdurationExceeded} indicates if this is
+#' the case. Otherwise, a new solution with a weight \code{w} not higher than the weight of the last found solution
+#' is returned.
 #' 
-#' Alternatively \code{<backtracker>$searchBest()} will return the last solution found directly: 
-#' the solution has the lowest weight (but there may be more solutions with equal weight).
+#' Alternatively \code{<backtracker>$searchBest()} will return the best solution found within \code{maxduration} seconds.
+#' If multiple equivalent solutions are found, a random one is returned.
 #'
 #' The backtracker is prepared such that missing data in the input record \code{x} is already
 #' set to adapt, and missing variables have been eliminated already.
@@ -57,11 +59,25 @@ errorLocalizer <- function(E, x, ...){
 #' @param E Object of class \code{\link{editmatrix}}
 #' @param x Data record, in the form of a named numeric vector.
 #' @param weight Weight vector, of the same length of \code{x}
+#' @param maxadapt maximum number of variables to adapt
+#' @param maxweight maximum weight of solution, if weights are not given, this is equal to the 
+#' maximum number of variables to adapt. 
+#' @param maxduration maximum time (in seconds), for \code{$searchNext()}, \code{$searchAll()} and \code{$searchBest()} 
 #' @param ... arguments to be passed to other methods.
+#'
+#' @rdname errorLocalizer
 #' @export
-errorLocalizer.editmatrix <- function(E, x, weight=rep(1,length(x)),...){
+errorLocalizer.editmatrix <- function(
+            E, 
+            x, 
+            weight=rep(1,length(x)), 
+            maxadapt=length(x), 
+            maxweight=sum(weight),
+            maxduration=600,
+            ...){
+    # search space larger then 1M:
+
     if ( !isNormalized(E) ) E <- normalize(E)
-    
     # missings must be adapted, others still have to be treated.
     adapt <- is.na(x)   
     names(adapt) <- names(x)
@@ -73,11 +89,19 @@ errorLocalizer.editmatrix <- function(E, x, weight=rep(1,length(x)),...){
     # Eliminate missing variables.
     vars <- getVars(E)
     for (v in names(x)[is.na(x)]) E <- eliminateFM(E,v)
-    wsol <- sum(weight)
+    wsol <- min(sum(weight), maxweight)
     cp <- backtracker(
+        maxduration=maxduration,
         isSolution = {
             w <- sum(weight[adapt])
-            if ( isObviouslyInfeasible(.E) || w > wsol ) return(FALSE)
+            if ( w > wsol 
+              || sum(adapt) > maxadapt
+              || isObviouslyInfeasible(.E)
+               ) return(FALSE)
+
+            if ( w == wsol && isObviouslyInfeasible(substValue(.E,totreat,x[totreat])) ) 
+                    return(FALSE)
+            # TODO report status
             if (length(totreat) == 0){
                 wsol <<- w
                 adapt <- adapt 
@@ -99,38 +123,27 @@ errorLocalizer.editmatrix <- function(E, x, weight=rep(1,length(x)),...){
         },
         .E = E,
         x = x,
+        maxadapt=maxadapt,
         totreat = totreat,
         adapt = adapt,
         weight = weight,
-        wsol = wsol 
+        wsol = wsol
     )
     
     # add a searchBest function, currently returns last solution (which has the lowest weight)
     with(cp,{
-        searchBest <- function(..., VERBOSE=FALSE){
-            l <- searchAll(...,VERBOSE=VERBOSE)
+        searchBest <- function(maxduration=600, VERBOSE=FALSE){
+            l <- searchAll(maxduration=maxduration,VERBOSE=VERBOSE)
             if (length(l)>1){ # randomize minimal weight solutions
                 ws <- sapply(l,function(s) s$w)
                 return(l[[sample(which(ws==min(ws)),1)]])
-            } else if (length(l)){
                 return(l[[length(l)]])
+            } else if (length(l)){
+               return(l[[1]])
             }
         }
     })
     cp
-}
-
-#' Deprecated error localization function.
-#'
-#' This function is replaced by S3 generic \code{\link{errorLocalizer}}.
-#' 
-#'
-#' @param E editmatrix
-#' @param x record
-#' @param ... Arguments to be passed to \code{\link{errorLocalizer}}
-#' @export
-cp.editmatrix <- function(E,x,...){
- stop("This function is deprecated. Use errorLocalizer in stead")
 }
 
 

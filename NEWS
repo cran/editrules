@@ -1,4 +1,15 @@
-version 0.8
+version 0.9-0
+- Performance gain by improved bounding condition in backtracking object returned by errorLocalizer 
+- functions getH and geth for objects of class editmatrix added.
+- removed bug from $searchBest(), a sole solution wasn't returned.
+- backtracker$searchNext() and $searchAll() gain maxduration argument
+- BREAKING CHANGE: function findBlocks replaced by blocks. finblocks now emits warning, will become error in next release
+- Solved bug causing eliminateFM to return spurious but harmless edits in edge case, thanks to Sander Scholtus
+- Backtracker gains maxdepth and maxduration parameter
+- errorLocalizer gains maxduration, maxadapt and maxweight parameter
+- removed deprecated functions cp.editmatrix, replaceValue
+ 
+version 0.8-0
 - removed deprecated functions getC. getMatrix from source
 - deprecated functions cp.editmatrix, replaceValue now emit error
 - added index to vignette

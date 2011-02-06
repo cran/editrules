@@ -1,7 +1,8 @@
 \name{backtracker}
 \alias{backtracker}
 \title{Backtracker: a flexible and generic binary search program...}
-\usage{backtracker(isSolution, choiceLeft, choiceRight, list, ...)
+\usage{backtracker(isSolution, choiceLeft, choiceRight, list, maxdepth=Inf,
+    maxduration=Inf, ...)
 }
 \description{Backtracker: a flexible and generic binary search program}
 \details{\code{backtracker} creates a binary search program that can be started by calling the \code{$searchNext} function
@@ -30,6 +31,8 @@ in the backtracker}
 \item{choiceLeft}{\code{expression} that will be evaluated for a left node}
 \item{choiceRight}{\code{expression} that will be evaluated for a right node}
 \item{list}{\code{list} with variables that will be added to the search environment}
+\item{maxdepth}{\code{integer} maximum depth of the search tree}
+\item{maxduration}{\code{integer} Default maximum search time for \code{$searchNext()} and \code{$searchAll()}}
 \item{...}{named variables that will be added to the search environment}
 }
 \examples{bt <- backtracker( isSolution= { 

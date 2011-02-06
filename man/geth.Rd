@@ -1,24 +1,24 @@
-\name{eliminateFM}
-\alias{eliminateFM}
-\title{Eliminate a variable from an editmatrix...}
-\usage{eliminateFM(E, var, fancynames=FALSE)
+\name{geth}
+\alias{getH}
+\title{Returns the derivation history of an edit matrix...}
+\usage{getH(E)
+geth(E)
 }
-\description{Eliminate a variable from an editmatrix}
-\details{Uses Fourier-Motzkin elimination to eliminate a variable from a set
-of linear (in)equality restrictions, represented as an \code{\link{editmatrix}}.
-An observation of Kohler (1967) is used to reduce the number of implied 
-restrictions. Obvious redundancies of the type 0 < 1 are removed as well.}
-\value{An editmatrix with an extra (hidden) attributes describing how the new restrictions were derived from the original ones.
-These attributes are used to remove redundancies when variables are repeatedly eliminated.}
-\seealso{\code{\link{editmatrix}} \code{\link{isObviouslyInfeasible}}}
-\references{D.A. Kohler (1967) Projections of convex polyhedral sets, Operational Research
-Center Report , ORC 67-29, University of California, Berkely.
+\description{Returns the derivation history of an edit matrix}
+\details{\code{getH}: eliminateFM tracks the history of edits in a logical array H.
+H has nrow(E) rows and the number of columns is the number of
+edits in the editmatrix as it was first defined. If suppose
+H[i,j1], H[i,j2],...,H[i,jn] are TRUE, then E[i,] is some 
+positive linear combination of original edits E[j1,], E[j2,],...,E[jn,]
 
-H.P. Williams (1986) Fourier's method of linear programming and its dual,
-The American Mathematical Monthly 93, 681-695}
-\arguments{\item{E}{an object of class \code{\link{editmatrix}}}
-\item{var}{\code{character} name of the variable to eliminate}
-\item{fancynames}{\code{logical} If true, the derived restrictions have rownames derived from the original restrictions (slower).}
+Attributes H and h are used to detect redundant derived edits.
+
+\code{geth}: h records the number of variables eliminated from E by \code{\link{eliminateFM}}
+
+
+}
+\seealso{\code{\link{editmatrix}},\code{\link{eliminateFM}}\code{\link{editmatrix}}, \code{\link{eliminateFM}}}
+\arguments{\item{E}{editmatrix}
 }
 \examples{# The following is an example by Williams (1986). Eliminating all variables
 # except z maximizes -4x1 + 5x2 +3x3:
@@ -70,4 +70,5 @@ eliminateFM(E,"x", fancynames=TRUE)
     "y == -2 + x" ),normalize=TRUE))
 # this happens to result in an obviously unfeasable system:
 isObviouslyInfeasible(eliminateFM(E,"x"))}
+\alias{geth}
 

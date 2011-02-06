@@ -2,9 +2,11 @@
 \alias{errorLocalizer}
 \title{Localize errors in numerical data based on the paradigm of Fellegi and Holt.}
 \usage{errorLocalizer(E, x, ...)
+\method{errorLocalizer}{editmatrix}(E, x, weight=rep(1, length(x)), maxadapt=length(x),
+    maxweight=sum(weight), maxduration=600, ...)
 }
 \description{Localize errors in a record based on Fellegi and Holt's paradigm}
-\details{Returns a \code{\link{backtracker}} object for error localization in numerical data.
+\details{\code{errorLocalizer}: Returns a \code{\link{backtracker}} object for error localization in numerical data.
 The returned backtracker containts methods to search depth-first to the least weighted
 number of variables that need to be adapted so that all restrictions in E can be 
 satisfied. (Generalized principle of Fellegi and Holt (1976)).
@@ -19,17 +21,23 @@ Every call to \code{<backtracker>$searchNext()} returns one solution \code{list}
 \item{w: The solution weight.} 
 \item{adapt: \code{logical} indicating whether a variable should be adapted (\code{TRUE}) or not}}
 
-Every subsequent call leads either to \code{NULL}, in which case all solutions have been found,
-or a new solution with a weight \code{w} not higher than the weight of the last found solution.
+Every subsequent call leads either to \code{NULL}, in which case either all solutions have been found,
+or \code{maxduration} was exceeded. The property \code{<backtracker>$maxdurationExceeded} indicates if this is
+the case. Otherwise, a new solution with a weight \code{w} not higher than the weight of the last found solution
+is returned.
 
-Alternatively \code{<backtracker>$searchBest()} will return the last solution found directly: 
-the solution has the lowest weight (but there may be more solutions with equal weight).
+Alternatively \code{<backtracker>$searchBest()} will return the best solution found within \code{maxduration} seconds.
+If multiple equivalent solutions are found, a random one is returned.
 
 The backtracker is prepared such that missing data in the input record \code{x} is already
-set to adapt, and missing variables have been eliminated already.}
-\value{an object of class \code{\link{backtracker}}. Each execution of \code{$searchNext()} yields a solution
+set to adapt, and missing variables have been eliminated already.
+
+}
+\value{\code{errorLocalizer}: an object of class \code{\link{backtracker}}. Each execution of \code{$searchNext()} yields a solution
 in the form of a \code{list} (see details). Executing \code{$searchBest()} returns the lowest-weight solution.
-When multiple solotions with the same weight are found, \code{$searchBest()} picks one at random.}
+When multiple solotions with the same weight are found, \code{$searchBest()} picks one at random.
+
+}
 \references{I.P. Fellegi and D. Holt (1976). A systematic approach to automatic edit and imputation. 
 Journal of the American Statistical Association 71, pp 17-25
 
@@ -39,6 +47,11 @@ http://www.cbs.nl/nl-NL/menu/methoden/onderzoek-methoden/onderzoeksrapporten/pro
 \arguments{\item{E}{an \code{\link{editmatrix}}}
 \item{x}{a named numerical vecor. The record for which errors will be localized.}
 \item{...}{Arguments to be passed to other methods (e.g. reliability weights)}
+\item{weight}{Weight vector, of the same length of \code{x}}
+\item{maxadapt}{maximum number of variables to adapt}
+\item{maxweight}{maximum weight of solution, if weights are not given, this is equal to the 
+maximum number of variables to adapt.}
+\item{maxduration}{maximum time (in seconds), for \code{$searchNext()}, \code{$searchAll()} and \code{$searchBest()}}
 }
 \examples{# example with a single editrule
 # p = profit, c = cost, t = turnover
@@ -92,4 +105,5 @@ cp <- errorLocalizer(E,x=c(p=755, c1=50, c2=NA,t=200))
 # There are two solutions. Both demand that c2 is adapted:
 cp$searchNext()
 cp$searchNext()}
+\alias{errorLocalizer.editmatrix}
 

@@ -4,7 +4,6 @@
 \usage{getb(E)
 }
 \description{Returns the constant part \code{b} of a linear (in)equality}
-\alias{getb}
 \seealso{\code{\link{editmatrix}}}
 \value{\code{numeric} vector \code{b}}
 \arguments{\item{E}{editmatrix}

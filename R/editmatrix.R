@@ -151,11 +151,8 @@ editmatrix <- function( editrules
       stop("Invalid input, please use a character vector or a data.frame.\n See ?editmatrix for a valid input specification")
    }
 
-   edts <- tryCatch(parse(text=edit), error=function(e){
-         stop(paste("The edits could not be parsed. Parser returned\n",e$message))})   
+   edts <- parseEdits(edit)
 
-   stopifnot(is.language(edts))
-   
    edit <- sapply(edts, deparse, width.cutoff=500)
    edit <- gsub(" * ","*", fixed=TRUE, edit)
    
@@ -232,8 +229,8 @@ neweditmatrix <- function(A, ops, normalized=FALSE,...){
         A = as.matrix(x)[i, j, drop=FALSE],
         ops = getOps(x)[i]
     )
-    attr(E,"derivedFrom") <- attr(x,"derivedFrom")[i, , drop=FALSE]
-    attr(E,"nEliminated") <- attr(x,"nEliminated")
+    attr(E,"H") <- attr(x,"H")[i, , drop=FALSE]
+    attr(E,"h") <- attr(x,"h")
     E
 }
 

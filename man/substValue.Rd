@@ -11,7 +11,6 @@ and \eqn{{\bf b}={\bf a}_j\tilde{x}_j}.
 
 Note that the resulting \code{\link{editmatrix}} may be inconsistent because of inconsistencies in
 \eqn{\tilde{\bf x}}.}
-\alias{replaceValue}
 \value{reduced edit matrix}
 \arguments{\item{E}{\code{editmatrix} object}
 \item{var}{\code{character} with name(s) of variable(s)}

@@ -16,7 +16,7 @@
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \newcommand{\pop}{\ensuremath{\textrm{\sc pop}}}
 \newcommand{\push}{\ensuremath{\textrm{\sc push}}}
-\newcommand{\env}{\ensuremath{\mathcal{E}}}
+\newcommand{\env}{\ensuremath{\mathcal{E}} }
 
 \usepackage{float}
  
@@ -41,24 +41,25 @@
 \hyphenation{time-stamp}
 
 
-\title{Linear edit manipulation and error localization with the {\tt editrules} package\\
+\title{Manipulation of linear edits and error localization with the {\tt editrules} package\\
 {\small Package version \Sexpr{packageVersion("editrules")}}}
 \author{Edwin de Jonge and Mark van der Loo}
 \begin{document}
 \maketitle
 \begin{abstract}
-{\em This vignette is not completely finished. Version 1.0 fo the package will have
+{\em This vignette is not completely finished. Version 1.0 of the package will have
 the full vignette.}
 This paper is the first of two papers describing the editrules package. The
 current paper is concerned with the treatment of numerical data under linear
-constraints, while the accompanying paper is concerned with constrained
-categorical and mixed data. The {\tt editrules} package is designed to offer
-user-friendly interface for edit definition, manipulation and checking. The
-package offers functionality for error localization based on the paradigm of
-Fellegi and Holt and a flexible interface to binary programming based on the
-choice point paradigm.  Lower-level functions include echelon transformation of
-linear systems, variable subtitution and a fast Fourier-Motzkin elimination
-routine. We describe theory, implementation and give examples of package usage.
+constraints, while the accompanying paper \citep{loo:2011b} is concerned with
+constrained categorical and mixed data. The {\tt editrules} package is designed
+to offer user-friendly interface for edit definition, manipulation and
+checking. The package offers functionality for error localization based on the
+paradigm of Fellegi and Holt and a flexible interface to binary programming
+based on the choice point paradigm.  Lower-level functions include echelon
+transformation of linear systems, variable substitution and a fast
+Fourier-Motzkin elimination routine. We describe theory, implementation and
+give examples of package usage.
 \end{abstract}
 
 <<echo=FALSE, keep.source=FALSE>>=
@@ -74,7 +75,7 @@ library(editrules)
 \section{Introduction}
 The value domain of real numerical data records with $n$ variables is often
 restricted to a subdomain of $\mathbb{R}^n$ due to linear equality and
-inequality relations which the variables in the record have to obey. Examples
+inequality relations which the variables in the records have to obey. Examples
 include equality restrictions imposed by financial balance accounts, positivity
 demands on certain variables or limits on the ratio of variables.
 
@@ -89,16 +90,17 @@ referred to as {\em edits}, or {\em edit rules}\index{edit rules}\index{edit}.
 In this paper we will call edits, written in the form of Eq.\ \eqref{edit},
 edits in {\em normal form}\index{edit rules!normal form}. 
 
-Large complex surveys are often endowed with dozens or even hundreds of edit
+Large, complex surveys are often endowed with dozens or even hundreds of edit
 rules.  For example, the Dutch Structural Business Survey, which aims to report
 on the financial structure of companies in the Netherlands, contains about 100
 variables, and has a similar number of linear equality and inequality
-restrictions.
+restrictions involving multiple variables, as well as many univariate
+positivity constraints.
 
 Defining and manipulating large edit sets in matrix representation is a
 daunting task, because it may involve hundreds of rows and columns. This is
 also true for finding which variables in a record are responsible for edit
-violations, the so called error localization problem.
+violations: the so-called error localization problem.
 
 The {\tt editrules} package for the {\sf R} statistical computing environment
 \citep{R-core:2011} aims to provide an environment to conveniently define, read
@@ -109,16 +111,16 @@ randomly over the variables and there is no detectable cause of error. It also
 decouples the detection of corrupt variables from their correction. 
 
 For some types of error, such as sign flips, typing errors or rounding errors,
-this assumption does not hold. These errors can be detected and are closely
-related to their resolution. The reader is referred to the {\tt
-deducorrect}\index{deducorrect@{\tt deducorrect}} package \citep{loo:2011, scholtus:2008,
-scholtus:2009} for treating such errors. 
+this assumption does not hold. The cause of these errors can be detected and
+are closely related to their resolution. The reader is referred to the {\tt
+deducorrect}\index{deducorrect@{\tt deducorrect}} package \citep{loo:2011a,
+scholtus:2008, scholtus:2009} for treating such errors. 
 
-The following chapters demonstrates the functionality of the {\tt editrules}
+The following chapters demonstrate the functionality of the {\tt editrules}
 package with coded examples as well a description of the underlying theory and
 algorithms. For a detailed per-function description the reader is referred to
 the reference manual accompanying the package. Unless mentioned otherwise, all
-code shown in this paper can be executed from the {\sf R} commandline after
+code shown in this paper can be executed from the {\sf R} command line after
 loading the {\tt editrules} package.
 
 \section{Defining and checking numerical restrictions}
@@ -138,19 +140,19 @@ $\bf b$. A second attribute holds the comparison operators as a {\tt character}
 vector.  Formally, we denote that every {\tt editmatrix} $E$ is defined by
 \begin{equation}
 E = \left\langle [\mathbf{A}|\mathbf{b}],\boldsymbol{\odot}\right\rangle 
-\textrm{ with } [{\bf A}|{\bf b}]\in \mathbb{R}^{m\times{n+1}},\:
+\textrm{ with } [{\bf A}|{\bf b}]\in \mathbb{R}^{m\times{(n+1)}},\:
 \boldsymbol{\odot}\in\{<,\leq,=,\geq,>\}^{m},
 \label{editset}
 \end{equation}\index{editmatrix@{\tt editmatrix}}
 where $n$ is the number of variables, $m$ the number of edit rules and the
 notation $\langle \:,\:\rangle$ denotes a combination of objects.  Retrieval
 functions for various parts of an {\tt editmatrix} are available, see Table
-\ref{simplemanipulations} (p.\ \pageref{simplemanipulations}) for an overview.
+\ref{simplemanipulations} (page \pageref{simplemanipulations}) for an overview.
 Defining augmented matrices by hand is tedious and prone to error, which is why
 the {\tt editmatrix} function  derives edit matrices from a textual
 representation of edit rules. Since most functions of the {\tt editrules}
-package expect an {\tt editmatrix} in normal form (that is
-$\boldsymbol{\odot}\in\{<,\leq,=\}$), the {\tt editmatrix} function by default
+package expect an {\tt editmatrix} in normal form (that is,
+$\boldsymbol{\odot}\in\{<,\leq,=\}^m$), the {\tt editmatrix} function by default
 transforms all linear edits to normal form.
 
 As an example, consider the set of variables
@@ -182,7 +184,11 @@ equality restrictions correspond to balance accounts, the 3rd, 4th and 5th
 restrictions are sanity checks and the last four edits demand positivity.
 Figure \ref{emfromtext} shows how these edit rules can be transformed from a
 textual representation to a matrix representation with the {\tt editmatrix}
-function.
+function. To define an {\tt editmatrix}, edit restrictions can be defined in
+usual {\sc R} syntax, using ${\sf ==}$ as comparison operator for equalities and
+${\tt <}$, ${\tt <=}$, ${\tt >=}$ or ${\tt >}$ for inequalities. Coefficients
+may be negative or positive, and both the binary ${\tt +}$ and ${\tt -}$
+operator are recognized.
 %
 \begin{Rcode}
 <<keep.source=true>>=
@@ -190,8 +196,8 @@ E <- editmatrix(c(
 "t  == ct + p" ,
 "ct == ch + cp",
 "p  <= 0.6*t",
+"ct <= 0.3*t",
 "cp <= 0.3*t",
-"ch <= 0.3*t",
 "t  >  0",
 "ch >  0",
 "cp >  0",
@@ -209,15 +215,12 @@ As Figure \ref{emfromtext} shows, the {\tt editmatrix} object is shown on the
 console as a matrix, as well as a set of textual edit rules. The {\tt
 editrules} package is capable of coercing a set of {\sf R} expressions to an
 {\tt editmatrix} and {\em vice versa}. To coerce text to a matrix, the {\tt
-editmatrix} function processes the {\sf R} language parsetree of the textual
+editmatrix} function processes the {\sf R} language parse tree of the textual
 {\sf R} expressions as provided by the {\sf R} internal {\tt parse} function.
 To coerce the matrix representation to textual representation, an {\sf R}
 character string is derived from the matrix which can be parsed to a language
-object.
-
-In the example, the edits were automatically named {\tt e1}, {\tt e2},
-$\ldots$, {\tt e9}. It is possible to name and comment edits by reading them
-from a {\tt data.frame}. 
+object. In the example, the edits were automatically named {\tt e1}, {\tt e2},
+$\ldots$, {\tt e9}. 
 
 \begin{Rcode}[t]
 <<keep.source=true>>=
@@ -229,26 +232,39 @@ editmatrix(edits)
 data.frame} is required to have three columns named {\tt name}, {\tt edit}
 (textual representation of the edit rule) and {\tt description} (a comment
 stating the intent of the rule). All must be of type {\tt character}.}
+\label{ReditmatrixDataframe}
 \end{Rcode}
 %
-
-The ability to read edit sets from a {\tt data.frame} facilitates defining and
-maintaining the rules outside of the {\sf R} environment by storing them in a
-user-filled database or text file. Manipulating and combining edits, for
-example through variable elimination methods will cause {\tt editrules} to drop
-or change the names and drop the comments, as they become meaningless after
-certain manipulations.
+It is also possible to name and comment edits by reading them from a {\tt
+data.frame}.  The ability to read edit sets from a {\tt data.frame} facilitates
+defining and maintaining the rules outside of the {\sf R} environment by
+storing them in a user-filled database or text file. Manipulating and combining
+edits, for example through variable elimination methods will cause {\tt
+editrules} to drop or change the names and drop the comments, as they become
+meaningless after certain manipulations.
 
 \subsection{Basic manipulations and edit checking}
 Table \ref{simplemanipulations} shows simple manipulation functions available
 for an {\tt editmatrix}. Basic manipulations include retrieval functions for
 the augmented matrix, coefficient matrix, constant vector and operators of an
-{\tt editmatrix}. There are functions to test for and transform to normality.
+{\tt editmatrix}. There are also functions to test for and transform to normality.
+
+When groups of editrules are unrelated, that is, if they do not share any
+variables, the edit matrix can be decomposed as\index{editmatrix@{\tt editmatrix}!blocks}
+\begin{equation}
+E = E_1 \oplus E_2\oplus\ldots \oplus E_k,
+\end{equation}
+where the $E_j$ are mutually independent edit matrices and $\oplus$ is the
+direct sum operator.  The function {\tt blocks} expects an {\tt editmatrix} and
+returns a list of independent edit matrices composing the original one.
+Splitting an edit matrix into independent blocks can yield a significant
+speedup in error localization problems.
+
 The function {\tt violatedEdits} expects an {\tt editmatrix} and a {\tt
 data.frame} or a named numeric vector. It returns a {\tt logical} {\tt array}
 where every row indicates which edits are violated ({\tt TRUE}) by records in
 the {\tt data.frame}. Figure \ref{violatedEdits} demonstrates the result of
-checking two records against the editrules defined in Eqs.\
+checking two records against the edit rules defined in Eqs.\
 \eqref{e1}--\eqref{e9}.
 %
 %
@@ -274,7 +290,8 @@ function                      & description\\
 {\tt duplicated(E)}           & Check for duplicates in rows of {\tt E}\\
 {\tt isObviouslyRedundant(E)} & Check for tautologies and duplicates in  {\tt E}\\
 {\tt isObviouslyInfeasible(E)}& Check for contradictions in rows of {\tt E}\\
-{\tt isFeasible}              & Complete feasibility check for {\tt E}\\ 
+{\tt isFeasible(E)}           & Complete feasibility check for {\tt E}\\ 
+{\tt blocks(E)}               & Decompose {\tt E} in independent blocks\\
 \hline
 \end{tabular}
 \end{threeparttable}
@@ -294,42 +311,45 @@ dat <- data.frame(
 violatedEdits(E,dat)
 @
 \caption{Checking which edits are violated for every record in a {\tt
-data.frame}.  The first record violates {\tt e1} and {\tt e2}, the second
-record violates {\tt e1},{\tt e2}, and {\tt e4}.}
+data.frame}.  The {\tt editmatrix} is the same as used in Fig.\ \ref{ReditmatrixDataframe}.
+The first record violates {\tt e1},{\tt e2} and {\tt e4}, the second
+record violates {\tt e1},{\tt e2}, and {\tt e5}.}
 \label{violatedEdits}
 \end{Rcode}
 %
 %
 Indexing of edits with the {\tt [} operator is restricted to selection only.
-For changing matrix entries {\tt as.editmatrix} should be used.
 
 \subsection{Obvious redundancy and infeasibility}
 After manipulating a linear edit set by value substitution and/or variable
 elimination, it can contain redundant edits or become infeasible.  The {\tt
 editrules} package has two methods available which check for easily detectable
 redundancies or infeasibility. The Fourier-Motzkin elimination method has
-auxilary built-in redundancy removal, which is described in Section
+auxiliary built-in redundancy removal, which is described in Section
 \ref{sfouriermotzkin}.
 
 A system of inequalities $\bf Ax\leq b$ is called infeasible or overconstraint
 when there is no real vector $\bf x$ satisfying it. It is a consequence of
 Farkas' lemma (\cite{farkas:1902}, but see \cite{schrijver:1998} and/or
-\cite{kuhn:1956}) on feasibility of sytems of linear equalities, that  a system
+\cite{kuhn:1956}) on feasibility of systems of linear equalities, that  a system
 is infeasible if and only if $0\leq -1$ can be derived by taking positive
 linear combinations of the rows of the augmented matrix $[{\bf A},{\bf b}]$.
-The function {\tt isObviouslyinfeasible} returns a {\tt logical} indicating
-whether such a contradiction is present. Substitution of values may also lead
-to equalities of the form $0=1$, which also indicate that the system has become
-infeasible.  Being obviously infeasible is sufficient for an {\tt editmatrix}
-to be infeasible, but not necessary. Algorithm \ref{isObviouslyInfeasible}
-gives the pseudocode for reference purposes.
 
 The function {\tt isFeasible} eliminates variables one by one using
-Fourier-Motzkin elimination (Section \ref{sfouriermotzkin}), and checks for
-obvious infeasibilities. If no obvious inconsistencies are found after the last
-variable has been eliminated, the system is consistent. This function is very
-useful in checking the feasibility of large sets of edits, which may contain
-contradictionary edits after maintenance.
+Fourier-Motzkin elimination (Section \ref{sfouriermotzkin}), and checks if such
+infeasible rules arise. If none are found after the last variable has been
+eliminated, the system is feasible. This function is useful in checking the
+feasibility of large sets of edits, which may contain contradictory edits after
+maintenance.
+
+A complete feasibility check is as computationally expensive as solving a
+system of inequalities. Therefore, the function {\tt isObviouslyInfeasible} was
+written to perform a quick check on obvious inconsistent rules in an
+editmatrix. It returns a {\tt logical} indicating whether an obvious
+contradiction of the form $0<-1$ or $0=1$ is present in an editmatrix. The
+latter inconsistency can be caused by substitution of values in the edit
+matrix. Algorithm \ref{isObviouslyInfeasible} gives the pseudo-code for
+reference purposes.
 %
 \begin{algorithm}[t]
 \caption{{\sc isObviouslyInfeasible($E$)}}
@@ -337,7 +357,7 @@ contradictionary edits after maintenance.
 \begin{algorithmic}
 \Require a normalized {\tt editmatrix} $E$
 \For {${\bf a}_i\cdot {\bf x}\odot_i b_i\in E$}
- \If{${\bf a}_i=0  \land \lnot 0\odot_i b_i$}
+\If{${\bf a}_i=\boldsymbol{0}  \land \lnot 0\odot_i b_i$}
     \State \Return {\sc true}
  \EndIf
 \EndFor
@@ -352,7 +372,7 @@ contradictionary edits after maintenance.
 \label{isObviouslyRedundant}
 \begin{algorithmic}
 \Require a normalized {\tt editmatrix} $E$, with $m$ edits, a boolean ``duplicates'', and a tolerance $\varepsilon$.
-\State  ${\bf v} \leftarrow$ ({\sc false})$^{\times{m}}$
+\State  ${\bf v} \leftarrow$ ({\sc false})$^{m}$
 \For {${\bf a}_i\cdot {\bf x}\odot_i b_i\in E$}
  \If{${\bf a}_i=0 \land 0\odot_i b_i$} 
     \State $v_i\leftarrow${\sc true}
@@ -373,7 +393,7 @@ Both value substitution and variable elimination derive new edits, that may be
 of the form $0 \leq 1$ or $0=0$.  The function {\tt isObviouslyRedundant}
 detects such rules and returns a {\tt logical} vector indicating which rows of
 an {\tt editmatrix} are redundant.  By default, the function detects row
-duplicates (within an adjustable tolerance), but this may be switched of by
+duplicates within an adjustable tolerance, but this may be switched of by
 providing the option {\tt duplicates=FALSE}.  Pseudo-code is given in Algorithm
 \ref{isObviouslyRedundant}. The actual implementation avoids explicit loops and
 makes use of R's built-in {\tt duplicated} function, which is also overloaded
@@ -383,14 +403,13 @@ for {\tt editmatrix} (see Table \ref{simplemanipulations}).
 
 \section{Manipulation of linear restrictions}
 There are two fundamental operations possible on edit sets, both of which
-(possibly) reduce the number of variables involved in the edit set. The first,
-most simple one is to substitute a variable with a value. The second
-possibility is variable elimination. For a set of linear equalities, one can
-apply Gaussian elimination, while for a set of inequalities or a mixed set of
-equalities and inequalities Fourier-Motzkin elimination can be applied. While
-variable substitution guarantees that the eliminated variable is not involved
-in the derived edit set anymore, this is not necessarily the case for Gaussian
-and Fourier-Motzkin elimination.
+reduce the number of variables involved in the edit set. The first, most simple
+one is to substitute a variable with a value. The second possibility is
+variable elimination. For a set of linear inequalities, one can apply
+Fourier-Motzkin elimination to eliminate a variable. The package also has
+functionality to rewrite systems of equalities in echelon form.  Table
+\ref{editmanipulationfunctions} (page \pageref{editmanipulationfunctions})
+gives an overview.
 
 \subsection{Value substitution}
 Given a set of $m$ linear edits as defined in Eq.\ \eqref{editset}. For
@@ -404,7 +423,7 @@ replacing the $j^{\rm th}$ column of $\bf A$ with ${\bf 0}$ and ${\bf b}$ with
 ${\bf b}-{\bf a}_j'x$. After this, the reduced record of unknowns, with $x_j$
 replaced by $x$ has to obey the adapted system \eqref{subst}. For reference
 purposes, Algorithm \ref{substValue} spells out the substitution routine.
-Figure \ref{RsubstValue} shows how {\tt substValue} can be called from the R
+Figure \ref{RsubstValue} shows how {\tt substValue} can be called from the {\sf R}
 environment. The function is set up so multiple variables can be substituted in
 a single call as well.
 %
@@ -432,7 +451,7 @@ substitute multiple values as well.}
 
 
 \subsection{Gaussian elimination}
-The well-known Gaussian elimination routine has been implemented here as a
+The well-known Gaussian elimination routine has been implemented as a
 utility function, enabling users to reduce the equality part of their edit
 matrices to reduced row echelon form.  The {\tt echelon} function has been
 overloaded to take either an {\sf R} {\tt matrix} or an {\tt editmatrix} as
@@ -448,7 +467,7 @@ implementation in the sense that it involves just one explicit loop.  Figure
 \caption{{\sc echelon($E$)}}
 \label{echelon}
 \begin{algorithmic}
-\Require An {\tt editmatrix} of the form $\langle [{\bf A}|{\bf b}],=\rangle$, $[{\bf A|b}]\in \mathbb{R}^{m\times {n+1}}$, $m\leq n+1$.
+\Require An {\tt editmatrix}  $\langle [{\bf A}|{\bf b}],=\rangle$, $[{\bf A|b}]\in \mathbb{R}^{m\times {(n+1)}}$, $m\leq n+1$.
 \State $I\leftarrow \{1,2,\ldots,m\}$
 \State $J\leftarrow \{1,2,\ldots,n+1\}$
 \For {$j\in I$} \Comment{eliminate variables}
@@ -477,7 +496,7 @@ echelon(E2)
 @
 \caption{Transforming linear equalities of an editmatrix to reduced row echelon
 form. If the {\tt editmatrix} argument contains inequalities, these are copied
-to the resuling system.}
+to the resulting system.}
 \label{Rechelon}
 \end{Rcode}
 
@@ -485,6 +504,7 @@ to the resuling system.}
 
 \subsection{Fourier-Motzkin elimination}
 \label{sfouriermotzkin}
+\index{Fourier-Motzkin elimination}
 Fourier-Motzkin elimination [\cite{fourier:1826,motzkin:1936}, but see
 \cite{williams:1986} for an elaborate or \cite{schrijver:1998} for a concise
 description] is an extension of Gaussian elimination to solving systems of
@@ -496,21 +516,21 @@ of rows.
 A full Fourier-Motzkin operation on a system of inequalities involves
 eliminating variables (where possible) one by one from the augmented matrix
 $[{\bf A|b}]$. Eliminating a single variable is an important step in the error
-localization algorithms elaborated in Section \ref{serrorlocalization}. 
+localization algorithm elaborated in Section \ref{serrorlocalization}. 
 
 Consider a system of inequalities ${\bf Ax}\leq {\bf b}$.  The $j^{\rm th}$
 variable  is eliminated by generating a positive combination of every row of
 $[{\bf A|b}]$ where $A_{ij}>0$ with every row of $[{\bf A|b}]$ where $A_{ij}<0$
 such that for the resulting row the $j^{\rm th}$ coefficient equals zero. Rows
-of $[{\bf A|b}]$ for which $A_{ij}=0$ are copied to the resulting system. If
-the system does not contain rows for which $A_{ij}>0$ and rows for which
-$A_{ij}<0$, an elimination operation leaves the system unchanged. 
+of $[{\bf A|b}]$ for which $A_{ij}=0$ are copied to the resulting system. 
+If the system does not contain rows for which $A_{ij}>0$ and rows for which
+$A_{ij}<0$, the result is the removal of all rows with nonzero $A_{ij}$
 
 Mixed systems with linear restrictions of the form ${\bf a}\cdot {\bf x}\odot
 b$ with $\odot\in\{<,\leq,=\}$ can in principle be transformed to a form where
 every $\odot \in\{\leq\}$. However, it is more efficient to take the comparison
 operators into account when combining rows. In that case, new rules are derived
-by first solving the the $j^{\rm th}$ variable from each equality and
+by first solving the $j^{\rm th}$ variable from each equality and
 substituting them in each inequality. Next, inequalities are treated as stated
 before. When inequalities are combined where one comparison operator is $<$ and
 the other is $\leq$, it is not difficult to show that $<$ becomes the operator
@@ -518,31 +538,52 @@ for the resulting inequality.
 
 It is a basic result of the theory of linear inequalities that the system
 resulting from a single variable elimination is equivalent to the original
-system. In Fourier-Motzkin elimination, $k$ elimination steps can generate up
-to $(\tfrac{1}{2}m)^{2k}$ new rows ($m$ being the original number of rows), of
+system. In Fourier-Motzkin elimination, $h$ elimination steps can generate up
+to $(\tfrac{1}{2}m)^{2h}$ new rows ($m$ being the original number of rows), of
 which many are redundant. Since the number of redundant rows increases fast
 during elimination, removing (most of) them is highly desirable. In our
-implementation, we use the property that if $k$ variables have been eliminated,
-any row derived from more than $k+1$ rows of the original system is redundant.
+implementation, we use the property that if $h$ variables have been eliminated,
+any row derived from more than $h+1$ rows of the original system is redundant.
 This result was originally stated by \cite{cernikov:1963} and rediscovered by
 \cite{kohler:1967}. A proof can also be found in \cite{williams:1986}. For the
-implementation in R, an {\tt editmatrix} is augmented with an integer $h$,
+implementation in {\sf R}, an {\tt editmatrix} is augmented with an integer $h$,
 recording the number of eliminations and a {\tt logical} array $\bf H$, which
 records for each edit from which original edit it was derived. Obviously, ${\bf
 H}$ is {\sc true} only on the diagonal when $h=0$. It is worth mentioning that
-by using R's vectorized indices and recycling properties, it is possible to
+by using {\sf R}'s vectorized indices and recycling properties, it is possible to
 avoid any explicit looping in the elimination process. Algorithm
 \ref{eliminateFM} gives an overview of the algorithm where explicit loops are
 included for readability.  Figure \ref{ReliminateFM} shows how one or more
 variables can be eliminated from an editmatrix with the {\tt eliminateFM}
 function.  Note that when multiple variables are eliminated, the {\tt
 editmatrix} must be overwritten at every iteration to ensure that the
-history $\bf H$ is updated accordingly.
+history $\bf H$ is updated accordingly. 
 %
+
+\begin{table}
+\begin{threeparttable}
+\caption{Edit manipulation functions. Only mandatory functions are shown. Refer
+to the built-in documentation for optional arguments}
+\label{editmanipulationfunctions}
+\begin{tabular}{ll}
+\hline
+function & description \\
+\hline
+{\tt substValue(E,var,value)}  & (multiple) value substitution\\ 
+{\tt echelon(E)}         & bring equalities in echelon form\\ 
+{\tt eliminateFM(E,var)} & Fourier-Motzkin elimination\\
+{\tt getH(E)}            & derivation history of {\tt E}\\
+{\tt geth(E)}            & nr. of eliminated variables\\
+\hline
+\end{tabular}
+\index{editmatrix@{\tt editmatrix}!manipulation}
+\end{threeparttable}
+\end{table}
+
 
 \begin{algorithm}[t]
 \caption[{\sc eliminateFM}$(E,j)$]{{\sc eliminateFM}$(E,j)$. In the actual implementation all explicit loops are avoided by
-making use of R's recycling properties and vectorized indices.}
+making use of {\sf R}'s recycling properties and vectorized indices.}
 \label{eliminateFM}
 \begin{algorithmic}
 \Require A normalized {\tt editmatrix} $E=\langle [{\bf A|b}],\boldsymbol{\odot},{\bf H},h\rangle$, and a variable index $j$.
@@ -611,10 +652,10 @@ While checking whether a numerical record violates any imposed restrictions
 (within a certain limit) is easy, finding out which variable(s) of the record
 cause the violation(s) can be far from trivial. If possible, the cause of the
 violation should be sought out, since it leads immediately to repair
-suggestions. The {\tt deducorrect} package \citep{loo:2011} mentioned above
+suggestions. The {\tt deducorrect} package \citep{loo:2011a} mentioned above
 offers functionality to detect and repair typing errors,
-rounding errors and sign errors. Although not directly available in R, methods
-for detecting repairing unit measure errors or other systematic errors have
+rounding errors and sign errors. Although not directly available in {\sf R}, methods
+for detecting and repairing unit measure errors or other systematic errors have
 been described in literature and may readily be implemented in {\sf R} (see
 \cite{waal:2011} Chapter 2 for an overview). 
 
@@ -628,22 +669,22 @@ be applied.
 \label{sgeneralfellegiholt}
 In line with the good
 practice of altering source data as little as possible, the paradigm of
-\cite{fellegi:1976} advises to edit a minimal number of variables as
-possible, under the condition that after editing, every edit rule will be
-obeyed. A generalization of this principle says that a weighted number
-of variables should be minimized.\index{Fellegi and Holt principle} More formally, the principle yields the
-following problem. Given a record ${\bf x}$, violating a number of edits
-in an edit matrix $E$ (see Eqn. \eqref{editset}) with $m$ rules and $n$ variables, 
-find $G$ such that
+\cite{fellegi:1976} advises to edit an as small number of variables as
+possible, under the condition that after editing, every edit rule can be
+obeyed. A generalization of this principle says that a weighted number of
+variables should be minimized.\index{Fellegi and Holt principle} More formally
+the principle yields the following problem. Given a record ${\bf x}$, violating
+a number of edits in an edit matrix $E$ (see Eq. \eqref{editset}) with $m$
+rules and $n$ variables, find $G$ such that
 %
 \begin{eqnarray}
-\lefteqn{G = \argmin_{g\subset \{1,2,\ldots,n\}} \sum_{j\in g}w_j\delta(x_j,\tilde{x}_j),}\nonumber\\
+\lefteqn{G = \argmin_{g\subset \{1,2,\ldots,n\}} \sum_{j\in g}w_j}\nonumber\\
  && \textrm{such that a solution } \tilde{\bf x}\in\mathbb{R}^{|G|}\textrm{ exists for} \nonumber\\
 && \sum_{j\in G} {A_{ij}}\tilde{x}_{j} \odot_i b_i-\sum_{j\not\in G}A_{ij}x_j,\quad i\in \{1,2,\ldots,m\}.
 \label{fhproblem}
 \end{eqnarray}
 %
-In other words, for every variable in $\bf x$, we have to decide wether to
+In other words, for every variable in $\bf x$, we have to decide whether to
 use or adapt its value. Unadapted variables can be replaced with
 their observed value $x_j$ while the values of the remaining variables 
 have to be changed into $\tilde{x}_j$, such that these values form no contradiction. 
@@ -679,7 +720,7 @@ mentioned above.
 \centering
 \includegraphics[width=0.495\textwidth]{diamond}
 \includegraphics[width=0.495\textwidth]{twodiamond}
-\caption{Graphic representation of editrules and the allowed area. Left panel: a convex
+\caption{Graphic representation of edit rules and the allowed area. Left panel: a convex
 case, as defined by Eq.\ \eqref{E1}. Right panel: the non-convex unconnected case, as defined
 by Eq.\ \eqref{E2}. Gray areas indicate the valid record domain, black dots indicate erroneous records and 
 black arrows indicate the solution of the error localization problem, while the thin black lines
@@ -690,10 +731,10 @@ the record (0,0) can move to reach the valid area.}
 
 To illustrate the binary search algorithm outlined above we will consider a
 simple two-dimensional example. The reader is encouraged to follow the
-reasoning below by checking the calculations using the R-functions mentioned in
+reasoning below by checking the calculations using the {\sf R}-functions mentioned in
 the previous sections. 
 
-Consider a 2-variable record $(x,y)$ subject to the set of constaints $E$:
+Consider a 2-variable record $(x,y)$ subject to the set of constraints $E$:
 \begin{equation}
 \label{E1}
 E = \left\{
@@ -708,8 +749,8 @@ Each separate inequality yields a half-plane of which the border is determined
 by the line obtained by replacing $<$ or $>$ by $=$. The intersection of the
 four half-planes is the region of allowed records.  In this example, the region
 is a diamond, depicted as the gray area in Figure \ref{example1}.  The borders
-are labled with the editrules in Eq.\ \eqref{E1}. Consider the record
-$(y=2,x=-1)$, depicted as the bottom black dot in Figure \ref{example1}. It is
+are labeled with the edit rules in Eq.\ \eqref{E1}. Consider the record
+$(x=2,y=-1)$, depicted as the bottom black dot in Figure \ref{example1}. It is
 easy to confirm either graphically or by substitution that $(2,-1)$ violates
 edits $e_1$ and $e_2$, and that the record can be made consistent by altering
 only $y$ and leaving $x$ constant (indicated by the black arrow).  It is also
@@ -741,7 +782,7 @@ In this notation, each time a left (right) node is added, the subscript of $T$ i
 with an $l$ ($r$). Substituting one of the values further restricts the possible values
 for variables that have not been treated yet. In fact, after the error localization problem
 has been solved, substituting all unaltered values into $E$ yields a set of equations which 
-determine the range of the variable vector which have to be altered or imputed.
+determine the range of the variables which have to be altered or imputed.
 
 Since no variables were eliminated, the weight in $T_{0l}$ is 0, and the record
 has not changed.  In the right child of the root, $x$ is assumed to be wrong,
@@ -766,13 +807,13 @@ T_{0ll} = \left\langle\begin{array}{l}
 -1 < 3
 \end{array},(2,-1),0\right\rangle,
 \end{equation}
-where the contradiction $-1>1$ which indicates that $T_{0ll}$ is not a solution (which
+where the contradiction $-1>1$ indicates that $T_{0ll}$ is not a solution (which
 is obvious since none of the values in the records are assumed incorrect).
 The right child of $T_{0l}$ is obtained by eliminating $y$:
 \begin{equation}
 T_{0lr} = \left\langle \varnothing, (2,y),1\right\rangle,
 \end{equation}
-where the tautology $0<2$ was removed. This endnode does represent a solution, since no
+where the tautology $0<2$ was removed. This end node does represent a solution, since no
 conflicting rules have been generated. To see if any other solutions exist, continue to
 calculate the left child node of $T_{0r}$
 \begin{equation}
@@ -813,7 +854,7 @@ e_4':&y < -x+6.
 \end{array}\right.
 \label{E2}
 \end{equation}
-The error localization problem fo this can be handled by solving the partial
+This error localization problem can be handled by solving the partial
 localization problems for $\{e_0,e_1,\ldots,e_4\}$ and $\{
 \overline{e}_0,e_1',\ldots,e_4'\}$ separately, where $\overline{e}_0$ stands
 for the complement $\overline{e}_0:\, x \geq 0$. The partial solution with the
@@ -833,7 +874,7 @@ and the solution weight.  }
 \label{treefig}
 \end{figure}
 
-To generalize this example, note that a conditional edit sets of the form
+To generalize this example, note that a conditional edit set of the form
 \begin{equation}
 \textbf{if } E_0\textbf{ then } E_1\textbf{ else } E_2,
 \end{equation}
@@ -867,48 +908,43 @@ Here, each negated inequality translates to a single inequality, while each nega
 equality yields two inequalities (as in Eq.\ \eqref{exampleExpansion}).
 
 We will have more to say on conditional edits\index{edit rules!conditional} in
-the accompanying paper where the error localization problem for categorical and
+the accompanying paper \citep{loo:2011b} where the error localization problem for categorical and
 mixed data are treated.
 
 \subsection{Error localization with {\tt errorLocalizer}}
 \label{scpeditmatrix}
 
 The error localization problem detailed in the previous subsections can be
-automated with {\tt errorLocalizer}.\index{errorLocalizer@{\tt errorLocalizer}} This function expects an {\tt editmatrix},
-a named {\tt numerical} record and optionally a vector of reliability weights
-with the same length as the record. The return value is not the solution to the
-error localization problem but an object of class {\tt backtracker}. With a
-backtracker object the branch-and-bound tree can be searched to find solutions
-one by one. As an example, consider the edits of Eqn.\ \eqref{E1}, and the
-record $(x=1,y=-1)$. Figure \ref{Rcpeditmatrix} shows how the error
-localization problem can be solved with the {\tt backtracker} object
-returned by {\tt errorLocalizer}. The internal machinery of {\tt backtracker}
-objects is detailed in the next subsection, in this section we show how to use
-such objects to solve error localization problems. In Figure
-\ref{Rcpeditmatrix}, the edits of Eqn.\ \eqref{E1} and the record $(2,-1)$ are
-offered to {\tt errorLocalizer}.  By calling the built-in {\tt searchNext}
-function, the backtracker object traverses the binary search tree depth-first,
-until the first solution is found. When a solution is found, it is returned to
-the user as a list, containing the solution weight {\tt w} and the logical vector 
-{\tt adapt} which is {\tt TRUE} for variables which need to be changed, and {\tt
-FALSE} for variables which can retain their original values. As expected,
-$y$ is pointed out as the variable to change. Another call to {\tt searchNext}
-will search for the next solution in the tree, with lower weight. However,
-since in this example there is only one solution, {\tt searchNext} returns
-{\tt NULL}.
+automated with {\tt errorLocalizer}.\index{errorLocalizer@{\tt errorLocalizer}}
+This function expects an {\tt editmatrix}, a named {\tt numerical} record and
+optionally a vector of reliability weights with the same length as the record.
+There are extra options to control the maximum number of variables to adapt
+({\tt maxadapt}), the maximum weight ({\tt maxweight}) and the maximum search
+time ({\tt maxduration}) in seconds.  The return value of {\tt errorLocalizer}
+is not the solution to the error localization problem but an object of class
+{\tt backtracker}. With a backtracker object the branch-and-bound tree can be
+searched to find solutions one by one. The internal machinery of {\tt
+backtracker} objects is detailed in the next subsection, in this section it is
+shown how to use such objects to solve error localization problems. 
 
-The method {\tt searchNext} is not the only method of the {\tt backtracker} object
-returned by {\tt errorLocalizer}. The avaliable methods are
-\begin{itemize}
-\item\verb"$searchNext" Searches for the next solution with a lower weight than the previously found solution.
-\item\verb"$searchAll"  Returns all encountered solutions that have non-increasing weights.
-\item\verb"$searchBest" Returns the lowest-weight solution. If multiple solutions have the same, minimum weight,
-        it returns one of those solutions at random.
-\end{itemize}
-In fact, any {\tt backtracker} object is equipped with the {\tt searchNext} and
-{\tt searchAll} methods. The {\tt searchBest} method is specific for the {\tt backtracker} object returned by 
-{\tt errorLocalizer}.
-%
+Consider again the edits of Eqn.\ \eqref{E1}, and the record $(x=2,y=-1)$.
+Figure \ref{Rcpeditmatrix} shows how the error localization problem can be
+solved with the {\tt backtracker} object returned by {\tt errorLocalizer}.  By
+calling the built-in {\tt searchNext} function, the backtracker object
+traverses the binary search tree depth-first, until the first solution is found
+or {\tt maxduration} is exceeded. If a solution is found, the contents of the
+current node is returned to the user as a list. It contains the current
+solution weight {\tt w} and a named {\tt logical} vector called {\tt adapt},
+indicating which variables have to be adapted.  If {\tt maxduration} is
+exceeded or no solution is found, {\tt NULL} is returned.  The backtracker
+object property {\tt maxdurationExceeded} indicates if the time limit has been
+exceeded or not.
+
+As expected, in the example $y$ is pointed out as the variable to change. At
+this point, the {\tt backtracker} object contains all the information needed to
+continue the search for new solutions, starting from the node where it just
+ended.  It also stores some information on the elapsed time needed for the
+previous search in the form of a standard {\tt proc\_time} object. 
 %
 \begin{Rcode}
 <<keep.source=true>>=
@@ -919,13 +955,42 @@ E1 = editmatrix(c(
     "y < -x + 5"))
 bt <- errorLocalizer(E1, c(x=2,y=-1))
 bt$searchNext()
+bt$duration
+bt$maxdurationExceeded
 bt$searchNext()
 @
+\caption{Localizing errors with the {\tt backtracker} object generated by {\tt errorLocalizer}. After
+a search is performed, the backtracker object holds information on the duration of the search, and if
+the time-limit for a search was exceeded.}
 \label{Rcpeditmatrix}
-\caption{Localizing errors with the {\tt backtracker} object generated by {\tt errorLocalizer}}
 \end{Rcode}
 %
 %
+
+Another call to {\tt searchNext} will
+search for the next solution in the tree, with lower weight. However, since in
+this example there is only one solution, {\tt searchNext} returns {\tt NULL}.
+
+The method {\tt searchNext} is not the only method of the {\tt backtracker} object
+returned by {\tt errorLocalizer}. The available methods are
+\begin{itemize}
+\item\verb"$searchNext" Searches for the next solution with a lower weight than the previously found solution.
+\item\verb"$searchAll"  Returns all solutions encountered in the branch-and-bound search before {\tt maxduration} is exceeded.
+\item\verb"$searchBest" Returns the lowest-weight solution of all solutions found before {\tt maxduration} is exceeded. 
+        If multiple solutions have the same, minimum weight,
+        it returns one of those solutions at random.
+\end{itemize}
+All these methods accept the following optional arguments:
+\begin{itemize}
+\item \verb"maxduration" The number of seconds after which to stop the search. The default value is the
+        value passed to {\tt errorLocalizer}, which created the object.
+\item \verb"VERBOSE" Print the path in the search tree and contents of each node during search. 
+\end{itemize}
+%
+Any {\tt backtracker} object is equipped with the {\tt searchNext} and
+{\tt searchAll} methods. The {\tt searchBest} method is specific for the {\tt
+backtracker} object returned by {\tt errorLocalizer}. 
+
 
 The backtracker method offers a flexible interface for error localization. To understand
 what happens when there are multiple solutions, consider the case of a simple balance
@@ -951,10 +1016,11 @@ bt$searchNext()$adapt
 bt$searchNext()$adapt
 bt$searchNext()$adapt
 @
-As can be seen the solution where turnover must be adapted is not found anymore. The 
-reason is that {\tt errorLocalizer} makes sure that during the search for solutions, 
-variables with the highest reliability weight are the last
-ones to be assumed incorrect. Since it has found solutions for the less reliable variables ($p$ and $c$), it won't search for solutions with higher weight.
+The solution where turnover must be adapted is not found anymore. The reason is
+that {\tt errorLocalizer} makes sure that during the search for solutions,
+variables with the highest reliability weight are the last ones to be assumed
+incorrect. Since it has found solutions for the less reliable variables ($p$
+and $c$), it won't search for solutions with higher weight.
 
 If we add more restrictions, the number of solutions to the error localization problem decreases. 
 Here, we demand that the cost to turnover ratio does not exceed 0.6.
@@ -1016,17 +1082,18 @@ words, it prunes invalid search subtrees and does not waste computation time on
 invalid solutions. Furthermore the algorithm allows users to specify how to
 extend a partial solution and when a partial solution is invalid.
 
-Backtracking\index{backtracking} is specific form of the more general ``choice point''
-\index{choice point} programming which stems from the field of nondeterministic
-programming.  In nondeterministic programming, the control flow of a program is
-not determined explicitly by the programmer with standard branching statements.
-In stead, choice points may be created which store the full state of a program
-so that control flow can at any time return to a stored state and choose a new
-path from there. Choice point programming is supported by various niche
-programming environments, such as {\sf Alma-0} \citep{partington:1997} and {\sf
-ELAN} \citep{vittek:1996}. See \cite{moreau:1998} for a clear introduction or
-\cite{mart:2002} for a bibliographic overview. The choice point paradigm offers
-an excellent environment for programming backtracking algorithms, of which the
+Backtracking\index{backtracking} is a specific form of the more general
+``choice point'' \index{choice point} programming which stems from the field of
+nondeterministic programming.  In nondeterministic programming, the control
+flow of a program is not determined explicitly by the programmer with standard
+branching statements.  In stead, choice points may be created which store the
+full state of a program so that control flow can at any time return to a stored
+state and choose a new path from there. Choice point programming is supported
+by various niche programming environments, such as {\sf Alma-0}
+\citep{partington:1997} and {\sf ELAN} \citep{vittek:1996}. See
+\cite{moreau:1998} for a clear introduction or \cite{mart:2002} for a
+bibliographic overview. The choice point paradigm offers an excellent
+environment for programming backtracking algorithms, of which the
 branch-and-bound algorithm of subsection \ref{sgeneralfellegiholt} is just a
 specific example. 
 
@@ -1048,8 +1115,8 @@ environments is equivalent to a stack, where a \push-operation corresponds to
 nesting a new environment and a \pop-operation ensures that the next expression
 will be evaluated in the last-pushed environment. Since environments are
 nested, expressions evaluated in a child node have read access to information
-stored in the parent node.  Pseudocode for the {\sc backtracker} object is
-given in Algorithm \ref{backtracker}. Expressions are denoted with greek
+stored in the parent node.  Pseudo-code for the {\sc backtracker} object is
+given in Algorithm \ref{backtracker}. Expressions are denoted with Greek
 letters $\psi$ or $\phi$, environments are denoted as $\env$ and $::$ is the
 scope resolution operator. The symbol $\mathcal{S}$ denotes a formal stack. We
 denote the result of evaluating an expression $\phi$ in an environment $\env$
@@ -1065,7 +1132,7 @@ evaluated at left and right child nodes and an expression $\psi$ to evaluate
 the contents of a node. The initialization expression usually consists of a
 number of variable declarations. Expressions $\phi_l$ and $\phi_r$ alter the
 state of left or right child node, any returned values are ignored. The
-expression $\psi$ serves two purposes. First of all, it judges a node \env and
+expression $\psi$ serves two purposes. First of all, it judges a node \env  and
 must return one of the following values:
 \begin{equation}
 \psi(\env) = \left\{\begin{array}{ll}
@@ -1081,7 +1148,12 @@ generates nodes in the binary tree, depth-first and returns the (contents of)
 the first environment corresponding to a solution. If {\sc bt} is the instance
 of a {\sc backtracker} object, then each call to {\sc bt::searchNext} will
 return a new, and better solution, until all solutions are found, in which
-case {\sc null} is returned.
+case {\sc null} is returned. A call to {\sc bt::searchAll} (not shown in
+pseudo-code) will return all solutions.
+Since search spaces grow exponentially with tree depth, the backtracker object
+can be equipped with a time limit for tree search or a maximum tree depth.
+The latter is mainly useful for debugging purposes.
+
 %
 %
 \begin{algorithm}[t]
@@ -1123,23 +1195,29 @@ is the scope resolution operator and $\mathcal{S}$ a stack.}
 %
 %
 
-As an example, Figure \ref{Rbacktracker} shows how to implement the branch-and-bound algorithm for
-error localization. The {\tt backtracker} function accepts the following arguments:
+The {\tt backtracker} function constructs a {\tt backtracker} object and
+accepts the following arguments:
 %
 \begin{itemize}
 \item {\tt isSolution}  : An {\sf R} expression corresponding to $\psi$ of Eqn.\ \eqref{psi}.
 \item {\tt choiceLeft}  : An {\sf R} expression for execution in left child nodes ($\phi_l$) .
 \item {\tt choiceRight} : An {\sf R} expression for execution in right child nodes ($\phi_r$).
+\item {\tt maxduration} : Optional: the default maximum time in seconds for a tree search with {\tt \$searchNext()} or {\tt \$searchAll()}.
+        This time may be overwritten by passing a new {\tt maxduration} when calling a search function.
+\item {\tt maxdepth}    : Optional: The maximum tree search depth.
 \item {\tt ...}         : Named arguments, to initialize the root node ($\phi_0$).
 \end{itemize}
 %
 %
-In Figure \ref{Rbacktracker} the top environment (root node) receives an edit
-matrix {\tt E}, a record {\tt r}, a vector of variable names that have yet to
-be treated ({\tt totreat}), a logical vector indicating whether a variable
-should be altered or not ({\tt adapt}), a weight vector {\tt weight} with
-reliability weights for each variable, and the weight {\tt wsol} of the current
-solution is initialized to the maximum possible weight. 
+As an example, Figure \ref{Rbacktracker} shows a simple implementation of the
+branch-and-bound algorithm for error localization (the implementation in {\tt
+errorLocalizer} is somewhat more advanced and faster than this example).  The
+top environment (root node) receives an edit matrix {\tt E}, a record {\tt r},
+a vector of variable names that have yet to be treated ({\tt totreat}), a
+logical vector indicating whether a variable should be altered or not ({\tt
+adapt}), a weight vector {\tt weight} with reliability weights for each
+variable. Also, the weight {\tt wsol} of the current solution is initialized to
+the maximum possible weight. 
 
 The expression {\tt isSolution} first computes the weight of the current
 solution by adding all elements of {\tt weight} for which {\tt adapt==TRUE}.
@@ -1148,20 +1226,20 @@ exceeds the weight of the last found solution. Since {\tt wsol} is initialized
 on the maximum weight, the latter can only happen when at least one solution
 has been found. If either condition is met, the branch must be pruned, so {\tt
 FALSE} is returned. Otherwise, it is checked whether any variables are left to
-treat, if so, the expression ends, otherwise. The solution weight in the top
+treat.  If so, the search continues. If not, the solution weight in the top
 environment is set (using the \verb"<<-" operator) and {\tt TRUE} is returned.
 Before returning, output is prepared by copying the variable {\tt adapt} from
 the enveloping environment, and removing the empty vector {\tt totreat}.
 
 In {\tt choiceLeft}, the first variable to be treated is chosen and its value
 replaced in the editmatrix. The value of {\tt E} in the call to {\tt
-substValue} is copied automagically from the enveloping environment which by
+substValue} is copied automatically from the enveloping environment which by
 construction holds the parent node of the node under treatment. For the same
-reason the assigning the indexed value of {\tt adapt} the value {\tt FALSE}
-works.  The value corresponding to the variable under treatement in {\tt adapt}
-is set to {\tt FALSE} since a variable who's value is substituted in the
-editmatrix is assumed correct in the treated node. Finally, the vector of
-variables to be treated is updated.
+reason assigning the indexed value of {\tt adapt} works.  The value
+corresponding to the variable under treatment in {\tt adapt} is set to {\tt
+FALSE} since a variable for which the value is substituted in the editmatrix is
+assumed correct in the treated node. Finally, the vector of variables to be
+treated is updated.
 
 In {\tt choiceRight}, the same administrative chores are performed as in the
 {\tt choiceLeft}. The only difference is that in the right node a variable is
@@ -1218,21 +1296,20 @@ bt$searchNext()
 \section{Related R-packages}
 The {\tt editrules} packages provides methods to specify, modify and solve sets
 of linear constraints.  Solving systems of linear constraints is the domain of
-linear programming \citep{schrijver:1998}. The comprehensive R Archive Network
-\citep{CRAN:2011} provides several R packages  that use external libraries to
-solve linear programming problems. For example {\sc R} packages {\tt linprog}
+linear programming \citep{schrijver:1998}. The comprehensive {\sf R} Archive Network
+\citep{CRAN:2011} provides several {\sf R} packages  that use external libraries to
+solve linear programming problems. For example {\sf R} packages {\tt linprog}
 \citep{linprog:2010} and {\tt lpSolve} \citep{lpSolve:2011}.  {\tt editrules}
-takes a different approach for a number of reasons and it provides an ``all R
-solution''.
+takes a different approach for a number of reasons.
 
-First of all, the specification of constraints in {\tt editrules} is in R
+First of all, the specification of constraints in {\tt editrules} is in {\sf R}
 syntax, while other packages typically use the specification format of the
-external library. This facilitates the maintanance of edits and reuse of these
-statements within R. It is very useful to check data within R before, during
+external library. This facilitates the maintenance of edits and reuse of these
+statements within {\sf R}. It is very useful to check data within {\sf R} before, during
 and after data analysis.
 
-Secondly, \cite{waal:2011}, Chapter \mbox{3.4.9} compares various
-implementations of error localilzers, based on specificly written
+Secondly, \cite{waal:2011}, Chapter \mbox{3.4.9} compare various
+implementations of error localizers, based on specifically written
 branch-and-bound software and based on general linear solvers. They observed
 that branch and bound algorithms for error localization problems in realistic
 data are as fast as linear programming techniques, but have the added advantage
@@ -1240,23 +1317,23 @@ of returning multiple equivalent solutions to the specified problem.  {\tt
 errorLocalizer} is an improved implementation of their original branch and
 bound algorithm.
 
-Thirdly {\tt editrules} provides a powerful toolbox to write advanced
-editing and backtracking operations on sets of edits using R statements.  Some
+Thirdly, {\tt editrules} provides a powerful toolbox to write advanced
+editing and backtracking operations on sets of edits using {\sf R} statements.  Some
 linear programming libraries also offer branch and bound or branch and cut
 methods, but these typically have to be specified in the original programming
-language of the library. In {\tt editrules} all coding is in {\sc R}.
+language of the library. In {\tt editrules} all coding is in {\sf R}.
 
 \section{Conclusions}
-The {\tt editrules} package offers a convenient interface to define and
+The {\tt editrules} package offers an interface to define and
 manipulate sets of linear (in)equality restrictions. Linear restrictions can be
-entered textually for for automated translation to matrix form or {\em vice
+entered textually for automated translation to matrix form or {\em vice
 versa}. Edit sets can be manipulated by value substitution or variable
 elimination, through a newly developed fast routine for Fourier-Motzkin
 elimination. The latter routine also allows the user to check sets of linear
 (in)equalities for internal consistency. 
 
-The package offers the ability to efficiently identify the edit rules violated
-by a set of records. Moreover, based on the generalized Fellegi-Holt
+The package offers the ability to identify the edit rules violated
+by a set of records. Based on the generalized Fellegi-Holt
 assumption, one can localize the erroneous fields in edit-violating records.
 The error localization routines are based on a backtracker-programming paradigm
 which is exported to user space, providing users with a flexible and easy to
@@ -1267,6 +1344,7 @@ use interface for solving binary programming problems.
 
 \bibliographystyle{chicago}
 \bibliography{editrules}
+\addcontentsline{toc}{section}{Index}
 \printindex
 
 \end{document}

@@ -26,13 +26,15 @@
 #' @param choiceLeft \code{expression} that will be evaluated for a left node
 #' @param choiceRight \code{expression} that will be evaluated for a right node
 #' @param list \code{list} with variables that will be added to the search environment
+#' @param maxdepth \code{integer} maximum depth of the search tree
+#' @param maxduration \code{integer} Default maximum search time for \code{$searchNext()} and \code{$searchAll()}
 #' @param ... named variables that will be added to the search environment
 #' 
 #' @return backtracker object, see Methods for a description of the methods
 #' @aliases backtracker choicepoint
 #' @export backtracker choicepoint
 #'
-backtracker <- function(isSolution, choiceLeft, choiceRight, list=NULL, ...){
+backtracker <- function(isSolution, choiceLeft, choiceRight, list=NULL, maxdepth=Inf, maxduration=Inf, ...){
    
    isSolution <- substitute(isSolution)
    choiceLeft <- substitute(choiceLeft)
@@ -40,7 +42,7 @@ backtracker <- function(isSolution, choiceLeft, choiceRight, list=NULL, ...){
    e <- new.env()
    
    with(e,{
-      
+      maxduration <- maxduration 
       reset <- function(){
          e$state <- root
          e$depth <- 0
@@ -54,15 +56,21 @@ backtracker <- function(isSolution, choiceLeft, choiceRight, list=NULL, ...){
          
       }
       
-      searchAll <- function(..., VERBOSE=FALSE){
+      searchAll <- function(maxduration=e$maxduration, ..., VERBOSE=FALSE){
          solutions <- list()
-         while (!is.null(sol <- searchNext(..., VERBOSE=VERBOSE))){
+         start <- proc.time()
+         duration <- start-start
+
+         while (!is.null(sol <- searchNext(maxduration=(maxduration-duration[3]), ..., VERBOSE=VERBOSE))){
             solutions[[length(solutions)+1]] <- sol
+            duration <- proc.time() - start
          }
+         e$duration <- duration
          return(solutions)
       }
             
-      searchNext <- function(..., VERBOSE=FALSE){
+      searchNext <- function(maxduration=e$maxduration, ..., VERBOSE=FALSE){
+         start <- proc.time()
          state <- e$state
          if (is.null(state)){
            #search complete
@@ -75,29 +83,38 @@ backtracker <- function(isSolution, choiceLeft, choiceRight, list=NULL, ...){
          
          sol <- eval(isSolution, state)
          while (is.null(sol) || !sol){
-            if (!is.null(sol)){
+            e$duration <- proc.time() - start
+            
+            if (e$duration[3] > maxduration){
+               e$state <- state
+               e$maxdurationExceeded <- TRUE
+               return(NULL)
+            }
+
+            if (!is.null(sol)){               
                state <- up(state)
+               
                if (is.null(state)){
                   return(NULL)
                }
-               state$.path <- state$.path[1:depth]
+               #state$.path <- state$.path[1:depth]
             }
             width <- state$.width
             path <- state$.path
             state <- down(state)
             if (width == 1){
-               state$.path <- c(path, "left")
+               state$.path <- c(path, "l")
                eval(choiceLeft, state)
             }
             else {
-               state$.path <- c(path, "right")
+               state$.path <- c(path, "r")
                eval(choiceRight, state)
             }
             sol <- eval(isSolution, state)
             
             if (VERBOSE){
                cat("***********************************************************************\n")
-               cat("path:",paste(state$.path, collapse="->", sep=""),", solution : ", sol,"\n")
+               cat("path:",paste(state$.path, collapse="", sep=""),", solution : ", sol,"\n")
                print(ls.str(envir=state))
             }
          }
@@ -119,13 +136,14 @@ backtracker <- function(isSolution, choiceLeft, choiceRight, list=NULL, ...){
          if (state$.width > maxwidth){
             return(up(state))
          }
+         state$.path <- head(state$.path, depth)
          #cat("up, depth=", depth,"width=", state$.width, "\n")
          state
       }
       
       down <- function(state){
          depth  <<- depth + 1
-         if (depth > maxdepth) stop("maxdepth")
+#         if (depth > maxdepth) stop("maxdepth")
          #cat("down, depth=", depth,"width=", state$.width, "\n")
          #state$.width <- state$.width + 1
          state <- new.env(parent=state)
@@ -134,8 +152,8 @@ backtracker <- function(isSolution, choiceLeft, choiceRight, list=NULL, ...){
       }
       depth <- 0
       maxwidth <- 2
-      #TODO add maxdepth as parameter to this function
-      maxdepth <- 100
+      maxdepth <- maxdepth
+      maxdurationExceeded <- FALSE
       currentSolution <- NULL
       root <- new.env(parent=e)
       init <- c(list, list(...))
