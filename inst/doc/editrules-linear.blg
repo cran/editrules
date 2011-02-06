@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: editrules-linear.aux
+The style file: chicago.bst
+Database file #1: editrules.bib
+Warning--page numbers missing in cernikov:1963
+Warning--empty organization in loo:2011
+You've used 19 entries,
+            2861 wiz_defined-function locations,
+            734 strings with 7677 characters,
+and the built_in function-call counts, 10693 in all, are:
+= -- 913
+> -- 620
+< -- 6
++ -- 167
+- -- 227
+* -- 789
+:= -- 2058
+add.period$ -- 63
+call.type$ -- 19
+change.case$ -- 115
+chr.to.int$ -- 19
+cite$ -- 21
+duplicate$ -- 341
+empty$ -- 715
+format.name$ -- 243
+if$ -- 1943
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 13
+newline$ -- 101
+num.names$ -- 192
+pop$ -- 74
+preamble$ -- 1
+purify$ -- 234
+quote$ -- 0
+skip$ -- 352
+stack$ -- 0
+substring$ -- 527
+swap$ -- 107
+text.length$ -- 6
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 360
+warning$ -- 2
+while$ -- 191
+width$ -- 0
+write$ -- 273
+(There were 2 warnings)

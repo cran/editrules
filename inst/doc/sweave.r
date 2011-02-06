@@ -1,2 +1,6 @@
 
-Sweave("deducorrect-vignette.Snw")
+Sweave("editrules-linear.Snw")
+Sweave("editrules-categorical.Snw")
+
+
+

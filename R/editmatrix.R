@@ -139,9 +139,9 @@ editmatrix <- function( editrules
       editrules <- NULL
     }
     else if (is.data.frame(editrules)){
-      name <- editrules$name
-      edit <- editrules$edit
-      description <- editrules$description
+      name <- as.character(editrules$name)
+      edit <- as.character(editrules$edit)
+      description <- as.character(editrules$description)
 
       if (is.null(edit)){
          stop("The supplied data.frame misses the column 'edit'.\nSee ?editmatrix for a valid input specification")
@@ -352,11 +352,16 @@ as.character.editmatrix <- function(x, ...){
    left <- gsub("1\\*","",left)
    right <- gsub("1\\*","",right)
 
+   
+   left <- ifelse( left==""
+                 , ifelse(right=="", "0", -b) 
+                 , ifelse(b < 0 & right != "", paste(left,-b,sep=" + "), left)
+                 )
+   
    right <- ifelse( right==""
                   , b
-                  , ifelse(b == 0, right, paste(right,b,sep=" + "))
+                  , ifelse(b > 0 & left != -b, paste(right,b,sep=" + "), right)
                   )
-   left <- ifelse(left=="", "0", left)
    txt <- paste(left,ops,right)    
    names(txt) <- rownames(x)
    txt
@@ -406,10 +411,10 @@ print.editmatrix <- function(x, ...){
 #' @param ... methods to pass to other methods
 #' @export
 str.editmatrix <- function(object,...){
-    ivar <- rowSums(abs(object)) > 0
-    vars <- paste(getVars(object)[ivar],collapse=", ")
+#    ivar <- rowSums(abs(object)) > 0
+    vars <- paste(getVars(object),collapse=", ")
     if (nchar(vars) > 20 ) vars <-  paste(strtrim(vars,16),"...") 
-    cat(paste("editmatrix with", ncol(object), "edits containing variables",vars,"\n"))
+    cat(paste("editmatrix with", nrow(object), "edits containing variables",vars,"\n"))
 }
 
 

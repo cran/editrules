@@ -4,7 +4,8 @@
 \title{Facilitates reading of linear (in)equalities and...}
 \description{Facilitates reading of linear (in)equalities and
 converting them to a matrix format (and vice versa)}
-\details{The package \code{editrules} facilitates the reading/parsing of so called "edit rules" or constraints. These are linear (in)equalities used for checking
+\details{The package \code{editrules} facilitates the reading/parsing of so called "edit rules" or constraints. 
+Edit rules are linear (in)equalities used for checking
 statistical data. 
 Often the specification of edit rules and their implementation in software is cumbersome. In many cases a restriction matrix 
 is created manually. With \code{editrules} these rules can be specified in R syntax and can be managed and documented.
@@ -21,13 +22,15 @@ The function \code{\link{editmatrix}} reads linear (in)equalities.
 Typical usage is:}
 \docType{package}
 \examples{# load a data.frame with the edit rules
-E.csv <- 
-'name , edit       , description
-A , x == y         , "these variables should be equal"
-B , z + w == y + x ,
-C , z == y + 2*w   ,
-'
-E.df <- read.csv(textConnection(E.csv))			
+E.df <- data.frame(
+    name =c("A","B","C"),
+    edit = c("x == y",    
+            "z + w == y + x",
+            "z == y + 2*w"),
+    description = c(
+            "these variables should be equal","","")
+
+)
 
 print(E.df)
 # Create the editmatrix from the editrules

@@ -1,7 +1,7 @@
-\name{replaceValue}
-\alias{replaceValue}
+\name{substValue}
+\alias{substValue}
 \title{Reduce an editmatrix by substituting a variable...}
-\usage{replaceValue(E, var, value)
+\usage{substValue(E, var, value)
 }
 \description{Reduce an editmatrix by substituting a variable}
 \details{Given a set of linear restrictions \eqn{E: {\bf Ax}\odot {\bf b}} with \eqn{\odot\in\{<,\leq,==\}},
@@ -11,6 +11,7 @@ and \eqn{{\bf b}={\bf a}_j\tilde{x}_j}.
 
 Note that the resulting \code{\link{editmatrix}} may be inconsistent because of inconsistencies in
 \eqn{\tilde{\bf x}}.}
+\alias{replaceValue}
 \value{reduced edit matrix}
 \arguments{\item{E}{\code{editmatrix} object}
 \item{var}{\code{character} with name of variable}

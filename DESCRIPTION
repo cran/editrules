@@ -2,6 +2,7 @@ Package: editrules
 Maintainer: Edwin de Jonge <edwindjonge@gmail.com>
 License: GPL-3
 Title: R package for parsing and manipulating edit rules
+LazyData: no
 Type: Package
 LazyLoad: yes
 Author: Edwin de Jonge, Mark van der Loo
@@ -12,13 +13,14 @@ Description: Facilitates reading and manipulation of linear
         elimination and variable substitution and solving error
         localization problems based on the generalized principle of
         Felligi and Holt.
-Version: 0.6
+Version: 0.7
 URL: http://code.google.com/p/editrules/
 Date: 2011-02-06
 Depends:
 Suggests: iterators
-Collate: 'check.R' 'choicepoint.R' 'cpeditmatrix.R' 'editmatrixAttr.R'
-        'editmatrix.R' 'eliminate.R' 'findBlocks.R' 'pkg.R' 'reduce.R'
-Packaged: 2011-05-11 10:19:53 UTC; mark
+Collate: 'check.R' 'choicepoint.R' 'editmatrixAttr.R' 'editmatrix.R'
+        'editrules-data.R' 'eliminate.R' 'errorLocalizer.R'
+        'findBlocks.R' 'pkg.R' 'reduce.R'
+Packaged: 2011-06-24 10:04:17 UTC; mark
 Repository: CRAN
-Date/Publication: 2011-05-11 10:57:47
+Date/Publication: 2011-06-25 05:54:08

@@ -1,3 +1,17 @@
+version 0.7
+- errorLocalizer gains searchBest() function, returns random solution in case of degeneracy
+- added as.character coercions in editmatrix to solve crash in R2.13-patched
+- BREAKING CHANGE: replaceValues renamed to substValues. Currently warns, will emit error in next release.
+- BREAKING CHANGE: cp.editmatrix renamed to errorLocalizer and now S3 generic. Currently warns, will emit error in next release.
+- getC and getMatrix are deprecated and now emit errors.
+- Vignette ready for review
+- solved bug in documentation of cp.editmatrix
+- solved bug in str.editmatrix
+- isObviouslyRedundant now finds duplicate rows within tolerance.
+- overloaded built-in function "duplicated" for editmatrix. 
+- Added full feasibility check for editmatrix: isFeasible
+- removed bug from findBlocks and exported.
+
 version 0.6
 - Edit rule coercions: as.expression as.character as.editmatrix as.data.frame
 - Transform equality restrictions to reduced row echelon form
