@@ -1,9 +1,0 @@
-\select@language {english}
-\contentsline {section}{\numberline {1}Introduction}{3}
-\contentsline {section}{\numberline {2}Defining and checking categorical constraints}{3}
-\contentsline {subsection}{\numberline {2.1}The {\tt editarray} object}{3}
-\contentsline {subsection}{\numberline {2.2}Basic manipulations and edit checking}{5}
-\contentsline {subsection}{\numberline {2.3}Obvious redundancy and infeasibility}{6}
-\contentsline {section}{\numberline {3}Manipulation of categorical restrictions}{7}
-\contentsline {subsection}{\numberline {3.1}Value substitution}{7}
-\contentsline {subsection}{\numberline {3.2}Variable elimination by category resolution}{7}

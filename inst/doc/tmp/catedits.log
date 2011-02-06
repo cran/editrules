@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.5.2)  14 JUL 2011 16:57
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.6.12)  28 JUL 2011 13:00
 entering extended mode
  %&-line parsing enabled.
 **catedits.tex
@@ -47,7 +47,8 @@ File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
 Package: colortbl 2001/02/13 v0.1j Color table columns (DPC)
 \everycr=\toks15
 \minrowclearance=\skip45
-) (./catedits.aux)
+)
+No file catedits.aux.
 \openout1 = `catedits.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
@@ -62,7 +63,6 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
 LaTeX Font Info:    ... okay on input line 66.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
 LaTeX Font Info:    ... okay on input line 66.
-
 (/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count88
@@ -126,8 +126,8 @@ Overfull \hbox (3.83356pt too wide) in paragraph at lines 213--220
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./catedits.aux) ) 
 Here is how much of TeX's memory you used:
- 888 strings out of 495061
- 10610 string characters out of 1182622
+ 886 strings out of 495061
+ 10584 string characters out of 1182621
  89642 words of memory out of 3000000
  4121 multiletter control sequences out of 15000+50000
  6379 words of font info for 23 fonts, out of 3000000 for 9000

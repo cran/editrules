@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: editrules-linear.aux
+The style file: chicago.bst
+Database file #1: editrules.bib
+Repeated entry---line 206 of file editrules.bib
+ : @manual{jonge:2011
+ :                   ,
+I'm skipping whatever remains of this entry
+Warning--empty organization in lpSolve:2011
+Warning--page numbers missing in cernikov:1963
+Warning--empty organization in linprog:2010
+You've used 26 entries,
+            2861 wiz_defined-function locations,
+            775 strings with 8567 characters,
+and the built_in function-call counts, 14760 in all, are:
+= -- 1261
+> -- 906
+< -- 10
++ -- 251
+- -- 337
+* -- 1092
+:= -- 2856
+add.period$ -- 88
+call.type$ -- 26
+change.case$ -- 158
+chr.to.int$ -- 26
+cite$ -- 29
+duplicate$ -- 457
+empty$ -- 946
+format.name$ -- 369
+if$ -- 2664
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 17
+newline$ -- 139
+num.names$ -- 262
+pop$ -- 103
+preamble$ -- 1
+purify$ -- 322
+quote$ -- 0
+skip$ -- 496
+stack$ -- 0
+substring$ -- 669
+swap$ -- 143
+text.length$ -- 10
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 480
+warning$ -- 3
+while$ -- 261
+width$ -- 0
+write$ -- 377
+(There was 1 error message)

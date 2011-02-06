@@ -1,11 +1,21 @@
 \name{errorLocalizer}
-\alias{errorLocalizer}
-\title{Localize errors in numerical data based on the paradigm of Fellegi and Holt.}
-\usage{errorLocalizer(E, x, ...)
-\method{errorLocalizer}{editmatrix}(E, x, weight=rep(1, length(x)), maxadapt=length(x),
+\alias{errorLocalizer.editmatrix}
+\title{Localize errors in numerical data...}
+\usage{\method{errorLocalizer}{editmatrix}(E, x, weight=rep(1, length(x)), maxadapt=length(x),
     maxweight=sum(weight), maxduration=600, ...)
+errorLocalizer(E, x, ...)
 }
-\description{Localize errors in a record based on Fellegi and Holt's paradigm}
+\description{Localize errors in numerical data}
+\arguments{\item{E}{Object of class \code{\link{editmatrix}}}
+\item{x}{Data record, in the form of a named numeric vector.}
+\item{weight}{Weight vector, of the same length of \code{x}}
+\item{maxadapt}{maximum number of variables to adapt}
+\item{maxweight}{maximum weight of solution, if weights are not given, this is equal to the 
+maximum number of variables to adapt.}
+\item{maxduration}{maximum time (in seconds), for \code{$searchNext()}, \code{$searchAll()} and \code{$searchBest()}}
+\item{...}{arguments to be passed to other methods.}
+}
+\alias{errorLocalizer}
 \details{\code{errorLocalizer}: Returns a \code{\link{backtracker}} object for error localization in numerical data.
 The returned backtracker containts methods to search depth-first to the least weighted
 number of variables that need to be adapted so that all restrictions in E can be 
@@ -44,15 +54,6 @@ Journal of the American Statistical Association 71, pp 17-25
 T. De Waal (2003) Processing of unsave and erroneous data.  PhD thesis, Erasmus Research institute 
 of management, Erasmus university Rotterdam. 
 http://www.cbs.nl/nl-NL/menu/methoden/onderzoek-methoden/onderzoeksrapporten/proefschriften/2008-proefschrift-de-waal.htm}
-\arguments{\item{E}{an \code{\link{editmatrix}}}
-\item{x}{a named numerical vecor. The record for which errors will be localized.}
-\item{...}{Arguments to be passed to other methods (e.g. reliability weights)}
-\item{weight}{Weight vector, of the same length of \code{x}}
-\item{maxadapt}{maximum number of variables to adapt}
-\item{maxweight}{maximum weight of solution, if weights are not given, this is equal to the 
-maximum number of variables to adapt.}
-\item{maxduration}{maximum time (in seconds), for \code{$searchNext()}, \code{$searchAll()} and \code{$searchBest()}}
-}
 \examples{# example with a single editrule
 # p = profit, c = cost, t = turnover
 E <- editmatrix(c("p + c == t"))
@@ -105,5 +106,4 @@ cp <- errorLocalizer(E,x=c(p=755, c1=50, c2=NA,t=200))
 # There are two solutions. Both demand that c2 is adapted:
 cp$searchNext()
 cp$searchNext()}
-\alias{errorLocalizer.editmatrix}
 

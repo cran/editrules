@@ -1,23 +1,23 @@
 \name{geth}
 \alias{getH}
-\title{Returns the derivation history of an edit matrix...}
+\title{Returns the derivation history of an edit matrix or array...}
 \usage{getH(E)
 geth(E)
 }
-\description{Returns the derivation history of an edit matrix}
-\details{\code{getH}: eliminateFM tracks the history of edits in a logical array H.
+\description{Returns the derivation history of an edit matrix or array}
+\details{\code{getH}: eliminate tracks the history of edits in a logical array H.
 H has nrow(E) rows and the number of columns is the number of
-edits in the editmatrix as it was first defined. If suppose
+edits in the editmatrix/array as it was first defined. If 
 H[i,j1], H[i,j2],...,H[i,jn] are TRUE, then E[i,] is some 
-positive linear combination of original edits E[j1,], E[j2,],...,E[jn,]
+(positive, linear) combination of original edits E[j1,], E[j2,],...,E[jn,]
 
 Attributes H and h are used to detect redundant derived edits.
 
-\code{geth}: h records the number of variables eliminated from E by \code{\link{eliminateFM}}
+\code{geth}: h records the number of variables eliminated from E by \code{\link{eliminate}}
 
 
 }
-\seealso{\code{\link{editmatrix}},\code{\link{eliminateFM}}\code{\link{editmatrix}}, \code{\link{eliminateFM}}}
+\seealso{\code{\link{editmatrix}}, \code{\link{eliminate}}\code{\link{editmatrix}}, \code{\link{eliminate}}}
 \arguments{\item{E}{editmatrix}
 }
 \examples{# The following is an example by Williams (1986). Eliminating all variables
@@ -30,11 +30,11 @@ P <- editmatrix(c(
      "-x2 <= 0",
      "-x3 <= 0"))
 # eliminate 1st variable
-(P1 <- eliminateFM(P, "x1", fancynames=TRUE))
+(P1 <- eliminate(P, "x1", fancynames=TRUE))
 # eliminate 2nd variable. Note that redundant rows have been eliminated
-(P2 <- eliminateFM(P1, "x2", fancynames=TRUE))
+(P2 <- eliminate(P1, "x2", fancynames=TRUE))
 # finally, the answer:
-(P3 <- eliminateFM(P2, "x3", fancynames=TRUE))
+(P3 <- eliminate(P2, "x3", fancynames=TRUE))
 
 # check which original edits were used in deriving the new ones
 getH(P3)
@@ -49,7 +49,7 @@ geth(P3)
     "2*x + y == 1",
     "y > 0",
     "x > 0"),normalize=TRUE))
-eliminateFM(E,"x", fancynames=TRUE)
+eliminate(E,"x", fancynames=TRUE)
 
 
 # This example has two equalities, and it's solution 
@@ -59,7 +59,7 @@ eliminateFM(E,"x", fancynames=TRUE)
     "y >= -1 + x",
     "x == y",
     "y ==-2*x" ),normalize=TRUE))
-eliminateFM(E,"x", fancynames=TRUE)
+eliminate(E,"x", fancynames=TRUE)
 
 # this example has no solution, the equalities demand (x,y) = (0,2)
 # while the inequalities demand y <= 1
@@ -69,6 +69,6 @@ eliminateFM(E,"x", fancynames=TRUE)
     "y == 2 - x",
     "y == -2 + x" ),normalize=TRUE))
 # this happens to result in an obviously unfeasable system:
-isObviouslyInfeasible(eliminateFM(E,"x"))}
+isObviouslyInfeasible(eliminate(E,"x"))}
 \alias{geth}
 

@@ -13,14 +13,13 @@ Description: Facilitates reading and manipulation of linear
         elimination and variable substitution and solving error
         localization problems based on the generalized principle of
         Felligi and Holt.
-Version: 1.0-0
+Version: 1.0-1
 URL: http://code.google.com/p/editrules/
 Date: 2011-02-06
-Depends:
 Suggests: iterators
 Collate: 'backtracker.R' 'blocks.R' 'check.R' 'editmatrixAttr.R'
         'editmatrix.R' 'editrules-data.R' 'eliminate.R'
-        'errorLocalizer.R' 'pkg.R' 'reduce.R'
-Packaged: 2011-08-01 09:12:55 UTC; mark
+        'errorLocalizer.R' 'pkg.R' 'reduce.R' 'S3Generics.R'
+Packaged: 2011-08-08 19:23:16 UTC; mark
 Repository: CRAN
-Date/Publication: 2011-08-01 10:35:45
+Date/Publication: 2011-08-09 04:59:23

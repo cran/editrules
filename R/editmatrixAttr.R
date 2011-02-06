@@ -7,7 +7,7 @@
 #'
 #' If \code{x} is a normal matrix, the matrix will be coerced to an \code{editmatrix}. The columns of the matrix
 #' are the variables and the rows are the edit rules (constraints).
-#' @example examples/editmatrixAttr.R
+#' @example ../examples/editmatrixAttr.R
 #' @aliases editrules
 #' @seealso \code{\link{editmatrix}}
 #' @export editrules
@@ -24,7 +24,7 @@ editrules <- function(x){
 
 #' Returns the constant part \code{b} of a linear (in)equality
 #'
-#' @example examples/editmatrixAttr.R
+#' @example ../examples/editmatrixAttr.R
 #' @export getb 
 #' @seealso \code{\link{editmatrix}}
 #'
@@ -38,35 +38,35 @@ getb <- function(E){
   E[,ncol(E)]
 }
 
-#' Returns the derivation history of an edit matrix
+#' Returns the derivation history of an edit matrix or array
 #'
-#' eliminateFM tracks the history of edits in a logical array H.
+#' eliminate tracks the history of edits in a logical array H.
 #' H has nrow(E) rows and the number of columns is the number of
-#' edits in the editmatrix as it was first defined. If suppose
+#' edits in the editmatrix/array as it was first defined. If 
 #' H[i,j1], H[i,j2],...,H[i,jn] are TRUE, then E[i,] is some 
-#' positive linear combination of original edits E[j1,], E[j2,],...,E[jn,]
+#' (positive, linear) combination of original edits E[j1,], E[j2,],...,E[jn,]
 #'
 #' Attributes H and h are used to detect redundant derived edits.
 #'
 #' @param E editmatrix
 #' @rdname geth
-#' @seealso \code{\link{editmatrix}},\code{\link{eliminateFM}}
+#' @seealso \code{\link{editmatrix}}, \code{\link{eliminate}}
 #'
-#' @example examples/eliminate.R
+#' @example ../examples/eliminate.R
 #'
 #' @export
 getH <- function(E){
-    if ( !is.editmatrix(E) ) stop("E has to be an editmatrix")
+    if ( !is.editmatrix(E)  ) stop("E has to be an editmatrix")
     attr(E,"H")  
 }
 
-#' Returns the number of elimination steps performed on an edit matrix
+#' Returns the number of elimination steps performed on an edit matrix or arrat
 #'
-#' h records the number of variables eliminated from E by \code{\link{eliminateFM}}
+#' h records the number of variables eliminated from E by \code{\link{eliminate}}
 #' @param E editmatrix
 #'
 #' @rdname geth
-#' @seealso \code{\link{editmatrix}}, \code{\link{eliminateFM}}
+#' @seealso \code{\link{editmatrix}}, \code{\link{eliminate}}
 #' @export
 geth <- function(E){
     if ( !is.editmatrix(E) ) stop("E has to be an editmatrix")
@@ -75,7 +75,7 @@ geth <- function(E){
 
 #' Returns the coefficient matrix \code{A} of linear (in)equalities
 #'
-#' @example examples/editmatrixAttr.R
+#' @example ../examples/editmatrixAttr.R
 #' @export getA 
 #' @seealso \code{\link{editmatrix}}
 #' @aliases getA 
@@ -83,16 +83,17 @@ geth <- function(E){
 #' @param E editmatrix
 #' @return \code{numeric} matrix \code{A}
 getA <- function(E){
-  if (!is.editmatrix(E)){
-     stop("E has to be an editmatrix.")
+  if ( is.editmatrix(E) ){
+    unclass(E)[,-ncol(E),drop=FALSE]
+  } else {
+     stop("E has to be an editmatrix")
   }
-  unclass(E)[,-ncol(E),drop=FALSE]
 }
 
 
 #' Returns augmented matrix representation of edit set.
 #'
-#' @example examples/editmatrixAttr.R
+#' @example ../examples/editmatrixAttr.R
 #' @seealso \code{\link{editmatrix}} \code{\link{as.matrix.editmatrix}}
 #'
 #' @param E editmatrix
@@ -108,7 +109,7 @@ getAb <- function(E){
 #' @export
 #' @seealso \code{\link{editmatrix}}
 #'
-#' @example examples/editmatrixAttr.R
+#' @example ../examples/editmatrixAttr.R
 #' 
 #' @param E editmatrix
 #'
@@ -125,7 +126,7 @@ getOps <- function(E){
 #' @export
 #' @seealso \code{\link{editmatrix}}
 #'
-#' @example examples/editmatrixAttr.R
+#' @example ../examples/editmatrixAttr.R
 #' 
 #' @param E editmatrix
 #'
@@ -142,7 +143,7 @@ getVars <- function(E){
 #' @export
 #' @seealso \code{\link{editmatrix}}
 #'
-#' @example examples/editmatrixAttr.R
+#' @example ../examples/editmatrixAttr.R
 #' 
 #' @param E editmatrix
 #'
@@ -164,7 +165,7 @@ isNormalized <- function(E){
 #' @export
 #' @seealso \code{\link{editmatrix}}
 #'
-#' @example examples/editmatrixAttr.R
+#' @example ../examples/editmatrixAttr.R
 #' 
 #' @param E editmatrix
 #'

@@ -1,7 +1,7 @@
-\name{eliminateFM}
-\alias{eliminateFM}
+\name{eliminate.editmatrix}
+\alias{eliminate.editmatrix}
 \title{Eliminate a variable from an editmatrix...}
-\usage{eliminateFM(E, var, fancynames=FALSE)
+\usage{\method{eliminate}{editmatrix}(E, var, fancynames=FALSE, ...)
 }
 \description{Eliminate a variable from an editmatrix}
 \details{Uses Fourier-Motzkin elimination to eliminate a variable from a set
@@ -19,6 +19,7 @@ The American Mathematical Monthly 93, 681-695}
 \arguments{\item{E}{an object of class \code{\link{editmatrix}}}
 \item{var}{\code{character} name of the variable to eliminate}
 \item{fancynames}{\code{logical} If true, the derived restrictions have rownames derived from the original restrictions (slower).}
+\item{...}{other arguments to be passed to or from other methods}
 }
 \examples{# The following is an example by Williams (1986). Eliminating all variables
 # except z maximizes -4x1 + 5x2 +3x3:
@@ -30,11 +31,11 @@ P <- editmatrix(c(
      "-x2 <= 0",
      "-x3 <= 0"))
 # eliminate 1st variable
-(P1 <- eliminateFM(P, "x1", fancynames=TRUE))
+(P1 <- eliminate(P, "x1", fancynames=TRUE))
 # eliminate 2nd variable. Note that redundant rows have been eliminated
-(P2 <- eliminateFM(P1, "x2", fancynames=TRUE))
+(P2 <- eliminate(P1, "x2", fancynames=TRUE))
 # finally, the answer:
-(P3 <- eliminateFM(P2, "x3", fancynames=TRUE))
+(P3 <- eliminate(P2, "x3", fancynames=TRUE))
 
 # check which original edits were used in deriving the new ones
 getH(P3)
@@ -49,7 +50,7 @@ geth(P3)
     "2*x + y == 1",
     "y > 0",
     "x > 0"),normalize=TRUE))
-eliminateFM(E,"x", fancynames=TRUE)
+eliminate(E,"x", fancynames=TRUE)
 
 
 # This example has two equalities, and it's solution 
@@ -59,7 +60,7 @@ eliminateFM(E,"x", fancynames=TRUE)
     "y >= -1 + x",
     "x == y",
     "y ==-2*x" ),normalize=TRUE))
-eliminateFM(E,"x", fancynames=TRUE)
+eliminate(E,"x", fancynames=TRUE)
 
 # this example has no solution, the equalities demand (x,y) = (0,2)
 # while the inequalities demand y <= 1
@@ -69,5 +70,5 @@ eliminateFM(E,"x", fancynames=TRUE)
     "y == 2 - x",
     "y == -2 + x" ),normalize=TRUE))
 # this happens to result in an obviously unfeasable system:
-isObviouslyInfeasible(eliminateFM(E,"x"))}
+isObviouslyInfeasible(eliminate(E,"x"))}
 
