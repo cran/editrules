@@ -6,7 +6,6 @@
 \description{Returns the coefficient matrix \code{A} of linear (in)equalities}
 \seealso{\code{\link{editmatrix}}}
 \alias{getA}
-\alias{getMatrix}
 \value{\code{numeric} matrix \code{A}}
 \arguments{\item{E}{editmatrix}
 }

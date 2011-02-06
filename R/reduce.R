@@ -32,7 +32,7 @@ echelon.editmatrix <- function(E,...){
     o <- getOps(E)
     # nothing to eliminate?
     eq <- o == "=="
-    if ( sum(eq) <= 1 ) return(E,...)
+    if ( sum(eq) <= 1 ) return(E)
     Ab <- getAb(E)
     Ab <- rbind(
         echelon.matrix(Ab[eq,,drop=FALSE]),
@@ -82,27 +82,34 @@ echelon.matrix <- function(E, tol=sqrt(.Machine$double.eps), ...){
 #' \eqn{\tilde{\bf x}}.
 #' @aliases replaceValue
 #' @param E \code{editmatrix} object
-#' @param var \code{character} with name of variable
-#' @param value \code{numeric} with value of variable
+#' @param var \code{character} with name(s) of variable(s)
+#' @param value \code{numeric} with value(s) of variable(s)
+#' @param remove \code{logical} should variable columns be removed from editmatrix?
 #' @return reduced edit matrix 
 #'
 #' @export
-substValue <- function(E, var, value){
+substValue <- function(E, var, value, remove=FALSE){
     v <- match(var, getVars(E), nomatch=0)
-    if (v==0){
-        stop("Parameter var (", var, ") is not a variable of editmatrix E")
+    if (any(v==0)){
+        stop("Parameter var (", var[v==0], ") is not a variable of editmatrix E")
     }
     
     ib <- ncol(E)
-    E[,ib] <- E[ ,ib] - E[ ,v]*value
-    E[,v] <- 0
-    E[!isObviouslyRedundant(E),]
+    E[,ib] <- E[ ,ib] - E[ ,v]%*%value
+    
+    E[,v] <- 0     
+    if (remove){
+        E[!isObviouslyRedundant(E),-v]
+    }
+    
+    else {
+        E[!isObviouslyRedundant(E),]
+    }
 }
 
 #' @nord
 #' @export
 replaceValue <- function(...){
-    warning("replaceValue is deprecated. Use substValue in stead.")
-    substValue(...)
+    stop("replaceValue is deprecated. Use substValue in stead.")
 }
 

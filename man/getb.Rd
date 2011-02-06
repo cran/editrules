@@ -5,7 +5,6 @@
 }
 \description{Returns the constant part \code{b} of a linear (in)equality}
 \alias{getb}
-\alias{getC}
 \seealso{\code{\link{editmatrix}}}
 \value{\code{numeric} vector \code{b}}
 \arguments{\item{E}{editmatrix}
