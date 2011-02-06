@@ -1,25 +1,25 @@
-\name{listErrors}
-\alias{listErrors}
+\name{listViolatedEdits}
+\alias{listViolatedEdits}
 \title{Lists which rows of data...}
-\usage{listErrors(edtmatrix, dat)
+\usage{listViolatedEdits(E, dat)
 }
 \description{Lists which rows of \code{data.frame dat} violate which constraints}
 \details{This function can be used as an input for automatic corrections methods.}
-\seealso{errorMatrix}
+\seealso{\code{\link{violatedEdits}} \code{\link{checkRows}}}
 \value{a list with per row a \code{integer} vector of the constraints that are violated}
-\arguments{\item{edtmatrix}{\code{\link{editmatrix}} containing the constraints for \code{dat}}
+\arguments{\item{E}{a number of edit restrictions, represented as \code{character} vector, \code{\link{editmatrix}} or \code{data.frame}.}
 \item{dat}{\code{data.frame} with data that should be checked}
 }
 \examples{# Using character vector to define contraints
-em <- editmatrix(editrules=c("x+3*y==2*z", "x==z"))
-print(em)
+E <- editmatrix(editrules=c("x+3*y==2*z", "x==z"))
+print(E)
 
 dat <- data.frame( x = c(0,2,1)
                  , y = c(0,0,1)
                  , z = c(0,1,1)
                  )
 # valid rows?
-valid <- checkRows(em, dat)
+valid <- checkRows(E, dat)
 invalid <- dat[!valid,] 
-listErrors(em,invalid)}
+listViolatedEdits(E,invalid)}
 

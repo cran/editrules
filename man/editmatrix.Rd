@@ -1,10 +1,16 @@
 \name{editmatrix}
 \alias{editmatrix}
-\title{Reading in edit rules}
-\usage{editmatrix(editrules=editsinfo, editsinfo)
+\title{Create an editmatrix}
+\usage{editmatrix(editrules, normalize=FALSE)
 }
-\description{Transforms a list of R (in)equalities into an edit matrix with a factor for each variable}
-\details{There are two forms of creating an editmatrix:
+\description{Transforms a list of R (in)equalities into an edit matrix.}
+\details{Transforms a list of R (in)equalities into an edit matrix with coefficients for each variable, and a constant (\code{C})
+and operator (\code{ops}) for each edit rule.
+
+Each row in the resulting editmatrix represents an linear (in) equality.
+Each column in the resulting editmatrix represents a variable.
+
+There are two forms of creating an editmatrix:
 \enumerate{ 
 \item a \code{character} vector with (in)equalities written in R syntax
 \item a \code{data.frame} with three columns:
@@ -21,28 +27,34 @@ may be very useful when the incorrect observations are analyzed.
 If the first form is used, \code{editmatrix} internally creates the second form. This information
 can be retrieved by using \code{\link{editrules}}
 
-The matrix is created by getting the factors of the variables in the equalities.
-i.e. \code{x == y}   results in  \code{c(x=-1, y=1, w=0, z=0)}
-and \code{x == y + w} results in \code{c(x=-1, y=1, w=1, z=0)}}
+The matrix is created by retrieving the coefficients of the variables in the equalities.
+i.e. \code{x == y}   results in  \code{c(x=1, y=-1)}
+and \code{x == y + w} results in \code{c(x=1, y=-1, w=-1)}
+
+By default the editmatrix is created using the comparison operators (\code{==,<=,>=,<,>}) in the edits. If option \code{normalize=TRUE} is used all 
+edits are transformed into an E == C, E < C or E <= C form, so that in the specification of the edit rules all inequalities can be mixed, 
+but the resulting matrix has similar sign.}
 \seealso{\code{\link{editrules}} \code{\link{as.editmatrix}}}
 \value{an object of class "editmatrix" which is a \code{matrix} with extra attributes}
 \arguments{\item{editrules}{\code{data.frame} with (in)equalities written in R syntax, see details for description or alternatively 
 a \code{character} with (in)equalities written in R syntax}
-\item{editsinfo}{deprecated}
+\item{normalize}{\code{logical} specifying if all edits should be transformed (see description)}
 }
-\examples{# Using character vector to define contraints
-em <- editmatrix(c("x+3*y==2*z", "x==z"))
-print(em)
+\examples{# Using a character vector to define contraints
+E <- editmatrix(c("x+3*y==2*z", "x==z"))
+print(E)
+
 
 #Using data.frame to define constraints
-editRules.csv <- 
+E.csv <- 
 'name , edit       , description
 A , x == y         , "these variables should be equal"
 B , z + w == y + x ,
 C , z == y + 2*w   ,
 '
+E.df <- read.csv(textConnection(E.csv))			
+print(E.df)
 
-editRules <- read.csv(textConnection(editRules.csv))			
-em <- editmatrix(editRules)
-print(em)}
+E <- editmatrix(E.df)
+print(E)}
 
