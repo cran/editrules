@@ -1,0 +1,106 @@
+#' Replace a variable by a value in a set of edits.
+#'
+#' @param E \code{\link{editmatrix}} or \code{\link{editarray}}
+#' @param var \code{character} with name(s) of variable(s) to substitute
+#' @param value vector with value(s) of variable(s)
+#' @param ... arguments to be passed to or from other methods
+#' @return \code{E}, with variables replaced by values
+#' @export
+substValue <- function(E, var, value, ...){ 
+    UseMethod("substValue")
+}
+
+
+#' Reduce an editmatrix by substituting a variable
+#'
+#' Given a set of linear restrictions \eqn{E: {\bf Ax}\odot {\bf b}} with \eqn{\odot\in\{<,\leq,==\}},
+#' and matrix \eqn{{\bf A}} with columns \eqn{{\bf a}_1,{\bf a}_2,\ldots,{\bf a}_n}.
+#' Substituting variable \eqn{x_j} with a value \eqn{\tilde{\bf x}_j} means setting \eqn{{\bf a}_j=0}
+#' and \eqn{{\bf b}={\bf a}_j\tilde{x}_j}.
+#'
+#' Note that the resulting \code{\link{editmatrix}} may be inconsistent because of inconsistencies in
+#' \eqn{\tilde{\bf x}}.
+#'
+#' @method substValue editmatrix
+#' @param remove \code{logical} should variable columns be removed from editmatrix?
+#'
+#' @rdname substValue 
+#' @export
+substValue.editmatrix <- function(E, var, value, remove=FALSE, ...){
+    v <- match(var, getVars(E), nomatch=0)
+    if (any(v==0)){
+        warning("Parameter var (", var[v==0], ") is not a variable of editmatrix E")
+    }
+    v <- v[v != 0]
+    ib <- ncol(E)
+    E[,ib] <- E[ ,ib] - E[ ,v]%*%value
+    
+    if (remove)
+        E <- E[,-v, drop=FALSE]
+    else 
+        E[,v] <- 0
+        
+    E[!isObviouslyRedundant.editmatrix(E),]    
+}
+
+
+
+#' Substitute a value in an editarray
+#'
+#' Only rows with \code{<var>:<value>==TRUE} are kept. In the kept rows, categories not equal to <value> are set to \code{FALSE}
+#' Multiple replacements is not yet implemented. 
+#'
+#' @method substValue editarray
+#'
+#'
+#' @rdname substValue
+#' @export
+substValue.editarray <- function(E, var, value, remove=TRUE, ...){
+# TODO: make this work for multiple variables and values.
+    ind <- getInd(E)
+    J <- ind[[var]]
+    sep=getSep(E)
+    i <- J[value]
+    if ( is.na(i) ) 
+        stop(paste("Variable ", var,"not present in editarray or cannot take value",value))
+
+    A <- getArr(E)
+    I <- A[,i]
+    if ( remove ){
+        v <- 
+        A <- A[ ,-setdiff(J,i) ,drop=FALSE]
+        ind <- indFromArray(A, sep)
+    } else {
+        A[,J] <- TRUE
+    }
+    neweditarray(
+        E = A[I,,drop=FALSE], 
+        ind = ind, 
+        sep = sep, 
+        levels = colnames(A) 
+    )
+}
+
+#' Compute index from array part of editarray
+#' 
+#' @param A boolean array
+#' @param sep separator
+#' @keywords internal
+#'
+indFromArray <- function(A,sep){
+    cn <- colnames(A)
+    l <- strsplit(cn,sep)
+    V <- sapply(l,`[`,1)
+    C <- sapply(l,`[`,-1)
+    vars <- unique(V)
+    ind <- lapply(vars, function(v) which(v==V))
+    names(ind) <- vars
+    ind <- lapply(ind, function(k){ names(k) <- C[k]; k})
+    ind
+}
+
+
+
+
+
+

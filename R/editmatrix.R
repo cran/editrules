@@ -1,69 +1,3 @@
-COPS <- c("==","<","<=",">",">=")
-
-retrieveCoef <- function(e, co=1){
-   #stopifnot(is.language(e))
-   if (length(e) == 1){
-     if (is.numeric(e)){
-        l <- co*e   #the resulting matrix is augmented so b has a -
-        names(l) <- getOption("editrules.CONSTANT", "CONSTANT")
-     }
-     else {
-        l <- co
-        names(l) <- as.character(e)
-     }
-     return(l)
-   }
-   if (length(e) == 2){
-     op <- deparse(e[[1]])
-      rhs <- e[[2]]
-     if (op == "("){
-	    return(retrieveCoef(rhs, co))
-	  } else if (op == "-"){
-        return(retrieveCoef(rhs, -1*co))
-     }
-	  else { 
-		stop("Operator ", op, " not implemented", "Invalid expression:", e)
-	  }
-   }
-   if (length(e) == 3){
-      op <- deparse(e[[1]])
-      lhs <- e[[2]]
-      rhs <- e[[3]]
-      lsign <- rsign <- co
-      if ( op %in% c(COPS, "-")){
-	      rsign <- -1 * co
-	    } 
-	    else if (op == "+"){
-	    }
-	    else if (op == "*"){
-       co <- retrieveCoef(lhs, co)
-       if (!is.numeric(co)){
-                stop(paste("Expression contains nonconstant coefficient", paste(lhs,collapse="")))
-       }
-       return(retrieveCoef(rhs, co))
-	  }
-	  else { 
-		   stop("Operator ", op, " not implemented", "Invalid expression:", e)
-	  }
-	  return(c( retrieveCoef(lhs, lsign)
-		      , retrieveCoef(rhs, rsign)
-		  )
-		)
-   }
-   stop("Invalid expression:", e)
-}
-
-makeEditRow <- function(edt){
-  op <- as.character(edt[[1]])
-  if (!(op %in% COPS)){
-     stop(paste("Invalid edit rule:", edt))
-  }
-  wgt <- retrieveCoef(edt)
-  # simplify the coefficients by summing them
-  wgt <- tapply(wgt, names(wgt), sum)
-  return(wgt)  
-}
-
 #' Transforms a list of R (in)equalities into an edit matrix.
 #'
 #' Transforms a list of R (in)equalities into an edit matrix with coefficients (\code{A}) for each variable, and a constant (\code{b})
@@ -128,12 +62,12 @@ editmatrix <- function( editrules
       stop("Invalid input, please use a character vector or a data.frame.\n See ?editmatrix for a valid input specification")
    }
 
-   edts <- parseEdits(edit)   
+    edts <- parseEdits(edit, type="num")   
   	if (is.null(name)){
   	   name <- paste("e", seq_along(edts),sep="")
   	}
    
-    rowedts <- lapply(edts, function(edt){makeEditRow(edt)})
+    rowedts <- lapply(edts, function(edt){parseNum(edt)})
     ops <- sapply(edts, function(e){deparse(e[[1]])})
    
     vars <- unique(names(unlist(rowedts)))
@@ -184,40 +118,8 @@ neweditmatrix <- function(A, ops, normalized=FALSE,...){
 }
 
 
-# NOTE: cannot export subscript function directly because Roxygen removes backticks in export
-# directive. Added explicitly in build.bash
-
-#' Row index operator for \code{editmatrix}.
-#'
-#' Use this operator to select edits from an editmatrix object.
-#'
-#' @usage `[.editmatrix`(x,i,j,...)
-#' @param x an object of class \code{\link{editmatrix}}
-#' @param i the row index in the edit matrix
-#' @param j the column index in the edit matrix
-#' @param ... arguments to be passed to other methods. Currently ignored.
-#' @rdname editmatrix-subscript
-`[.editmatrix` <- function(x, i, j, ...){
-    E <- neweditmatrix(
-        A = as.matrix(x)[i, j, drop=FALSE],
-        ops = getOps(x)[i]
-    )
-    attr(E,"H") <- attr(x,"H")[i, , drop=FALSE]
-    attr(E,"h") <- attr(x,"h")
-    E
-}
 
 
-
-#' Check if object is an editmatrix
-#' 
-#' @seealso \code{\link{editmatrix}}
-#' @export
-#' @param x object to be checked
-#' @return TRUE if \code{x} is an \code{editmatrix}
-is.editmatrix <- function(x){
-   return(inherits(x, "editmatrix"))
-}
 
 #' Coerce a matrix to an edit matrix.
 #'
@@ -367,26 +269,6 @@ as.expression.editmatrix <- function(x, ...){
  )
 }
 
-#' print edit matrix
-#'
-#' @export
-#' @method print editmatrix
-#'
-#' @param x editmatrix object to be printed
-#' @param ... further arguments passed to or from other methods.
-print.editmatrix <- function(x, ...){
-   cat("Edit matrix:\n")
-   print(as.data.frame(x), ...)
-   cat("\nEdit rules:\n")
-   info <- editrules(x)
-   desc <- paste("[",info$description,"]")
-   desc <- ifelse(info$description=="","", desc)
-   cat( paste( info$name,":", info$edit, desc, collapse="\n")
-      , "\n"
-      )
-}
-
-
 #' \code{\link{str}} method for editmatrix object
 #'
 #'
@@ -394,7 +276,6 @@ print.editmatrix <- function(x, ...){
 #' @param ... methods to pass to other methods
 #' @export
 str.editmatrix <- function(object,...){
-#    ivar <- rowSums(abs(object)) > 0
     vars <- paste(getVars(object),collapse=", ")
     if (nchar(vars) > 20 ) vars <-  paste(strtrim(vars,16),"...") 
     cat(paste("editmatrix with", nrow(object), "edits containing variables",vars,"\n"))

@@ -1,14 +1,21 @@
 \name{getAb}
 \alias{getAb}
 \title{Returns augmented matrix representation of edit set.}
-\usage{getAb(E)
+\usage{
+  getAb(E)
 }
-\description{Returns augmented matrix representation of edit set.}
-\seealso{\code{\link{editmatrix}} \code{\link{as.matrix.editmatrix}}}
-\value{\code{numeric} matrix \code{A|b}}
-\arguments{\item{E}{editmatrix}
+\arguments{
+  \item{E}{editmatrix}
 }
-\examples{E <- editmatrix(c( "x+3*y == 2*z"
+\value{
+  \code{numeric} matrix \code{A|b}
+}
+\description{
+  Returns augmented matrix representation of edit set.
+}
+\examples{
+
+E <- editmatrix(c( "x+3*y == 2*z"
                  , "x > 2")
                  )
 print(E)
@@ -39,5 +46,10 @@ E <- normalize(E)
 E
 
 # is het now normalized?
-isNormalized(E)}
+isNormalized(E)
+}
+\seealso{
+  \code{\link{editmatrix}}
+  \code{\link{as.matrix.editmatrix}}
+}
 

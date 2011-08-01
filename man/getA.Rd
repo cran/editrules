@@ -1,15 +1,22 @@
 \name{getA}
 \alias{getA}
-\title{Returns the coefficient matrix A of linear (in)equalities...}
-\usage{getA(E)
+\title{Returns the coefficient matrix \code{A} of linear (in)equalities}
+\usage{
+  getA(E)
 }
-\description{Returns the coefficient matrix \code{A} of linear (in)equalities}
-\seealso{\code{\link{editmatrix}}}
-\alias{getA}
-\value{\code{numeric} matrix \code{A}}
-\arguments{\item{E}{editmatrix}
+\arguments{
+  \item{E}{editmatrix}
 }
-\examples{E <- editmatrix(c( "x+3*y == 2*z"
+\value{
+  \code{numeric} matrix \code{A}
+}
+\description{
+  Returns the coefficient matrix \code{A} of linear
+  (in)equalities
+}
+\examples{
+
+E <- editmatrix(c( "x+3*y == 2*z"
                  , "x > 2")
                  )
 print(E)
@@ -40,5 +47,9 @@ E <- normalize(E)
 E
 
 # is het now normalized?
-isNormalized(E)}
+isNormalized(E)
+}
+\seealso{
+  \code{\link{editmatrix}}
+}
 

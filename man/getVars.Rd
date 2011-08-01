@@ -1,43 +1,38 @@
 \name{getVars}
 \alias{getVars}
-\title{Returns the variable names of an (in)equality editmatrix E...}
-\usage{getVars(E)
+\title{get names of variables in a set of edits}
+\usage{
+  getVars(E)
 }
-\description{Returns the variable names of an (in)equality \code{editmatrix} E}
-\seealso{\code{\link{editmatrix}}}
-\value{\code{character} vector with the names of the variables.}
-\arguments{\item{E}{editmatrix}
+\arguments{
+  \item{E}{\code{\link{editmatrix}} or
+  \code{\link{editarray}}}
 }
-\examples{E <- editmatrix(c( "x+3*y == 2*z"
+\value{
+  \code{character} vector with the names of the variables.
+}
+\description{
+  get names of variables in a set of edits
+}
+\examples{
+
+E <- editmatrix(c( "x+3*y == 2*z"
                  , "x > 2")
                  )
-print(E)
-                 
-# get editrules, useful for storing and maintaining the rules external from your script
-editrules(E)
-                 
-# get coeficient matrix of inequalities
-getA(E)
-
-# get augmented matrix of linear edit set
-getAb(E)
-
-# get constants of inequalities (i.e. c(0, 2))                
-getb(E)
-
-# get operators of inequalities (i.e. c("==",">"))
-getOps(E)
-
-# get variables of inequalities (i.e. c("x","y","z"))
 getVars(E)
 
-# isNormalized
-isNormalized(E)
+E <- editarray(c(
+    "gender \%in\% c('male','female')",
+    "pregnant \%in\% c(TRUE, FALSE)",
+    "if( gender == 'male' ) pregnant == FALSE"
+    )
+)
 
-#normalized E
-E <- normalize(E)
-E
+getVars(E)
 
-# is het now normalized?
-isNormalized(E)}
+}
+\seealso{
+  \code{\link{getA}}, \code{\link{getb}},
+  \code{\link{getOps}}
+}
 

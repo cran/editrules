@@ -1,14 +1,22 @@
 \name{isNormalized}
 \alias{isNormalized}
-\title{Check if an editmatrix is normalized...}
-\usage{isNormalized(E)
+\title{Check if an editmatrix is normalized}
+\usage{
+  isNormalized(E)
 }
-\description{Check if an editmatrix is normalized}
-\seealso{\code{\link{editmatrix}}}
-\value{TRUE if editmatrix was normalized or created with \code{normalize=TRUE}}
-\arguments{\item{E}{editmatrix}
+\arguments{
+  \item{E}{editmatrix}
 }
-\examples{E <- editmatrix(c( "x+3*y == 2*z"
+\value{
+  TRUE if editmatrix was normalized or created with
+  \code{normalize=TRUE}
+}
+\description{
+  Check if an editmatrix is normalized
+}
+\examples{
+
+E <- editmatrix(c( "x+3*y == 2*z"
                  , "x > 2")
                  )
 print(E)
@@ -39,5 +47,9 @@ E <- normalize(E)
 E
 
 # is het now normalized?
-isNormalized(E)}
+isNormalized(E)
+}
+\seealso{
+  \code{\link{editmatrix}}
+}
 

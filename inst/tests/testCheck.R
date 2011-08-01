@@ -1,5 +1,7 @@
 library(testthat)
 
+context("Edit checking")
+
 test_that("Checking a data set works",{
    edt <- editmatrix("2*x==y")
    dat <- data.frame(x=c(2,1), y=c(4,5))
@@ -19,8 +21,6 @@ test_that("Showing data errors works",{
    errors <- violatedEdits(edt, dat)
    
    # rule names equal?
-   #print(dat)
-   #print(errors)
    expect_equal(colnames(errors), rownames(edt))
    
    dimnames(errors) <- NULL

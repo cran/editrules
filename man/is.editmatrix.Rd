@@ -1,11 +1,19 @@
 \name{is.editmatrix}
 \alias{is.editmatrix}
-\title{Check if object is an editmatrix...}
-\usage{is.editmatrix(x)
+\title{Check if object is an editmatrix}
+\usage{
+  is.editmatrix(x)
 }
-\description{Check if object is an editmatrix}
-\seealso{\code{\link{editmatrix}}}
-\value{TRUE if \code{x} is an \code{editmatrix}}
-\arguments{\item{x}{object to be checked}
+\arguments{
+  \item{x}{object to be checked}
+}
+\value{
+  TRUE if \code{x} is an \code{editmatrix}
+}
+\description{
+  Check if object is an editmatrix
+}
+\seealso{
+  \code{\link{editmatrix}}
 }
 

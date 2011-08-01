@@ -1,14 +1,22 @@
 \name{getOps}
 \alias{getOps}
-\title{Returns the operator part of a linear (in)equality editmatrix E...}
-\usage{getOps(E)
+\title{Returns the operator part of a linear (in)equality \code{editmatrix} E}
+\usage{
+  getOps(E)
 }
-\description{Returns the operator part of a linear (in)equality \code{editmatrix} E}
-\seealso{\code{\link{editmatrix}}}
-\value{\code{character} vector with the (in)equality operators.}
-\arguments{\item{E}{editmatrix}
+\arguments{
+  \item{E}{editmatrix}
 }
-\examples{E <- editmatrix(c( "x+3*y == 2*z"
+\value{
+  \code{character} vector with the (in)equality operators.
+}
+\description{
+  Returns the operator part of a linear (in)equality
+  \code{editmatrix} E
+}
+\examples{
+
+E <- editmatrix(c( "x+3*y == 2*z"
                  , "x > 2")
                  )
 print(E)
@@ -39,5 +47,9 @@ E <- normalize(E)
 E
 
 # is het now normalized?
-isNormalized(E)}
+isNormalized(E)
+}
+\seealso{
+  \code{\link{editmatrix}}
+}
 

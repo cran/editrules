@@ -1,22 +1,59 @@
 \name{isObviouslyRedundant}
 \alias{isObviouslyRedundant}
-\title{Find obvious redundancies in set of edits...}
-\usage{isObviouslyRedundant(E, ...)
-}
-\description{Find obvious redundancies in set of edits}
-\details{The function returns a logical vector which is TRUE at any row of the system 
-Ax <operators> b which is obviously redundant. Obvious redundancies, amounting
-to statements as 0==0 or 0 < 1 may arise durining elimination processes. The 
-function also checks for duplicate rows in the augmented matrix [A|b]
+\alias{isObviouslyRedundant.editarray}
+\alias{isObviouslyRedundant.editmatrix}
+\alias{isObviouslyRedundant.matrix}
+\title{Find obvious redundancies in set of edits}
+\usage{
+  isObviouslyRedundant(E, duplicates = TRUE, ...)
 
-Extra paramters:
-\itemize{
-\item{tol: tolerance to check for zeros, default square root of machine accuracy}
-\item{duplicates: logical, check for duplicate rows?, default \code{TRUE}}
-\item{duplicates.tol: tolerance for duplicate search, standard: \code{tol}}
-}}
-\seealso{\code{\link{isObviouslyRedundant.matrix}}, \code{\link{isObviouslyRedundant.editmatrix}}}
-\arguments{\item{E}{Augmented matrix A|b, editmatrix}
-\item{...}{parameters to be passed to or from other methods.}
+  \method{isObviouslyRedundant}{matrix} (E, duplicates =
+  TRUE, operators, tol = sqrt(.Machine$double.eps),
+  duplicates.tol = tol, ...)
+
+  \method{isObviouslyRedundant}{editmatrix} (E, duplicates
+  = TRUE, ...)
+
+  \method{isObviouslyRedundant}{editarray} (E, duplicates =
+  TRUE, ...)
+}
+\arguments{
+  \item{E}{Augmented matrix A|b, editmatrix}
+
+  \item{duplicates}{\code{logical}: check for duplicate
+  edits?}
+
+  \item{...}{parameters to be passed to or from other
+  methods.}
+
+  \item{operators}{character vecor of comparison operators
+  in \code{<, <=, ==} of length \code{nrow(E)}}
+
+  \item{tol}{tolerance to check for zeros.}
+
+  \item{duplicates.tol}{tolerance for duplicate search}
+}
+\value{
+  logical vector indicating which edits are (obviously)
+  redundant
+}
+\description{
+  Find obvious redundancies in set of edits
+
+  Lower-level method, to be called directly from internal
+  functions of the editrules package.
+
+  Normalizes the editmatrix if necessary, converts it and
+  passes it to the \code{matrix} method. All options of the
+  \code{matrix} method may be passed. Obvious redundancies,
+  amounting to statements as 0==0 or 0 < 1 will be
+  detected, as well as duplicates.
+
+  Check if any of the variables has FALSE for every
+  category (a record can never be contained in such a set).
+}
+\seealso{
+  \code{\link{isObviouslyRedundant}},
+  \code{\link{isObviouslyRedundant.editmatrix}}
 }
 

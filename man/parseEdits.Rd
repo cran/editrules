@@ -1,13 +1,22 @@
 \name{parseEdits}
 \alias{parseEdits}
-\title{Parse a character vector of edits...}
-\usage{parseEdits(E)
+\title{Parse a character vector of edits}
+\usage{
+  parseEdits(E, type = c("all", "num", "cat", "mix"))
 }
-\description{Parse a character vector of edits}
-\details{This function wraps the native \code{\link{parse}} function in a \code{\link{tryCatch}}.
-The function is \code{editrules} internal. It tries to give a meaningfull error message when
-parsing fails for some reason.}
-\value{The edits in \code{E} parsed to R expressions.}
-\arguments{\item{E}{\code{character}}
+\arguments{
+  \item{E}{\code{character}}
+
+  \item{type}{optional filter for type of edit, may be
+  \code{"all"}, \code{"num"} \code{"cat"} or \code{"mix"}}
+}
+\value{
+  The edits in \code{E} parsed to R expressions.
+}
+\description{
+  This function wraps the native \code{\link{parse}}
+  function in a \code{\link{tryCatch}}. The function is
+  \code{editrules} internal. It tries to give a meaningfull
+  error message when parsing fails for some reason.
 }
 

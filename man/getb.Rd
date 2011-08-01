@@ -1,14 +1,22 @@
 \name{getb}
 \alias{getb}
-\title{Returns the constant part b of a linear (in)equality...}
-\usage{getb(E)
+\title{Returns the constant part \code{b} of a linear (in)equality}
+\usage{
+  getb(E)
 }
-\description{Returns the constant part \code{b} of a linear (in)equality}
-\seealso{\code{\link{editmatrix}}}
-\value{\code{numeric} vector \code{b}}
-\arguments{\item{E}{editmatrix}
+\arguments{
+  \item{E}{editmatrix}
 }
-\examples{E <- editmatrix(c( "x+3*y == 2*z"
+\value{
+  \code{numeric} vector \code{b}
+}
+\description{
+  Returns the constant part \code{b} of a linear
+  (in)equality
+}
+\examples{
+
+E <- editmatrix(c( "x+3*y == 2*z"
                  , "x > 2")
                  )
 print(E)
@@ -39,5 +47,9 @@ E <- normalize(E)
 E
 
 # is het now normalized?
-isNormalized(E)}
+isNormalized(E)
+}
+\seealso{
+  \code{\link{editmatrix}}
+}
 

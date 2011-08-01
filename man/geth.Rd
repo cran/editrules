@@ -1,26 +1,33 @@
-\name{geth}
+\name{getH}
+\alias{geth}
 \alias{getH}
-\title{Returns the derivation history of an edit matrix or array...}
-\usage{getH(E)
-geth(E)
+\title{Returns the derivation history of an edit matrix or array}
+\usage{
+  getH(E)
+
+  geth(E)
 }
-\description{Returns the derivation history of an edit matrix or array}
-\details{\code{getH}: eliminate tracks the history of edits in a logical array H.
-H has nrow(E) rows and the number of columns is the number of
-edits in the editmatrix/array as it was first defined. If 
-H[i,j1], H[i,j2],...,H[i,jn] are TRUE, then E[i,] is some 
-(positive, linear) combination of original edits E[j1,], E[j2,],...,E[jn,]
-
-Attributes H and h are used to detect redundant derived edits.
-
-\code{geth}: h records the number of variables eliminated from E by \code{\link{eliminate}}
-
-
+\arguments{
+  \item{E}{editmatrix}
 }
-\seealso{\code{\link{editmatrix}}, \code{\link{eliminate}}\code{\link{editmatrix}}, \code{\link{eliminate}}}
-\arguments{\item{E}{editmatrix}
+\description{
+  eliminate tracks the history of edits in a logical array
+  H. H has nrow(E) rows and the number of columns is the
+  number of edits in the editmatrix/array as it was first
+  defined. If H[i,j1], H[i,j2],...,H[i,jn] are TRUE, then
+  E[i,] is some (positive, linear) combination of original
+  edits E[j1,], E[j2,],...,E[jn,]
+
+  h records the number of variables eliminated from E by
+  \code{\link{eliminate}}
 }
-\examples{# The following is an example by Williams (1986). Eliminating all variables
+\details{
+  Attributes H and h are used to detect redundant derived
+  edits.
+}
+\examples{
+
+# The following is an example by Williams (1986). Eliminating all variables
 # except z maximizes -4x1 + 5x2 +3x3:
 P <- editmatrix(c(
      "4*x1 - 5*x2 - 3*x3 + z <= 0",
@@ -69,6 +76,35 @@ eliminate(E,"x", fancynames=TRUE)
     "y == 2 - x",
     "y == -2 + x" ),normalize=TRUE))
 # this happens to result in an obviously unfeasable system:
-isObviouslyInfeasible(eliminate(E,"x"))}
-\alias{geth}
+isObviouslyInfeasible(eliminate(E,"x"))
+
+
+# for categorical data, elimination amounts to logical derivartions. For example
+E <- editarray(c(
+    "age \%in\% c('under aged','adult')",
+    "positionInHousehold \%in\% c('marriage partner', 'child', 'other')",
+    "maritalStatus \%in\% c('unmarried','married','widowed','divorced')",
+    "if (maritalStatus \%in\% c('married','widowed','divorced') ) positionInHousehold != 'child'",
+    "if (maritalStatus == 'unmarried') positionInHousehold != 'marriage partner' ",
+    "if ( age == 'under aged') maritalStatus == 'unmarried'"
+    )
+)
+E
+
+# by eliminating 'maritalStatus' we can deduce that under aged persones cannot be partner in marriage.
+eliminate(E,"maritalStatus")
+
+
+
+
+
+
+
+
+}
+\seealso{
+  \code{\link{editmatrix}}, \code{\link{eliminate}}
+
+  \code{\link{editmatrix}}, \code{\link{eliminate}}
+}
 

@@ -1,5 +1,7 @@
 library(testthat)
 
+context("Editmatrix")
+
 test_that("editmatrix works correcly with character",{
    cond <- c( "x == y"
             , "z + w == y + x"
@@ -39,7 +41,8 @@ A,x == y
 B,z + w == y + x
 C,z == y + 2*w
 "
-   edtinf <- read.csv(textConnection(edtinf.csv))
+   edtinf <- read.csv((con <- textConnection(edtinf.csv)))
+   close(con)
 			
    mat <- editmatrix(edtinf)
    A <- getA(mat)

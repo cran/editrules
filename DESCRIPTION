@@ -6,20 +6,26 @@ LazyData: no
 Type: Package
 LazyLoad: yes
 Author: Edwin de Jonge, Mark van der Loo
-Description: Facilitates reading and manipulation of linear
-        (in)equalities, converting them into matrix format (and vice
-        versa) and checking if data are valid according to these rules.
-        Sets of linear edits can be manipulated using Fourier-Motzkin
-        elimination and variable substitution and solving error
-        localization problems based on the generalized principle of
-        Felligi and Holt.
-Version: 1.0-2
+Description: Facilitates reading and manipulation of categorical and
+        linear (in)equality constraints on data (edit rules). Numerical
+        edits are converted to matrix format from text, and categorical
+        rules are converted to a boolean format. Data may be tested
+        against the rules and erroneous fields can be localized based
+        on Fellegi and Holt's generalized principle. Edits may be
+        manipulated and tested for consistency by means of variable
+        (Fourier-Motzkin) elimination or substitution.
+Version: 1.5-0
 URL: http://code.google.com/p/editrules/
-Date: 2011-02-06
-Suggests: iterators
-Collate: 'backtracker.R' 'blocks.R' 'check.R' 'editmatrixAttr.R'
+Date: 2011-08-01
+Suggests: lpSolveAPI,iterators
+Collate: 'backtracker.R' 'blocks.R' 'checkRows.R' 'duplicated.R'
+        'echelon.R' 'editarrayAttr.R' 'editarray.R' 'editmatrixAttr.R'
         'editmatrix.R' 'editrules-data.R' 'eliminate.R'
-        'errorLocalizer.R' 'pkg.R' 'reduce.R' 'S3Generics.R'
-Packaged: 2011-08-10 13:47:11 UTC; mark
+        'errorLocalizer.R' 'getVars.R' 'isFeasible.R'
+        'isObviouslyInfeasible.R' 'isObviouslyRedundant.R' 'is.R'
+        'isSubset.R' 'localizeError_mip.R' 'localizeErrors.R'
+        'parseEdits.R' 'pkg.R' 'print.R' 'removeEmpty.R' 'subsetting.R'
+        'substValue.R' 'violatedEdits.R'
+Packaged: 2011-09-23 16:42:45 UTC; mark
 Repository: CRAN
-Date/Publication: 2011-08-10 16:21:35
+Date/Publication: 2011-09-24 06:42:27
