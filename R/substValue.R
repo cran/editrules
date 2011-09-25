@@ -22,11 +22,11 @@ substValue <- function(E, var, value, ...){
 #' \eqn{\tilde{\bf x}}.
 #'
 #' @method substValue editmatrix
-#' @param remove \code{logical} should variable columns be removed from editmatrix?
+#' @param reduce \code{logical} should variable columns be removed from editmatrix?
 #'
 #' @rdname substValue 
 #' @export
-substValue.editmatrix <- function(E, var, value, remove=FALSE, ...){
+substValue.editmatrix <- function(E, var, value, reduce=FALSE, ...){
     v <- match(var, getVars(E), nomatch=0)
     if (any(v==0)){
         warning("Parameter var (", var[v==0], ") is not a variable of editmatrix E")
@@ -35,7 +35,7 @@ substValue.editmatrix <- function(E, var, value, remove=FALSE, ...){
     ib <- ncol(E)
     E[,ib] <- E[ ,ib] - E[ ,v]%*%value
     
-    if (remove)
+    if (reduce)
         E <- E[,-v, drop=FALSE]
     else 
         E[,v] <- 0
@@ -55,23 +55,26 @@ substValue.editmatrix <- function(E, var, value, remove=FALSE, ...){
 #'
 #' @rdname substValue
 #' @export
-substValue.editarray <- function(E, var, value, remove=TRUE, ...){
-# TODO: make this work for multiple variables and values.
-    ind <- getInd(E)
-    J <- ind[[var]]
-    sep=getSep(E)
-    i <- J[value]
-    if ( is.na(i) ) 
-        stop(paste("Variable ", var,"not present in editarray or cannot take value",value))
+substValue.editarray <- function(E, var, value, reduce=FALSE, ...){
 
+    ind <- getInd(E)
+    sep=getSep(E)
     A <- getArr(E)
-    I <- A[,i]
-    if ( remove ){
-        v <- 
-        A <- A[ ,-setdiff(J,i) ,drop=FALSE]
-        ind <- indFromArray(A, sep)
-    } else {
-        A[,J] <- TRUE
+    for ( i in 1:length(var) ){
+        vr <- var[i]
+        vl <- value[i]
+        J <- ind[[vr]]
+        i <- J[vl]
+        if ( is.na(i) ) 
+            stop(paste("Variable ", vr,"not present in editarray or cannot take value",vl))
+
+        I <- A[,i]
+        if ( reduce ){
+            A <- A[ ,-setdiff(J,i) ,drop=FALSE]
+            ind <- indFromArray(A, sep)
+        } else {
+            A[,J] <- TRUE
+        }
     }
     neweditarray(
         E = A[I,,drop=FALSE], 
@@ -88,6 +91,7 @@ substValue.editarray <- function(E, var, value, remove=TRUE, ...){
 #' @keywords internal
 #'
 indFromArray <- function(A,sep){
+    if (ncol(A) == 0 ) return(list())
     cn <- colnames(A)
     l <- strsplit(cn,sep)
     V <- sapply(l,`[`,1)

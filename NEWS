@@ -1,3 +1,19 @@
+version 1.7-0
+- several improvements in parsing categorical edit rules in the presence of & and | operators.
+- solved a bug in violatedEdits causing inequality violations to go unnoticed (since version 1.5.0, thanks to Elmar Wein)
+- substValue.editarray now works for multiple variables
+- Introduced the special FALSE edit (indicating that the set of valid records is empty)
+- editarray now emits error when the | or || operator is used in conjuncion with an 'if' statement.
+- Solved inconsistent parsing character->editmatrix->character in case a (derived) edit reduces the datamodel
+- Solved bug in blocks (constants were ignored for obects of class editmatrix)
+- Output of errorLocalizer.editarray is now equivalent to errorLocalizer.editmatrix
+- isFeasible tested for objects of class editarray (works)
+- blocks now also works for objects of class editarray
+- overloaded indexing for objects of class editarray
+- added function 'reduce' which deletes unnecessary variables and rows from editarray or edimatrix
+- BREAKING CHANGE argument 'remove' is replaced with reduce for clarity
+- NOTE: Default value for argument 'warn' in isFeasible is now set to TRUE
+- NOTE: Default value for argument 'remove' in substValue.editarray is now set to FALSE
 
 version 1.6-0
 - Added functionality for plotting edit graphs directly from edit sets

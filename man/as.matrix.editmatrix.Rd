@@ -14,8 +14,8 @@
   augmented matrix of editmatrix
 }
 \description{
-  An \code{editmatrix} is a matrix and can be used as such,
-  but it has extra attributes. In some cases it is
+  An \code{\link{editmatrix}} is a matrix and can be used
+  as such, but it has extra attributes. In some cases it is
   preferable to convert the editmatrix to a normal matrix.
   Please note that coercion returns the augmented matrix
   \code{A|b} and not the \code{ops} part.

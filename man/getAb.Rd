@@ -5,7 +5,7 @@
   getAb(E)
 }
 \arguments{
-  \item{E}{editmatrix}
+  \item{E}{\code{\link{editmatrix}}}
 }
 \value{
   \code{numeric} matrix \code{A|b}

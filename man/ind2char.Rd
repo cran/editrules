@@ -2,7 +2,8 @@
 \alias{ind2char}
 \title{Derive textual representation from (partial) indices}
 \usage{
-  ind2char(ivd, ind = ivd, invert = logical(length(ivd)))
+  ind2char(ivd, ind = ivd, invert = logical(length(ivd)),
+  useEqual = TRUE)
 }
 \arguments{
   \item{ind}{a \code{list}, usually a (part of) the 'ind'

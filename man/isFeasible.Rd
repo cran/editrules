@@ -1,11 +1,12 @@
 \name{isFeasible}
 \alias{isFeasible}
-\title{Check consistency of editmatrix}
+\title{Check consistency of edit set}
 \usage{
-  isFeasible(E, warn = TRUE)
+  isFeasible(E, warn = FALSE)
 }
 \arguments{
-  \item{E}{an \code{\link{editmatrix}}}
+  \item{E}{an \code{\link{editmatrix}} or
+  \code{\link{editarray}}}
 
   \item{warn}{logical: should a warning be raised when
   system is infeasible?}

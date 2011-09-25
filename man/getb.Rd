@@ -5,7 +5,7 @@
   getb(E)
 }
 \arguments{
-  \item{E}{editmatrix}
+  \item{E}{\code{\link{editmatrix}}}
 }
 \value{
   \code{numeric} vector \code{b}

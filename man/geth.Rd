@@ -8,7 +8,7 @@
   geth(E)
 }
 \arguments{
-  \item{E}{editmatrix}
+  \item{E}{\code{\link{editmatrix}}}
 }
 \description{
   eliminate tracks the history of edits in a logical array

@@ -5,7 +5,7 @@
   normalize(E)
 }
 \arguments{
-  \item{E}{editmatrix}
+  \item{E}{\code{\link{editmatrix}}}
 }
 \value{
   If E was normalized, the original editmatrix is returned,

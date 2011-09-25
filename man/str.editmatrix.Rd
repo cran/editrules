@@ -2,12 +2,12 @@
 \alias{str.editmatrix}
 \title{\code{\link{str}} method for editmatrix object}
 \usage{
-  str.editmatrix(object, ...)
+  \method{str}{editmatrix} (object, ...)
 }
 \arguments{
   \item{object}{\code{\link{editmatrix}} object}
 
-  \item{...}{methods to pass to other methods}
+  \item{...}{arguments to pass to other methods}
 }
 \description{
   \code{\link{str}} method for editmatrix object

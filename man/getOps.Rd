@@ -5,7 +5,7 @@
   getOps(E)
 }
 \arguments{
-  \item{E}{editmatrix}
+  \item{E}{\code{\link{editmatrix}}}
 }
 \value{
   \code{character} vector with the (in)equality operators.

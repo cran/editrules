@@ -2,7 +2,7 @@
 \alias{duplicated.editmatrix}
 \title{Check for duplicate edit rules}
 \usage{
-  duplicated.editmatrix(x, ...)
+  \method{duplicated}{editmatrix} (x, ...)
 }
 \arguments{
   \item{x}{an \code{\link{editmatrix}}}

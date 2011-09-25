@@ -6,11 +6,11 @@
 \usage{
   substValue(E, var, value, ...)
 
-  \method{substValue}{editmatrix} (E, var, value, remove =
+  \method{substValue}{editmatrix} (E, var, value, reduce =
   FALSE, ...)
 
-  \method{substValue}{editarray} (E, var, value, remove =
-  TRUE, ...)
+  \method{substValue}{editarray} (E, var, value, reduce =
+  FALSE, ...)
 }
 \arguments{
   \item{E}{\code{\link{editmatrix}} or
@@ -24,7 +24,7 @@
   \item{...}{arguments to be passed to or from other
   methods}
 
-  \item{remove}{\code{logical} should variable columns be
+  \item{reduce}{\code{logical} should variable columns be
   removed from editmatrix?}
 }
 \value{

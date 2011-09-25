@@ -5,7 +5,7 @@
   isNormalized(E)
 }
 \arguments{
-  \item{E}{editmatrix}
+  \item{E}{\code{\link{editmatrix}}}
 }
 \value{
   TRUE if editmatrix was normalized or created with

@@ -11,8 +11,7 @@
   \method{violatedEdits}{character} (E, dat, name = NULL,
   ...)
 
-  \method{violatedEdits}{editmatrix} (E, dat, tol =
-  sqrt(.Machine$double.eps), ...)
+  \method{violatedEdits}{editmatrix} (E, dat, tol = 0, ...)
 
   \method{violatedEdits}{data.frame} (E, dat, ...)
 
@@ -49,13 +48,15 @@
   of records )\eqn{times}(number of edits), indicating
   which record violates (\code{TRUE}) which edit.
 
-  For rules of the form Ax == b or Ax <= b, |Ax - b| <= tol
-  is returned. For rules of the form Ax < b, |Ax - b| < tol
-  is returned. The editmatrix is normalized before checks
-  are performed.
-
-  If \code{datamodel=TRUE} the first n edits (n being the
-  number of variables) represent the datamodel.
+  \itemize{ \item{For rules of the form Ax == b |Ax - b| <=
+  tol is returned.} \item{For rules of the form Ax < b, Ax
+  - b < tol is returned.} \item{For rules of the form Ax <=
+  b Ax- b <= tol is returned.} } For numerical records, the
+  default tolerance is 0. When working with doubles, the
+  square root of machina accuracy is a resonable
+  alternative (\code{sqrt(.Machine\$double.eps)}). The
+  editmatrix is \cite{\link[=normalize]{normalized}} before
+  checks are performed.
 }
 \details{
   This function can be used as an input for automatic
