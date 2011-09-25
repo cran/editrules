@@ -11,11 +11,15 @@
 #'
 #' @export
 parseEdits <- function(E, type=c("all", "num", "cat", "mix")){
+     if (is.expression(E)){
+       edits <- E
+     } else {
      edits <- 
         tryCatch(parse(text=E), 
             error=function(e){
                 stop(paste("Not all edits can be parsed, parser returned", e$message,sep="\n"))
             })
+     }
      type <- match.arg(type)
      if (type=="all"){
        return(edits)
@@ -55,6 +59,13 @@ parseCat <- function(x, val=NA, edit=logical(0), sep=":", useLogical=FALSE){
     if ( length(x) == 1 ) {
        # corner case: the always FALSE edit (array must be TRUE at every category)
        if ( is.na(val) && !x[[1]] ) return(NULL)
+       if (is.logical(x)){
+         if (val == x) { return(edit)
+         }else { 
+           # if this happens the statements is always true, so delete it...
+           return (logical())
+         }
+       }
        var <- if (useLogical) as.character(x)
               else paste(x,"TRUE",sep=sep)
        edit[var] <- val
@@ -87,11 +98,11 @@ parseCat <- function(x, val=NA, edit=logical(0), sep=":", useLogical=FALSE){
         edit[var] <- !val
     } else if (op == "!") {
         edit <- parseCat(x[[2]],!val,  edit, sep, useLogical)
-    } else if (op == "&&"){
+    } else if (op %in% c("&", "&&")){
         if (is.na(val))
            val <- TRUE
         if (val == FALSE){
-            stop("Operator '&&' not allowed in 'then' clause")
+            stop("Operators '&' and '&&' not allowed in 'then' clause")
         }
         edit <- parseCat(x[[2]],val, edit, sep, useLogical)
         edit <- parseCat(x[[3]],val, edit, sep, useLogical)

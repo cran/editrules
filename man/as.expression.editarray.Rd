@@ -1,11 +1,11 @@
-\name{as.expression.editmatrix}
-\alias{as.expression.editmatrix}
-\title{Coerce an editmatrix to R expressions}
+\name{as.expression.editarray}
+\alias{as.expression.editarray}
+\title{Coerce an editarray to R expressions}
 \usage{
-  \method{as.expression}{editmatrix} (x, ...)
+  \method{as.expression}{editarray} (x, ...)
 }
 \arguments{
-  \item{x}{editmatrix object to be parsed}
+  \item{x}{editarray object to be parsed}
 
   \item{...}{further arguments passed to or from other
   methods.}

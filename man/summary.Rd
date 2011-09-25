@@ -36,6 +36,10 @@
 E <- editmatrix(c("x+3*y==2*z", "x==z"))
 print(E)
 
+# Using a expression vector to define contraints
+E <- editmatrix(expression(x+3*y==2*z, x==z))
+print(E)
+
 # an editmatrix also has a summary method:
 summary(E)
 
@@ -72,10 +76,10 @@ E
 summary(E)
 
 # A yes/no variable may also be modeled as a logical:
-editarray(c(
-    "gender \%in\% c('male','female')",
-    "pregnant \%in\% c(TRUE, FALSE)",
-    "if( gender == 'male' ) pregnant == FALSE"
+editarray(expression(
+    gender \%in\% c('male','female'),
+    pregnant \%in\% c(TRUE, FALSE),
+    if( gender == 'male' ) pregnant == FALSE
     )
 )
 
