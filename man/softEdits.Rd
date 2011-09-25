@@ -3,13 +3,10 @@
 \title{Derive editmatrix with soft constraints based on boundaries of variables. This is a utility function that is used for
 constructing a mip/lp problem.}
 \usage{
-  softEdits(E, prefix = "adapt.")
+  softEdits(E, prefix = "delta.", M = 1e+07)
 }
 \arguments{
   \item{E}{normalized \code{editmatrix}}
-
-  \item{xlim}{\code{matrix} with columns lower and upper
-  boundary, and rows are variables (in same order as E)}
 
   \item{prefix}{\code{character} used for naming dummy
   variables in matrix.}

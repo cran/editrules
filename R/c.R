@@ -19,6 +19,15 @@ c.editmatrix <- function(...){
   
   ops <- unlist(lapply(ems, getOps))
   b <- unlist(lapply(ems, getb))
+  nms <- lapply(ems, function(E){
+    rn <- rownames(E)
+    if (is.null(rn)){
+      rn <- rep("num", nrow(E))
+    }
+    rn
+  })
+  nms <- make.unique(unlist(nms), sep="")
+  rownames(A) <- nms
   
   as.editmatrix(A=A, ops=ops, b=b)
 }
@@ -45,7 +54,7 @@ c.editarray <- function(...){
   
   B <- do.call(rbind, B)
   cats <- sub("^.+:", "", lvls)
-  vars <- sub(":.+$", "", lvls)
+  vars <- sub(":.*$", "", lvls)
   ind <- seq_along(lvls)
   names(ind) <- cats
   ind <- split(ind, vars)

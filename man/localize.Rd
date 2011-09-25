@@ -4,7 +4,7 @@
 \usage{
   localize(E, dat, verbose, pretext = "Processing",
     call = sys.call(), weight, maxduration,
-    method = c("localizer", "mip"), ...)
+    method = c("bb", "mip", "localizer"), retrieve, ...)
 }
 \arguments{
   \item{E}{\code{\link{editmatrix}} or
@@ -21,11 +21,11 @@
   \item{weight}{a \code{nrow(dat)xncol(dat)} array of
   weights}
 
-  \item{method}{should errorlocalizer ("localizer") or mix
+  \item{method}{should branch and bound ("bb") or mix
   integer programming ("mip") be used?}
 
-  \item{call}{call to include in
-  \code{\link{errorLocation}} object}
+  \item{retrieve}{return \code{best} or \code{first} found
+  solution (bb method only)}
 
   \item{maxduration}{max time for searchBest()}
 }

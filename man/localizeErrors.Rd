@@ -4,7 +4,8 @@
 \usage{
   localizeErrors(E, dat, verbose = FALSE,
     weight = rep(1, ncol(dat)), maxduration = 600,
-    method = c("localizer", "mip"), useBlocks = TRUE, ...)
+    method = c("bb", "mip", "localizer"), useBlocks = TRUE,
+    retrieve = c("best", "first"), ...)
 }
 \arguments{
   \item{E}{an object of class \code{\link{editset}}
@@ -23,8 +24,11 @@
   \code{data.frame} of weights with the same dimensions as
   \code{dat}.}
 
-  \item{method}{should errorlocalizer ("localizer") or mix
-  integer programming ("mip") be used?}
+  \item{method}{should errorlocalizer ("bb") or mix integer
+  programming ("mip") be used?}
+
+  \item{retrieve}{Return the first found solution or the
+  best solution? ("bb" method only).}
 
   \item{maxduration}{maximum time for \code{$searchBest()}
   to find the best solution for a single record.}
@@ -144,7 +148,8 @@ dat <- data.frame(
     y = c(1,1),
     z = c(1,1))
 
-# At equal weights, both records have three solutions (degeneracy): adapt x, y or z:
+# At equal weights, both records have three solutions (degeneracy): adapt x, y
+# or z:
 localizeErrors(E,dat)$status
 
 # Set different weights per record (lower weight means lower reliability):
@@ -161,7 +166,8 @@ E <- editarray(expression(
     maritalStatus \%in\% c('unmarried','married','widowed','divorced'),
     positionInHousehold \%in\% c('marriage partner', 'child', 'other'),
     if( age == 'under aged' ) maritalStatus == 'unmarried',
-    if( maritalStatus \%in\% c('married','widowed','divorced')) !positionInHousehold \%in\% c('marriage partner','child')
+    if( maritalStatus \%in\% c('married','widowed','divorced')) 
+      !positionInHousehold \%in\% c('marriage partner','child')
     )
 )
 E
@@ -174,11 +180,11 @@ dat <- data.frame(
 )
 dat
 localizeErrors(E,dat)
-# the last record of dat has 2 degenerate solutions. Running  the last command a few times
-# demonstrates that one of those solutions is chosen at random.
+# the last record of dat has 2 degenerate solutions. Running  the last command
+# a few times demonstrates that one of those solutions is chosen at random.
 
-# Increasing the weight of  'positionInHousehold' for example, makes the best solution
-# unique again
+# Increasing the weight of  'positionInHousehold' for example, makes the best
+# solution unique again
 localizeErrors(E,dat,weight=c(1,1,2))
 
 

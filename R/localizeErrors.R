@@ -33,7 +33,8 @@
 #' @param verbose print progress to screen?
 #' @param weight Vector of positive weights for every variable in \code{dat}, or 
 #'      an \code{array} or \code{data.frame} of weights with the same dimensions as \code{dat}.
-#' @param method should errorlocalizer ("localizer") or mix integer programming ("mip") be used? 
+#' @param method should errorlocalizer ("bb") or mix integer programming ("mip") be used? 
+#' @param retrieve Return the first found solution or the best solution? ("bb" method only).
 #' @param maxduration maximum time for \code{$searchBest()} to find the best solution for a single record.
 #' @param ... Further options to be passed to \code{\link{errorLocalizer}}
 #'  
@@ -52,9 +53,10 @@
 #'  http://CRAN.R-project.org/package=lpSolveAPI
 #'
 #' @export
-
-localizeErrors <- function(E, dat, verbose=FALSE, weight=rep(1,ncol(dat)), maxduration=600, method=c("localizer", "mip"), useBlocks=TRUE, ...){
+localizeErrors <- function(E, dat, verbose=FALSE, weight=rep(1,ncol(dat)), maxduration=600, method=c("bb", "mip", "localizer"), 
+  useBlocks=TRUE, retrieve=c("best","first"), ...){
     stopifnot(is.data.frame(dat))
+    retrieve <- match.arg(retrieve)
     if ( any(is.na(weight)) ) stop('Missing weights detected')    
     if ( is.data.frame(weight) ) weight <- as.matrix(weight)
     if (is.array(weight) && !all(dim(weight) == dim(dat)) ) 
@@ -111,7 +113,8 @@ localizeErrors <- function(E, dat, verbose=FALSE, weight=rep(1,ncol(dat)), maxdu
             call=sys.call(),
             weight=weight, 
             maxduration=maxduration,
-            method=method, ...)
+            method=method, 
+            retrieve=retrieve, ...)
     }
     if (verbose) cat('\n')
     # weights for checkdatamodel cannot be added naively with those of errorLocalizer
@@ -128,12 +131,12 @@ localizeErrors <- function(E, dat, verbose=FALSE, weight=rep(1,ncol(dat)), maxdu
 #' @param verbose \code{logical} print progress report during run?
 #' @param pretext \code{character} text to print before progress report
 #' @param weight a \code{nrow(dat)xncol(dat)} array of weights
-#' @param method should errorlocalizer ("localizer") or mix integer programming ("mip") be used?
-#' @param call call to include in \code{\link{errorLocation}} object
+#' @param method should branch and bound ("bb") or mix integer programming ("mip") be used?
+#' @param retrieve return \code{best} or \code{first} found solution (bb method only) 
 #' @param maxduration max time for searchBest()
 #' 
 #' @keywords internal
-localize <- function(E, dat, verbose, pretext="Processing", call=sys.call(), weight, maxduration, method=c("localizer", "mip"), ...){
+localize <- function(E, dat, verbose, pretext="Processing", call=sys.call(), weight, maxduration, method=c("bb", "mip", "localizer"), retrieve, ...){
     vars <- getVars(E)
     weight <- weight[,vars,drop=FALSE]
 
@@ -156,9 +159,16 @@ localize <- function(E, dat, verbose, pretext="Processing", call=sys.call(), wei
     wgt <- rep(NA,n)
     degeneracy <- rep(NA,n)
     maxDurationExceeded <- logical(n)
+    memfail <- logical(n)
     fmt <- paste('\r%s record %',nchar(n),'d of %d',sep="")
     method <- match.arg(method)
+    
     if (method == "localizer"){
+      warning("method=='localizer' is deprecated. Please use method=='bb'")
+      method <- "bb"
+    }
+    
+    if (method == "bb"){
       for ( i in 1:n ){
           if (verbose){ 
               cat(sprintf(fmt,pretext,i,n)) 
@@ -167,14 +177,20 @@ localize <- function(E, dat, verbose, pretext="Processing", call=sys.call(), wei
           r <- as.list(dat[i,vars,drop=FALSE])
           wt <- weight[i, ]
           bt <- errorLocalizer(E, r, weight=wt, ...)
-          e <- bt$searchBest(maxduration=maxduration)
+          if (retrieve=='best'){ 
+            e <- bt$searchBest(maxduration=maxduration)
+          } else {
+            e <- bt$searchNext(maxduration=maxduration)
+          }
           if (!is.null(e) && !bt$maxdurationExceeded){
               err[i,vars] <- e$adapt
               wgt[i] <- e$w
           }
-          degeneracy[i] <- bt$degeneracy
-          duration[i,] <- getDuration(bt$duration)
-          maxDurationExceeded[i] <- bt$maxdurationExceeded
+# the ifelse's are dirty workarounds for an error occurring sometimes when retrieve='first'
+          degeneracy[i] <- ifelse(is.null(bt$degeneracy),NA,bt$degeneracy)
+          duration[i,] <- ifelse(is.null(bt$duration), c(0,0,0), getDuration(bt$duration))
+          maxDurationExceeded[i] <- ifelse(is.null(bt$maxDurationExceeded),FALSE, bt$maxdurationExceeded)
+          if ( !is.null(bt$memfail) ) memfail[i] <- TRUE
       }
     } else if (method == "mip"){
       for ( i in 1:n ){
@@ -200,7 +216,8 @@ localize <- function(E, dat, verbose, pretext="Processing", call=sys.call(), wei
             weight  = wgt,
             degeneracy=degeneracy,
             duration,
-            maxDurationExceeded
+            maxDurationExceeded,
+            memfail
             ),
         call=call,
         method=method,
@@ -215,7 +232,7 @@ getDuration <- function(x){
     if (!is.na(y[5L])) 
         y[2L] <- y[2L] + y[5L]
     y <- y[1L:3L]
-    names(y) <- c(gettext("user"), gettext("system"), gettext("elapsed"))
+    names(y) <- c("user", "system", "elapsed")
     y
 }
 
@@ -247,7 +264,8 @@ localize_singleton <- function(E, dat,
         user = numeric(n),
         system=numeric(n),
         elapsed=numeric(n),
-        maxDurationExceeded=logical(n)
+        maxDurationExceeded=logical(n),
+        memfail = logical(n)
     )
     newerrorlocation(
         adapt       = adapt,

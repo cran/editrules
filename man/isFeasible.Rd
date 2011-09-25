@@ -19,8 +19,8 @@
   one by one from a set of edits, eventually either no
   edits are left or an
   \code{\link[=isObviouslyInfeasible]{obvious
-  contradiction}} is encountered. In the latter case no
-  records can obey all edits in the set which is therefore
+  contradiction}} is encountered. In the case no records
+  can obey all edits in the set which is therefore
   \code{inFeasible}.
 }
 \note{

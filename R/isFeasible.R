@@ -3,7 +3,7 @@
 #' When variables are \code{\link[=eliminate]{eliminated}} one by one
 #' from a set of edits, eventually either no edits are left or an 
 #' \code{\link[=isObviouslyInfeasible]{obvious contradiction}} is encountered.
-#' In the latter case no records can obey all edits in the set which is therefore
+#' In the    case no records can obey all edits in the set which is therefore
 #' \code{inFeasible}.
 #'
 #'
@@ -22,11 +22,13 @@ isFeasible <- function(E, warn=FALSE){
     ## TODO: make it return the subset of edits causing the contradiction.
     vars <- getVars(E)
     vars2 <- vars
-    feasible <- !isObviouslyInfeasible(E)
-    while( feasible && length(vars) > 0 ){
+    feasible <- any(!isObviouslyInfeasible(E))
+    while( isTRUE(feasible) && length(vars) > 0 ){
         E <- eliminate(E,vars[1])
         vars <- vars[-1]
-        feasible <- !isObviouslyInfeasible(E)
+        ## TODO: cleanup editlists that have infeasible parts, currently they are included
+        ## for all eliminations.
+        feasible <- any(!isObviouslyInfeasible(E))
         if ( !feasible && warn )
             warning(
                 paste("system becomes obviously infeasible after eliminating",

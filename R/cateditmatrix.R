@@ -13,7 +13,15 @@ cateditmatrix <- function(x, sep=":", env=parent.frame()){
     if (is.editarray(x)) {
       x <- as.character(x)
     }
+    
+    if ( length(x) == 0 ){
+      res <- neweditmatrix(matrix(numeric(0)),ops=character(0),normalized=TRUE)
+      class(res) <- c("cateditmatrix", "editmatrix")
+      return(res)
+    }
+    
     edts <- parseEdits(x)
+    #names(edts) <- names(x)
     
     catedits <- lapply(edts,parseCat,sep=sep, useLogical=TRUE, env=env)
     catedits <- lapply(catedits, parseCatEdit)

@@ -45,10 +45,12 @@
   (as in \code{sys.time})} \item{\code{elapsed} elapsed
   time used to generate solution (as in \code{sys.time})}
   \item{\code{maxDurationExceeded} Was the maximum search
-  time reached?} } } \item{\code{method} The error
-  localization method used, can be "mip", "localizer" or
-  "checkDatamodel".} \item{\code{call} The R calls to the
-  function generating the object.} \item{\code{user}
+  time reached?} \item{\code{memfail} Indicates whether a
+  branch was broken off due to memory allocation failure
+  (branch and bound only)} } } \item{\code{method} The
+  error localization method used, can be "mip", "localizer"
+  or "checkDatamodel".} \item{\code{call} The R calls to
+  the function generating the object.} \item{\code{user}
   \code{character} user who generated the object.}
   \item{\code{timestamp} \code{character} timestamp.} }
 
@@ -117,7 +119,8 @@ dat <- data.frame(
     y = c(1,1),
     z = c(1,1))
 
-# At equal weights, both records have three solutions (degeneracy): adapt x, y or z:
+# At equal weights, both records have three solutions (degeneracy): adapt x, y
+# or z:
 localizeErrors(E,dat)$status
 
 # Set different weights per record (lower weight means lower reliability):
@@ -134,7 +137,8 @@ E <- editarray(expression(
     maritalStatus \%in\% c('unmarried','married','widowed','divorced'),
     positionInHousehold \%in\% c('marriage partner', 'child', 'other'),
     if( age == 'under aged' ) maritalStatus == 'unmarried',
-    if( maritalStatus \%in\% c('married','widowed','divorced')) !positionInHousehold \%in\% c('marriage partner','child')
+    if( maritalStatus \%in\% c('married','widowed','divorced')) 
+      !positionInHousehold \%in\% c('marriage partner','child')
     )
 )
 E
@@ -147,11 +151,11 @@ dat <- data.frame(
 )
 dat
 localizeErrors(E,dat)
-# the last record of dat has 2 degenerate solutions. Running  the last command a few times
-# demonstrates that one of those solutions is chosen at random.
+# the last record of dat has 2 degenerate solutions. Running  the last command
+# a few times demonstrates that one of those solutions is chosen at random.
 
-# Increasing the weight of  'positionInHousehold' for example, makes the best solution
-# unique again
+# Increasing the weight of  'positionInHousehold' for example, makes the best
+# solution unique again
 localizeErrors(E,dat,weight=c(1,1,2))
 
 
