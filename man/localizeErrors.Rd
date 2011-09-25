@@ -3,7 +3,7 @@
 \title{Localize errors on records in a data.frame.}
 \usage{
   localizeErrors(E, dat, useBlocks = TRUE, verbose = FALSE,
-  weight = rep(1, ncol(dat)), ...)
+  weight = rep(1, ncol(dat)), maxduration = 600, ...)
 }
 \arguments{
   \item{E}{an object of class \code{\link{editmatrix}} or
@@ -19,6 +19,9 @@
   \item{weight}{Vector of positive weights for every
   variable in \code{dat}, or an array of weights with the
   same dimensions as \code{dat}.}
+
+  \item{maxduration}{maximum time for \code{$searchBest()}
+  to find the best solution for a single record.}
 
   \item{...}{Further options to be passed to
   \code{\link{errorLocalizer}}}

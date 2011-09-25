@@ -3,7 +3,7 @@
 \title{Workhorse function for localizeErrors}
 \usage{
   localize(E, dat, verbose, pretext, call = sys.call(),
-  weight, ...)
+  weight, maxduration, ...)
 }
 \arguments{
   \item{E}{\code{\link{editmatrix}} or
@@ -21,6 +21,8 @@
 
   \item{call}{call to include in
   \code{\link{errorLocation}} object}
+
+  \item{maxduration}{max time for searchBest()}
 }
 \description{
   Workhorse function for localizeErrors

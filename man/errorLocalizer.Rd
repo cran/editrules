@@ -36,8 +36,9 @@
   variables to adapt.}
 
   \item{maxduration}{maximum time (in seconds), for
-  \code{$searchNext()}, \code{$searchAll()} and
-  \code{$searchBest()}}
+  \code{$searchNext()}, \code{$searchAll()} (not for
+  \code{$searchBest}, use
+  \code{$searchBest(maxdration=<duration>)} in stead)}
 }
 \value{
   an object of class \code{\link{backtracker}}. Each
