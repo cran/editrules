@@ -8,7 +8,7 @@
 
   \method{errorLocalizer}{editmatrix} (E, x, weight =
   rep(1, length(x)), maxadapt = length(x), maxweight =
-  sum(weight[!is.na(weight)]), maxduration = 600, ...)
+  sum(weight), maxduration = 600, ...)
 
   \method{errorLocalizer}{editarray} (E, x, weight = rep(1,
   length(x)), maxadapt = length(x), maxweight =
