@@ -1,6 +1,6 @@
-cd8f070e776f8f0c26e48d88eeb6770d *DESCRIPTION
-17b5c1a9619bcf9904953747eb2c2d65 *NAMESPACE
-ef83d97607f908d80f70ed9192a6b1df *NEWS
+f685715325ad381dfb3b1ba0466f7f52 *DESCRIPTION
+67c7d7906e6251bd8e7a7a26d470e886 *NAMESPACE
+e30d15e9435d1380a57b66d53946e9f6 *NEWS
 c99f26ab73fe450ab4fe8cd5bf03e291 *R/adjacency.R
 c20e15dd505a8a34d40424b38eacdceb *R/as.igraph.R
 425bc277e5bd0bbae9178411c1f2dad5 *R/as.matrix.R
@@ -35,7 +35,7 @@ ca948e35bc6f81711566cc7173ad2d84 *R/reduce.R
 cf6fb9762e9be18d680bf73f557731eb *R/subsetting.R
 873ea3be74e009d2ae4f8591c828d1d3 *R/substValue.R
 d893c2a721412fe21c7c12c7e59a913f *R/summary.R
-f72bf5a77383eaeaf54e3e8433061e13 *R/violatedEdits.R
+eb377cef9b31c92743d4702232e3fc68 *R/violatedEdits.R
 bc78a58c81d18969a63c537904488148 *data/edits.RData
 d714b25081ef39ecc64d5e6a172257ae *inst/doc/DeJongeVanderLoo2011.pdf
 bccb0fcda9493ca9de237f5195f0fd20 *inst/doc/Sweave.sty
@@ -44,11 +44,11 @@ ce01bb529235d2febc14da01b8e452c5 *inst/doc/algorithmic.sty
 b0adcaf6e795a698fff297e3cd0440a4 *inst/doc/algorithmicx.sty
 8dfffa296b2349618eda3a914290b6aa *inst/doc/algpseudocode.sty
 b3955ce11e5f8a3fcf0f2971e853e183 *inst/doc/buildVignette.bash
-60df76206953ed65c40c0c28a52caf60 *inst/doc/editrules-categorical.Rnw
-14b9ddd4481ae107b28dbedb2002bb2f *inst/doc/editrules-categorical.pdf
+65ab310140add4e60714c62b1ad62d92 *inst/doc/editrules-categorical.Rnw
+a38fda6177c2b98d2756a6440b1894de *inst/doc/editrules-categorical.pdf
 58c92f1253bfce69a77299acf29e7d4f *inst/doc/editrules-linear.Rnw
-634d01404401fd42a86ae7cadb8c28eb *inst/doc/editrules-linear.pdf
-f42cd7f0f35810fb3aa7a8a096058ff4 *inst/doc/editrules.bib
+5acae089198332ff9bf840b8f6c47cae *inst/doc/editrules-linear.pdf
+36df72286d179f424686c1e2b75bc663 *inst/doc/editrules.bib
 c28fffb03d6a5ec89f4658e87f7334a0 *inst/doc/fig/tree.tex
 3bdc54471f92896b48a5d48add85fbeb *inst/doc/index.html
 f5637ab17a59f72578d832cbda12f805 *inst/doc/pic.R
@@ -68,7 +68,7 @@ bee233c435b8c0b0d2b67a5496cfe8f2 *inst/tests/testErrorLocalizer.R
 5f9f169c865fd25755f806bd6f2227a1 *inst/tests/testLocalizeErrors.R
 11cd2b2843653c2b84d53abccbbb4952 *inst/tests/testParseEdits.R
 a14de6e71dd5cf5c32e1ae0ac4cc3b17 *inst/tests/testSubstValue.R
-3f12349ccf0bcceade4e7e210b40fea6 *inst/tests/testViolatedEdits.R
+6d8798109e8d9ad76c9ce471639a6f0d *inst/tests/testViolatedEdits.R
 fe9bff220ee36989e85668089c4accd2 *inst/tests/testdatamodel.R
 296ba241894fa23bd96fe79590673c6a *inst/tests/testechelon.R
 c4f6be6fecc9e298aaa57a302cfc261b *inst/tests/testeditarray.R
@@ -80,6 +80,7 @@ f0a2409af17d5b5ecd7d8baa583c9bd1 *man/as.character.editarray.Rd
 3cad17747e307bc182aaae178b2a1b14 *man/as.character.editmatrix.Rd
 ba4dcbc8223f2885bddfbfbff841951b *man/as.data.frame.editarray.Rd
 599b476af756ef40ce31c3b42346e382 *man/as.data.frame.editmatrix.Rd
+4b9c1126e37e63724bde6ba57b7b33f9 *man/as.data.frame.violatedEdits.Rd
 c4e248293ace864e20c62cd7bffc2a9d *man/as.editmatrix.Rd
 b644fbf07da404516297400890cde633 *man/as.expression.editmatrix.Rd
 98159fe32968d57d230170eb0780a006 *man/as.matrix.editarray.Rd
