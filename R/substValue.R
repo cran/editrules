@@ -65,13 +65,13 @@ substValue.editarray <- function(E, var, value, reduce=FALSE, ...){
         vr <- var[i]
         vl <- value[i]
         J <- ind[[vr]]
-        i <- J[vl]
-        if ( is.na(i) ) 
+        ii <- J[vl]
+        if ( is.null(ii) || is.na(ii) ) 
             stop(paste("Variable ", vr,"not present in editarray or cannot take value",vl))
 
-        I <- A[,i]
+        I <- A[,ii]
         if ( reduce ){
-            A <- A[ ,-setdiff(J,i) ,drop=FALSE]
+            A <- A[ ,-setdiff(J,ii) ,drop=FALSE]
             ind <- indFromArray(A, sep)
         } else {
             A[,J] <- TRUE
@@ -96,7 +96,8 @@ indFromArray <- function(A,sep){
     cn <- colnames(A)
     l <- strsplit(cn,sep)
     V <- sapply(l,`[`,1)
-    C <- sapply(l,`[`,-1)
+#    C <- sapply(l,`[`,-1)
+    C <- sapply(l,function(g) ifelse(length(g[-1])==1,g[-1],""))
     vars <- unique(V)
     ind <- lapply(vars, function(v) which(v==V))
     names(ind) <- vars

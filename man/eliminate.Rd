@@ -6,8 +6,8 @@
 \usage{
   eliminate(E, var, ...)
 
-  \method{eliminate}{editmatrix} (E, var, fancynames =
-  FALSE, ...)
+  \method{eliminate}{editmatrix} (E, var,
+    fancynames = FALSE, ...)
 
   \method{eliminate}{editarray} (E, var, ...)
 }
@@ -27,7 +27,7 @@
 \value{
   An editmatrix with an extra (hidden) attributes
   describing how the new restrictions were derived from the
-  original ones. These attributes are used to remove
+  original ones.  These attributes are used to remove
   redundancies when variables are repeatedly eliminated.
 }
 \description{
@@ -99,10 +99,10 @@ isObviouslyInfeasible(eliminate(E,"x"))
 
 # for categorical data, elimination amounts to logical derivartions. For example
 E <- editarray(c(
-    "age \%in\% c('under aged','adult')",
-    "positionInHousehold \%in\% c('marriage partner', 'child', 'other')",
-    "maritalStatus \%in\% c('unmarried','married','widowed','divorced')",
-    "if (maritalStatus \%in\% c('married','widowed','divorced') ) positionInHousehold != 'child'",
+    "age \\\%in\\\% c('under aged','adult')",
+    "positionInHousehold \\\%in\\\% c('marriage partner', 'child', 'other')",
+    "maritalStatus \\\%in\\\% c('unmarried','married','widowed','divorced')",
+    "if (maritalStatus \\\%in\\\% c('married','widowed','divorced') ) positionInHousehold != 'child'",
     "if (maritalStatus == 'unmarried') positionInHousehold != 'marriage partner' ",
     "if ( age == 'under aged') maritalStatus == 'unmarried'"
     )
@@ -113,7 +113,22 @@ E
 eliminate(E,"maritalStatus")
 
 
+for ( f in dir('../pkg/R',full.names=TRUE)) dmp <- source(f)
 
+
+E <- editarray(c(
+    "age \\\%in\\\% c('under aged','adult')",
+    "positionInHousehold \\\%in\\\% c('marriage partner', 'child', 'other')",
+    "maritalStatus \\\%in\\\% c('unmarried','married','widowed','divorced')",
+    "if (maritalStatus \\\%in\\\% c('married','widowed','divorced') ) positionInHousehold != 'child'",
+    "if (maritalStatus == 'unmarried') positionInHousehold != 'marriage partner' ",
+    "if ( age == 'under aged') maritalStatus == 'unmarried'"
+    )
+)
+E
+
+# by eliminating 'maritalStatus' we can deduce that under aged persones cannot be partner in marriage.
+eliminate(E,"maritalStatus")
 
 
 

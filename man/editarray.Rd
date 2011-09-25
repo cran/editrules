@@ -2,13 +2,16 @@
 \alias{editarray}
 \title{Parse textual, categorical edit rules to an editarray}
 \usage{
-  editarray(editrules, sep = ":")
+  editarray(editrules, sep = ":", env = parent.frame())
 }
 \arguments{
   \item{editrules}{\code{character} vector}
 
   \item{sep}{textual separator, to be used internally for
   separating variable from category names.}
+
+  \item{env}{environment to evaluate the rhs of '==' or
+  '\%in\%' in.}
 }
 \value{
   editarray
@@ -65,8 +68,8 @@
 
 # Here is the prototypical categorical edit: men cannot be pregnant.
 E <- editarray(c(
-    "gender \%in\% c('male','female')",
-    "pregnant \%in\% c('yes','no')",
+    "gender \\\%in\\\% c('male','female')",
+    "pregnant \\\%in\\\% c('yes','no')",
     "if( gender == 'male' ) pregnant == 'no'"
     )
 )
@@ -77,33 +80,36 @@ summary(E)
 
 # A yes/no variable may also be modeled as a logical:
 editarray(expression(
-    gender \%in\% c('male','female'),
-    pregnant \%in\% c(TRUE, FALSE),
+    gender \\\%in\\\% c('male','female'),
+    pregnant \\\%in\\\% c(TRUE, FALSE),
     if( gender == 'male' ) pregnant == FALSE
     )
 )
 
 # or, shorter: 
 editarray(c(
-    "gender \%in\% c('male','female')",
-    "pregnant \%in\% c(TRUE, FALSE)",
+    "gender \\\%in\\\% c('male','female')",
+    "pregnant \\\%in\\\% c(TRUE, FALSE)",
     "if( gender == 'male' ) !pregnant"
     )
 )
 
-# the \%in\% statement may be used at will
+# the \\\%in\\\% statement may be used at will
 editarray(c(
-    "gender \%in\% c('male','female')",
-    "pregnant \%in\% c(TRUE, FALSE)",
-    "positionInHousehold \%in\% c('marriage partner', 'child', 'other')",
-    "maritalStatus \%in\% c('unmarried','married','widowed','divorced')",
+    "gender \\\%in\\\% c('male','female')",
+    "pregnant \\\%in\\\% c(TRUE, FALSE)",
+    "positionInHousehold \\\%in\\\% c('marriage partner', 'child', 'other')",
+    "maritalStatus \\\%in\\\% c('unmarried','married','widowed','divorced')",
     "if( gender == 'male' ) !pregnant",
-    "if( maritalStatus \%in\% c('unmarried','widowed','divorced')) !positionInHousehold \%in\% c('marriage partner','child')"
+    "if( maritalStatus \\\%in\\\% c('unmarried','widowed','divorced')) !positionInHousehold \\\%in\\\% c('marriage partner','child')"
     )
 )
 
 
 
 
+}
+\seealso{
+  \code{\link{editfile}}
 }
 

@@ -1,3 +1,20 @@
+version 2.0-3
+- new generic function checkDatamodel: checks data agains datamodel implied by editarray
+- bugfix in localizeErrors: crashed when reduce() (used in blocks) removes variables in editarray (thanks to Bikram Maharjan)
+- internally, eliminate.editarray performs extra edit redundancy checks
+- fixed cornercase in `[.editarray`. Now correctly handles empty character ("") as category name.
+- added numcat function, returns number of categories for each variable in an editarray
+
+version 2.0-2
+- NOTE: 2.0-2 is not a CRAN release
+- includes *BETA* version of mixed edit parsing
+- includes *BETA* version of error localiztion as MIP problem (option method='mip' in localizeErrors)
+- eliminate.editarray gained speed in certain cases
+- fixed cornercase in editarray: empty category value gave new variable 
+- New function editfile reads edits and domain definitions from text file
+- editarray gains env (environment) argument
+- editarray and editmatrix now handle zero-length arguments
+
 version 2.0-1
 - bugfix in isSubset.editarray
 - buxfix in localizeErrors: maxduration was previously ignored (thanks to Francesca Pogelli and Teresa Buglielli of ISTAT)

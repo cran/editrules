@@ -1,9 +1,9 @@
 \name{buildELMatrix}
 \alias{buildELMatrix}
-\title{Extends an editmatrix with extra constraints needed for error
+\title{Extend an editmatrix or editarray with extra constraints needed for error
 localization}
 \usage{
-  buildELMatrix(E, x, weight = rep(1, length(x)))
+  buildELMatrix(E, x, weight, ...)
 }
 \arguments{
   \item{E}{editmatrix}
@@ -14,8 +14,8 @@ localization}
   list with extended E, objfn and lower and upper bound
 }
 \description{
-  Extends an editmatrix with extra constraints needed for
-  error localization
+  Extend an editmatrix or editarray with extra constraints
+  needed for error localization
 }
 \keyword{internal}
 

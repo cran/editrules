@@ -8,8 +8,8 @@
 
   \method{echelon}{editmatrix} (E, ...)
 
-  \method{echelon}{matrix} (E, tol =
-  sqrt(.Machine$double.eps), ...)
+  \method{echelon}{matrix} (E,
+    tol = sqrt(.Machine$double.eps), ...)
 }
 \arguments{
   \item{E}{a matrix or editmatrix}

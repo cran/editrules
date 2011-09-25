@@ -2,8 +2,8 @@
 \alias{as.editmatrix}
 \title{Coerce a matrix to an edit matrix.}
 \usage{
-  as.editmatrix(A, b = numeric(nrow(A)), ops = rep("==",
-  nrow(A)), ...)
+  as.editmatrix(A, b = numeric(nrow(A)),
+    ops = rep("==", nrow(A)), ...)
 }
 \arguments{
   \item{A}{matrix to be transformed into an

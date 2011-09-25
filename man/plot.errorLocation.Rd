@@ -2,14 +2,14 @@
 \alias{plot.errorLocation}
 \title{plot errorLocation object}
 \usage{
-  \method{plot}{errorLocation} (x, topn = min(10,
-  ncol(x$adapt)), ...)
+  \method{plot}{errorLocation} (x,
+    topn = min(10, ncol(x$adapt)), ...)
 }
 \arguments{
   \item{x}{errorLocation object}
 
   \item{topn}{Number of variables to show in 'errors per
-  variable plot'. Only the top-n are are shown. By default
+  variable plot'. Only the top-n are are shown.  By default
   the top-20 variables with the most errors are shown.}
 
   \item{...}{other arguments that will be transferred to

@@ -37,15 +37,18 @@
 #'
 #' @param editrules \code{character} vector 
 #' @param sep textual separator, to be used internally for separating variable from category names. 
+#' @param env environment to evaluate the rhs of '==' or '\%in\%' in. 
 #' @return editarray
 #'
 #' @example ../examples/editarray.R
 #'
-#'
+#' @seealso \code{\link{editfile}}
 #' @export
-editarray <- function(editrules, sep=":"){
+editarray <- function(editrules, sep=":", env=parent.frame()){
+    if (length(editrules) == 0 ) return(neweditarray(array(numeric(0),dim=c(0,0)),ind=list(),sep=sep))
+
     e <- parseEdits(editrules)
-    v <- lapply(e,parseCat,sep=sep)
+    v <- lapply(e,parseCat,sep=sep,env=env)
     
     # find always FALSE edits:
     iNull <- sapply(v,is.null)  
@@ -53,7 +56,7 @@ editarray <- function(editrules, sep=":"){
     # derive datamodel
     cols <- sort(unique(do.call(c,lapply(v[!iNull],names))))
     # get variable names
-    vr <- sub(paste(sep,".+","",sep=""),"",cols)
+    vr <- sub(paste(sep,".*","",sep=""),"",cols)
     vars <- unique(vr)
     
     # get categories
@@ -249,5 +252,17 @@ neweditarray <- function(E, ind, sep, names=NULL, levels=colnames(E),...){
         ...
     )
 }
+
+
+#' return vector with number of categories for each variable in editarray
+#' 
+#' @param E object of class \code{\link{editarray}}
+#' @return a vector of \code{length(getVar(E))} with the number of categories for every variable in E.
+#' @export
+numcat <- function(E){
+    if ( !is.editarray(E) ) stop('Argument not of class editarray')
+    sapply(getInd(E),length)
+}
+
 
 

@@ -3,7 +3,7 @@
 \title{Coerce an editarray to \code{character}}
 \usage{
   \method{as.character}{editarray} (x, useIf = TRUE,
-  datamodel = TRUE, ...)
+    datamodel = TRUE, ...)
 }
 \arguments{
   \item{x}{editarray object}

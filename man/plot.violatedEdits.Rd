@@ -3,7 +3,7 @@
 \title{Plot summary statistics on violatedEdits}
 \usage{
   \method{plot}{violatedEdits} (x, topn = min(10, ncol(x)),
-  ...)
+    ...)
 }
 \arguments{
   \item{x}{\code{violatedEdits} object.}

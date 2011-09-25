@@ -4,19 +4,23 @@
 \alias{violatedEdits.data.frame}
 \alias{violatedEdits.editarray}
 \alias{violatedEdits.editmatrix}
+\alias{violatedEdits.editset}
 \title{Retrieve which rows of \code{data.frame dat} violate which constraints}
 \usage{
   violatedEdits(E, dat, ...)
 
   \method{violatedEdits}{character} (E, dat, name = NULL,
-  ...)
+    ...)
 
   \method{violatedEdits}{editmatrix} (E, dat, tol = 0, ...)
 
   \method{violatedEdits}{data.frame} (E, dat, ...)
 
-  \method{violatedEdits}{editarray} (E, dat, datamodel =
-  TRUE, ...)
+  \method{violatedEdits}{editarray} (E, dat,
+    datamodel = TRUE, ...)
+
+  \method{violatedEdits}{editarray} (E, dat,
+    datamodel = TRUE, ...)
 }
 \arguments{
   \item{E}{\code{\link{editmatrix}} containing the
@@ -85,8 +89,8 @@ plot(ve)
 # An example with categorical data:
 
 E <- editarray(c(
-    "gender \%in\% c('male','female')",
-    "pregnant \%in\% c(TRUE, FALSE)",
+    "gender \\\%in\\\% c('male','female')",
+    "pregnant \\\%in\\\% c(TRUE, FALSE)",
     "if( gender == 'male' ) !pregnant"
     )
 )

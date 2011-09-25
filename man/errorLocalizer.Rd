@@ -6,20 +6,20 @@
 \usage{
   errorLocalizer(E, x, ...)
 
-  \method{errorLocalizer}{editmatrix} (E, x, weight =
-  rep(1, length(x)), maxadapt = length(x), maxweight =
-  sum(weight), maxduration = 600, ...)
+  \method{errorLocalizer}{editmatrix} (E, x,
+    weight = rep(1, length(x)), maxadapt = length(x),
+    maxweight = sum(weight), maxduration = 600, ...)
 
-  \method{errorLocalizer}{editarray} (E, x, weight = rep(1,
-  length(x)), maxadapt = length(x), maxweight =
-  sum(weight), maxduration = 600, ...)
+  \method{errorLocalizer}{editarray} (E, x,
+    weight = rep(1, length(x)), maxadapt = length(x),
+    maxweight = sum(weight), maxduration = 600, ...)
 }
 \arguments{
   \item{E}{an \code{\link{editmatrix}} or an
   \code{\link{editarray}}}
 
   \item{x}{a named numerical vecor (if E is an editmatrix)
-  or a named character vector (if E is an editarray). This
+  or a named character vector (if E is an editarray).  This
   is the record for which errors will be localized.}
 
   \item{...}{Arguments to be passed to other methods (e.g.
@@ -123,7 +123,7 @@ cp$searchNext()
 
 
 # A case with two restrictions. The second restriction demands that
-# c/t >= 0.6 (cost should be more than 60% of turnover)
+# c/t >= 0.6 (cost should be more than 60\% of turnover)
 E <- editmatrix(c(
         "p + c == t",
         "c - 0.6*t >= 0"))
@@ -155,11 +155,11 @@ cp$searchNext()
 # 3 variables, recording age class, position in household, and marital status:
 # We define the datamodel and the rules
 E <- editarray(c(
-    "age \%in\% c('under aged','adult')",
-    "maritalStatus \%in\% c('unmarried','married','widowed','divorced')",
-    "positionInHousehold \%in\% c('marriage partner', 'child', 'other')",
+    "age \\\%in\\\% c('under aged','adult')",
+    "maritalStatus \\\%in\\\% c('unmarried','married','widowed','divorced')",
+    "positionInHousehold \\\%in\\\% c('marriage partner', 'child', 'other')",
     "if( age == 'under aged' ) maritalStatus == 'unmarried'",
-    "if( maritalStatus \%in\% c('married','widowed','divorced')) !positionInHousehold \%in\% c('marriage partner','child')"
+    "if( maritalStatus \\\%in\\\% c('married','widowed','divorced')) !positionInHousehold \\\%in\\\% c('marriage partner','child')"
     )
 )
 E

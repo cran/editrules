@@ -7,15 +7,16 @@
 \usage{
   isObviouslyRedundant(E, duplicates = TRUE, ...)
 
-  \method{isObviouslyRedundant}{matrix} (E, duplicates =
-  TRUE, operators, tol = sqrt(.Machine$double.eps),
-  duplicates.tol = tol, ...)
+  \method{isObviouslyRedundant}{matrix} (E,
+    duplicates = TRUE, operators,
+    tol = sqrt(.Machine$double.eps), duplicates.tol = tol,
+    ...)
 
-  \method{isObviouslyRedundant}{editmatrix} (E, duplicates
-  = TRUE, ...)
+  \method{isObviouslyRedundant}{editmatrix} (E,
+    duplicates = TRUE, ...)
 
-  \method{isObviouslyRedundant}{editarray} (E, duplicates =
-  TRUE, ...)
+  \method{isObviouslyRedundant}{editarray} (E,
+    duplicates = TRUE, ...)
 }
 \arguments{
   \item{E}{Augmented matrix A|b, editmatrix}

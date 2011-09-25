@@ -3,7 +3,8 @@
 \title{Localize errors on records in a data.frame.}
 \usage{
   localizeErrors(E, dat, useBlocks = TRUE, verbose = FALSE,
-  weight = rep(1, ncol(dat)), maxduration = 600, ...)
+    weight = rep(1, ncol(dat)), maxduration = 600,
+    method = c("localizer", "mip"), ...)
 }
 \arguments{
   \item{E}{an object of class \code{\link{editmatrix}} or
@@ -19,6 +20,10 @@
   \item{weight}{Vector of positive weights for every
   variable in \code{dat}, or an array of weights with the
   same dimensions as \code{dat}.}
+
+  \item{method}{should errorlocalizer ("localizer") or mix
+  integer programming ("mip") be used? NOTE: option "mip"
+  is currently experimental.}
 
   \item{maxduration}{maximum time for \code{$searchBest()}
   to find the best solution for a single record.}
@@ -127,11 +132,11 @@ localizeErrors(E,dat,weight=w)
 
 # an example with categorical variables
 E <- editarray(c(
-    "age \%in\% c('under aged','adult')",
-    "maritalStatus \%in\% c('unmarried','married','widowed','divorced')",
-    "positionInHousehold \%in\% c('marriage partner', 'child', 'other')",
+    "age \\\%in\\\% c('under aged','adult')",
+    "maritalStatus \\\%in\\\% c('unmarried','married','widowed','divorced')",
+    "positionInHousehold \\\%in\\\% c('marriage partner', 'child', 'other')",
     "if( age == 'under aged' ) maritalStatus == 'unmarried'",
-    "if( maritalStatus \%in\% c('married','widowed','divorced')) !positionInHousehold \%in\% c('marriage partner','child')"
+    "if( maritalStatus \\\%in\\\% c('married','widowed','divorced')) !positionInHousehold \\\%in\\\% c('marriage partner','child')"
     )
 )
 E

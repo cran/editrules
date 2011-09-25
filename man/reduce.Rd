@@ -6,8 +6,8 @@
 \usage{
   reduce(E, ...)
 
-  \method{reduce}{editmatrix} (E, tol =
-  sqrt(.Machine$double.eps), ...)
+  \method{reduce}{editmatrix} (E,
+    tol = sqrt(.Machine$double.eps), ...)
 
   \method{reduce}{editarray} (E, ...)
 }

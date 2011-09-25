@@ -7,27 +7,30 @@
 \alias{as.igraph.editmatrix}
 \title{Derive adjecency matrix from set of edits}
 \usage{
-  adjacency(E, nodetype = c("all", "rules", "vars"), rules
-  = rownames(E), vars = getVars(E), ...)
+  adjacency(E, nodetype = c("all", "rules", "vars"),
+    rules = rownames(E), vars = getVars(E), ...)
 
-  \method{adjacency}{editmatrix} (E, nodetype = c("all",
-  "rules", "vars"), rules = rownames(E), vars = getVars(E),
-  ...)
+  \method{adjacency}{editmatrix} (E,
+    nodetype = c("all", "rules", "vars"),
+    rules = rownames(E), vars = getVars(E), ...)
 
-  \method{adjacency}{editarray} (E, nodetype = c("all",
-  "rules", "vars"), rules = rownames(E), vars = getVars(E),
-  ...)
+  \method{adjacency}{editarray} (E,
+    nodetype = c("all", "rules", "vars"),
+    rules = rownames(E), vars = getVars(E), ...)
 
-  as.igraph(E, nodetype = c("all", "rules", "vars"), rules
-  = rownames(E), vars = getVars(E), weighted = TRUE, ...)
+  as.igraph(E, nodetype = c("all", "rules", "vars"),
+    rules = rownames(E), vars = getVars(E),
+    weighted = TRUE, ...)
 
-  \method{as.igraph}{editmatrix} (E, nodetype = c("all",
-  "rules", "vars"), rules = rownames(E), vars = getVars(E),
-  weighted = TRUE, ...)
+  \method{as.igraph}{editmatrix} (E,
+    nodetype = c("all", "rules", "vars"),
+    rules = rownames(E), vars = getVars(E),
+    weighted = TRUE, ...)
 
-  \method{as.igraph}{editarray} (E, nodetype = c("all",
-  "rules", "vars"), rules = rownames(E), vars = getVars(E),
-  weighted = TRUE, ...)
+  \method{as.igraph}{editarray} (E,
+    nodetype = c("all", "rules", "vars"),
+    rules = rownames(E), vars = getVars(E),
+    weighted = TRUE, ...)
 }
 \arguments{
   \item{E}{\code{\link{editmatrix}} or
@@ -43,8 +46,9 @@
   methods}
 
   \item{weighted}{Should the number of variables connecting
-  two edits be counted as weight? Passed as \code{weighted}
-  argument to \code{igraph::graph.adjacency}}
+  two edits be counted as weight?  Passed as
+  \code{weighted} argument to
+  \code{igraph::graph.adjacency}}
 }
 \value{
   the adjacency matrix of edits in \code{E} with resect to
@@ -141,9 +145,9 @@ adjacency(E,vars=c('t','ch'))
 
 # generate an editarray:
 E <- editarray(c(
-    "age \%in\% c('<15','16-65','>65')",
-    "employment \%in\% c('unemployed','employed','retired')",
-    "salary \%in\% c('none','low','medium','high')",
+    "age \\\%in\\\% c('<15','16-65','>65')",
+    "employment \\\%in\\\% c('unemployed','employed','retired')",
+    "salary \\\%in\\\% c('none','low','medium','high')",
     "if (age == '<15') employment=='unemployed'",
     "if (salary != 'none') employment != 'unemployed'",
     "if (employment == 'unemployed') salary == 'none'"))

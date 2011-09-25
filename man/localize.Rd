@@ -3,7 +3,8 @@
 \title{Workhorse function for localizeErrors}
 \usage{
   localize(E, dat, verbose, pretext, call = sys.call(),
-  weight, maxduration, ...)
+    weight, maxduration, method = c("localizer", "mip"),
+    ...)
 }
 \arguments{
   \item{E}{\code{\link{editmatrix}} or
@@ -18,6 +19,9 @@
   progress report}
 
   \item{weight}{vector or array of weights}
+
+  \item{method}{should errorlocalizer ("localizer") or mix
+  integer programming ("mip") be used?}
 
   \item{call}{call to include in
   \code{\link{errorLocation}} object}

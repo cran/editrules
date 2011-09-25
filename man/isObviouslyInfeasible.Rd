@@ -6,8 +6,8 @@
 \usage{
   isObviouslyInfeasible(E, ...)
 
-  \method{isObviouslyInfeasible}{editmatrix} (E, tol =
-  sqrt(.Machine$double.eps), ...)
+  \method{isObviouslyInfeasible}{editmatrix} (E,
+    tol = sqrt(.Machine$double.eps), ...)
 
   \method{isObviouslyInfeasible}{editarray} (E, ...)
 }

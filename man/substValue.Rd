@@ -6,11 +6,11 @@
 \usage{
   substValue(E, var, value, ...)
 
-  \method{substValue}{editmatrix} (E, var, value, reduce =
-  FALSE, ...)
+  \method{substValue}{editmatrix} (E, var, value,
+    reduce = FALSE, ...)
 
-  \method{substValue}{editarray} (E, var, value, reduce =
-  FALSE, ...)
+  \method{substValue}{editarray} (E, var, value,
+    reduce = FALSE, ...)
 }
 \arguments{
   \item{E}{\code{\link{editmatrix}} or

@@ -47,7 +47,7 @@ editmatrix <- function( editrules
 					       ){   
    if (is.character(editrules) || is.expression(editrules)){
       edit <- editrules
-      name <- NULL
+      name <- names(editrules)
       description <- NULL
       editrules <- NULL
     } else if (is.data.frame(editrules)){
@@ -60,12 +60,11 @@ editmatrix <- function( editrules
     } else {
       stop("Invalid input, please use a character vector or a data.frame.\n See ?editmatrix for a valid input specification")
     }
-
+    if ( length(edit) == 0 ) return(neweditmatrix(matrix(numeric(0)),ops=character(0),normalized=TRUE))
     edts <- parseEdits(edit, type="num")   
   	if (is.null(name)){
   	   name <- paste("e", seq_along(edts),sep="")
   	}
-   
     rowedts <- lapply(edts, function(edt){parseNum(edt)})
     ops <- sapply(edts, function(e){deparse(e[[1]])})
    

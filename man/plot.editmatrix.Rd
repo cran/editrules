@@ -3,21 +3,23 @@
 \alias{plot.editmatrix}
 \title{Graphical representation of editmatrix}
 \usage{
-  \method{plot}{editmatrix} (x, nodetype = "all", rules =
-  rownames(x), vars = getVars(x), violated =
-  logical(nrow(x)), adapt = logical(length(getVars(x))),
-  nabbreviate = 5, layout = layout.fruchterman.reingold,
-  edgecolor = "steelblue", rulecolor = "khaki1", varcolor =
-  "lightblue1", violatedcolor = "sienna1", adaptcolor =
-  "sienna1", ...)
+  \method{plot}{editmatrix} (x, nodetype = "all",
+    rules = rownames(x), vars = getVars(x),
+    violated = logical(nrow(x)),
+    adapt = logical(length(getVars(x))), nabbreviate = 5,
+    layout = layout.fruchterman.reingold,
+    edgecolor = "steelblue", rulecolor = "khaki1",
+    varcolor = "lightblue1", violatedcolor = "sienna1",
+    adaptcolor = "sienna1", ...)
 
-  \method{plot}{editarray} (x, nodetype = "all", rules =
-  rownames(x), vars = getVars(x), violated =
-  logical(nrow(x)), adapt = logical(length(getVars(x))),
-  nabbreviate = 5, layout = layout.fruchterman.reingold,
-  edgecolor = "steelblue", rulecolor = "khaki1", varcolor =
-  "lightblue1", violatedcolor = "sienna1", adaptcolor =
-  "sienna1", ...)
+  \method{plot}{editarray} (x, nodetype = "all",
+    rules = rownames(x), vars = getVars(x),
+    violated = logical(nrow(x)),
+    adapt = logical(length(getVars(x))), nabbreviate = 5,
+    layout = layout.fruchterman.reingold,
+    edgecolor = "steelblue", rulecolor = "khaki1",
+    varcolor = "lightblue1", violatedcolor = "sienna1",
+    adaptcolor = "sienna1", ...)
 }
 \arguments{
   \item{x}{object of class \code{\link{editmatrix}}}
@@ -165,9 +167,9 @@ adjacency(E,vars=c('t','ch'))
 
 # generate an editarray:
 E <- editarray(c(
-    "age \%in\% c('<15','16-65','>65')",
-    "employment \%in\% c('unemployed','employed','retired')",
-    "salary \%in\% c('none','low','medium','high')",
+    "age \\\%in\\\% c('<15','16-65','>65')",
+    "employment \\\%in\\\% c('unemployed','employed','retired')",
+    "salary \\\%in\\\% c('none','low','medium','high')",
     "if (age == '<15') employment=='unemployed'",
     "if (salary != 'none') employment != 'unemployed'",
     "if (employment == 'unemployed') salary == 'none'"))

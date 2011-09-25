@@ -3,7 +3,7 @@
 \title{Summary statistics on violatedEdits}
 \usage{
   \method{summary}{violatedEdits} (object, E = NULL,
-  minfreq = 1, ...)
+    minfreq = 1, ...)
 }
 \arguments{
   \item{object}{\code{violatedEdits} object}

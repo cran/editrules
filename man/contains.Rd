@@ -6,8 +6,8 @@
 \usage{
   contains(E, var = NULL, ...)
 
-  \method{contains}{editmatrix} (E, var = NULL, tol =
-  sqrt(.Machine$double.eps), ...)
+  \method{contains}{editmatrix} (E, var = NULL,
+    tol = sqrt(.Machine$double.eps), ...)
 
   \method{contains}{editarray} (E, var = NULL, ...)
 }
