@@ -5,7 +5,7 @@
   \method{as.data.frame}{editarray} (x, ...)
 }
 \arguments{
-  \item{x}{editmatrix object}
+  \item{x}{\code{\link{editarray}} object}
 
   \item{...}{further arguments passed to or from other
   methods.}

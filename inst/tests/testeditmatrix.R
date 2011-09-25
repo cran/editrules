@@ -39,10 +39,10 @@ test_that("editmatrix can simplify",{
    C <- getb(E)
    expect_equal(as.integer(mat[1,]), c(1,-1,0,0))
    expect_equal(as.integer(mat[2,]), c(0,-1,1,0))
-   expect_equal(C[2], c(e2=1))
+   expect_equal(C[2], c(num2=1))
    
    expect_equal(mat[3,], c(x=0,y=0,z=0,w=1))
-   expect_equal(C[3], c(e3=3))
+   expect_equal(C[3], c(num3=3))
 })
 
 
@@ -128,7 +128,7 @@ test_that("as.editmatrix works",{
 	#			, dimnames=list(c("a", "b"), c("x","y", "z"))
 				)
    E <- as.editmatrix(A, b=c(0,1), ops=c("==","<"))
-   ei <- editrules(E)
+   ei <- as.data.frame(E)
    expect_equivalent(ei$edit, c("x1 == 2*x2", "2*x1 + x3 < 1"))
 })
 
@@ -155,7 +155,7 @@ test_that("editmatrix normalize works",{
 
 test_that("coercions work",{
     E <- editmatrix("x+y==z")
-    expect_that(E, is_identical_to(editmatrix(editrules(E)))) 
+    expect_that(E, is_identical_to(editmatrix(as.data.frame(E)))) 
     expect_that(E, is_identical_to(as.editmatrix(A=getA(E), b=getb(E), ops=getOps(E))))    
     # edge case, testing as.character feature
     E <- editmatrix("x + 0.1*y==z")

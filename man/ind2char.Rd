@@ -24,8 +24,6 @@
 }
 \seealso{
   as.character.editarray
-
-  not for export
 }
 \keyword{internal}
 

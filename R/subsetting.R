@@ -30,7 +30,41 @@
     A <- getArr(x)[i,j,drop=FALSE]
     sep <- getSep(x)
     ind <- indFromArray(A,sep)
-    neweditarray(E=A, ind=ind, sep=sep, names=getnames(x)[i],levels=getlevels(x)[j])
+    H <- getH(x)
+    if (!is.null(H)) H <- H[i,j,drop=FALSE]
+    neweditarray(E=A, ind=ind, sep=sep, names=getnames(x)[i],levels=getlevels(x)[j],H=H)
 }
+
+#' Row index operator for \code{editset}
+#' Note: the datamodel is not changed
+#' @method [ editset
+#' @rdname subsetting
+#' @export
+`[.editset` <- function(x,i,j, ...){
+    if ( is.logical(i) ) i <- which(i)
+    nnum <- nrow(x$num)
+    mixcat <- x$mixcat[i[i>nnum]-nnum]
+    # remove edits from mixnum not occuring in mixcat
+    v <- getVars(reduce(mixcat))
+    mixnum <- x$mixnum[rownames(x$mixnum) %in% v,]
+    # remove dummy variables from mixcat not referring to numerical edits anymore
+    v <- getVars(x,type='dummy')
+    delvars <- v[ !v %in% rownames(mixnum)]
+    if ( length(delvars) > 0 ){
+        ind <- getInd(mixcat)
+        delcols <- do.call('c',ind[delvars])
+        Amixcat <- getArr(mixcat)[,-delcols,drop=FALSE]
+        sep <- getSep(mixcat)
+        ind <- indFromArray(Amixcat,sep=sep)
+        mixcat <- neweditarray(Amixcat,ind,sep) 
+    }
+    neweditset(
+        num = x$num[i[i<=nnum]],
+        mixnum = mixnum,
+        mixcat = mixcat
+    )
+}
+
+
 
 

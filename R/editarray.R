@@ -81,9 +81,11 @@ editarray <- function(editrules, sep=":", env=parent.frame()){
         )
 
     }
+
+    editnames <- paste("cat",1:m,sep="")
     E <- array(NA, dim=c(m,n), 
             dimnames = list(
-                edits = paste("e",1:m,sep=""),
+                edits = editnames,
                 variables = cols
             )
         )
@@ -118,7 +120,6 @@ editarray <- function(editrules, sep=":", env=parent.frame()){
 #'
 #' @seealso as.character.editarray
 #'
-#' not for export
 #' @keywords internal
 ind2char <- function(ivd, ind=ivd, invert=logical(length(ivd)),useEqual=TRUE){
     v <- names(ivd)
@@ -165,7 +166,7 @@ as.character.editarray <- function(x, useIf=TRUE, datamodel=TRUE, ...){
     dm <- c()
     if ( datamodel ){
         dm <- ind2char(ind,useEqual=FALSE)
-        names(dm) <- paste("d",1:length(dm),sep="")
+        names(dm) <- paste("dat",1:length(dm),sep="")
     }
     # edits
     if ( nrow(A) == 0 ) return(dm)
@@ -208,7 +209,7 @@ as.character.editarray <- function(x, useIf=TRUE, datamodel=TRUE, ...){
 #' Coerces an editarray to a \code{data.frame}. 
 #'
 #' @method as.data.frame editarray
-#' @param x editmatrix object
+#' @param x \code{\link{editarray}} object
 #' @param ... further arguments passed to or from other methods.
 #' @seealso \code{\link{as.character.editarray}}
 #' @return data.frame with columns 'name', 'edit' and 'description'.
@@ -216,7 +217,14 @@ as.character.editarray <- function(x, useIf=TRUE, datamodel=TRUE, ...){
 #' @export 
 as.data.frame.editarray <- function(x, ...){
     edts <- as.character(x, ...)
-    data.frame(name=names(edts),edit=edts,description=character(length(edts)),row.names=NULL)
+    d <- data.frame(
+        name=names(edts),
+        edit=edts,
+        row.names=NULL,
+        stringsAsFactors=FALSE
+    )
+    if (!is.null(attr(x,'description'))) d$description <- attr(x,'description')
+    d
 }
 
 #' Coerce an editarray to R expressions
@@ -243,7 +251,7 @@ as.expression.editarray <- function(x, ...){
 #' a *forbidden* combination.
 #' @keywords internal
 neweditarray <- function(E, ind, sep, names=NULL, levels=colnames(E),...){
-    if ( is.null(names) & nrow(E)>0 ) names <- paste("e",1:nrow(E),sep="")
+    if ( is.null(names) & nrow(E)>0 ) names <- paste("cat",1:nrow(E),sep="")
     dimnames(E) <- list(edits=names,levels=levels)
     structure(E,
         class  = "editarray",

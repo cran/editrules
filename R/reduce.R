@@ -43,6 +43,7 @@ reduce.editarray <- function(E,...){
     E <- E[!isObviouslyRedundant.editarray(E),,drop=FALSE]
     m <- as.matrix(E)
     ind <- getInd(E)
+    H <- getH(E)
     b <- sapply(ind,function(ind) all(m[,ind])) 
     if ( any(b) ){
         J <- logical(0)   
@@ -52,13 +53,34 @@ reduce.editarray <- function(E,...){
         ind <- indFromArray(m,sep=sep)
         i <- apply(!m,1,all)
         m <- m[!i,,drop=FALSE]
-        E <- neweditarray(E=m, ind=ind, sep=sep, names=rownames(m))
+        if (!is.null(H))  H <- H[!i,,drop=FALSE]
+        E <- neweditarray(E=m, ind=ind, sep=sep, names=rownames(m), H=H)
     }
     E
 }
 
 
+#'
+#' @method reduce editset
+#' @export
+#' @rdname reduce
+#'
+reduce.editset <- function(E,...){
 
+    num <- reduce(E$num)
+    mixcat <- reduce(E$mixcat)
+    mixnum <- reduce(E$mixnum[rownames(E$mixnum) %in% getVars(mixcat),])
+
+    # TODO better naming (not all should be 'mix')
+    if (nrow(mixcat) > 0 ) rownames(mixcat) <- paste("mix",1:nrow(mixcat),sep="")
+
+    simplify(neweditset(
+        num = num,
+        mixnum = mixnum,
+        mixcat = mixcat
+    ))
+
+}
 
 
 

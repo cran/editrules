@@ -1,19 +1,24 @@
 \name{blocks}
 \alias{blocks}
-\alias{findBlocks}
-\title{Break a matrix into blocks}
+\title{Decompose matrix or edits in independent blocks}
 \usage{
-  blocks(M)
+  blocks(M, ...)
 }
 \arguments{
-  \item{M}{\code{matrix} or \code{editmatrix} that will be
-  broken in blocks}
+  \item{M}{Object to be decomposed into}
+
+  \item{...}{Arguments to be passed to or from other
+  functions/}
 }
 \value{
-  list with seperate matrix blocks
+  list of independent subobjects of \code{M}.
 }
 \description{
-  Break a matrix into blocks
+  For matrices, a list of matrices is returned which direct
+  sum to the original matrix. For objects of class
+  \code{\link{editmatrix}}, \code{\link{editarray}} or
+  \code{\link{editset}}, lists of corresponding objects not
+  sharing any variable are returned.
 }
 \examples{
 # three seperate blocks, will they be found?

@@ -145,6 +145,8 @@ eliminate(E,"maritalStatus")
   Monthly 93, 681-695
 }
 \seealso{
+  \code{\link{substValue}}
+
   \code{\link{editmatrix}}
   \code{\link{isObviouslyInfeasible}}
 }

@@ -1,11 +1,12 @@
 \name{plot.editmatrix}
 \alias{plot.editarray}
 \alias{plot.editmatrix}
+\alias{plot.editset}
 \title{Graphical representation of editmatrix}
 \usage{
   \method{plot}{editmatrix} (x, nodetype = "all",
-    rules = rownames(x), vars = getVars(x),
-    violated = logical(nrow(x)),
+    rules = editnames(x), vars = getVars(x),
+    violated = logical(nedits(x)),
     adapt = logical(length(getVars(x))), nabbreviate = 5,
     layout = layout.fruchterman.reingold,
     edgecolor = "steelblue", rulecolor = "khaki1",
@@ -13,8 +14,17 @@
     adaptcolor = "sienna1", ...)
 
   \method{plot}{editarray} (x, nodetype = "all",
-    rules = rownames(x), vars = getVars(x),
-    violated = logical(nrow(x)),
+    rules = editnames(x), vars = getVars(x),
+    violated = logical(nedits(x)),
+    adapt = logical(length(getVars(x))), nabbreviate = 5,
+    layout = layout.fruchterman.reingold,
+    edgecolor = "steelblue", rulecolor = "khaki1",
+    varcolor = "lightblue1", violatedcolor = "sienna1",
+    adaptcolor = "sienna1", ...)
+
+  \method{plot}{editarray} (x, nodetype = "all",
+    rules = editnames(x), vars = getVars(x),
+    violated = logical(nedits(x)),
     adapt = logical(length(getVars(x))), nabbreviate = 5,
     layout = layout.fruchterman.reingold,
     edgecolor = "steelblue", rulecolor = "khaki1",
@@ -66,6 +76,8 @@
   can plot three types of graphs based on an edit set.
 
   plot method for editarray
+
+  plot method for editset
 }
 \details{
   \itemize{ \item{If \code{nodetype="all"} (default), the

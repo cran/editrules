@@ -1,6 +1,6 @@
 \name{isFeasible}
 \alias{isFeasible}
-\title{Check consistency of edit set}
+\title{Check consistency of editmatrix or editarray}
 \usage{
   isFeasible(E, warn = FALSE)
 }
@@ -15,10 +15,17 @@
   TRUE or FALSE
 }
 \description{
-  Applies Fourier-Motzkin elimination untill either all
-  variables are eliminated or the editmatrix becomes
-  obviously infeasible. The check rests on the theorem that
-  a set of linear inequalities is infeasible if and only if
-  0 < -1 can be derived from it.
+  For linear edits, Fourier-Motzkin elimination is applied
+  untill either all variables are eliminated or the
+  editmatrix becomes obviously infeasible. The check rests
+  on the property (Farka's lemma) that a set of linear
+  inequalities is infeasible if and only if 0 < -1 can be
+  derived from it.
+}
+\details{
+  For categorical edits in an editarray, variables are
+  eliminated by category resolution untill all variables
+  are eliminated or an obvious infeasibility is
+  encountered.
 }
 

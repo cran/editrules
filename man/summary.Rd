@@ -1,6 +1,7 @@
 \name{summary.editmatrix}
 \alias{summary.editarray}
 \alias{summary.editmatrix}
+\alias{summary.editset}
 \alias{summary.errorLocation}
 \title{Summarize}
 \usage{
@@ -9,6 +10,8 @@
 
   \method{summary}{editarray} (object, useBlocks = TRUE,
     ...)
+
+  \method{summary}{editset} (object, useBlocks = TRUE, ...)
 
   \method{summary}{errorLocation} (object, ...)
 }
@@ -22,7 +25,9 @@
 \description{
   Summarizes an object
 
-  Summary of edit set
+  Summary of editarray
+
+  Summary of editset
 
   Generates an object of class 'locationsummary' for which
   a print method is implemented.
@@ -102,6 +107,37 @@ editarray(c(
     )
 )
 
+
+
+
+
+# edits can be read from a vector of expressions 
+E <- editset(expression(
+    if ( x > 0 ) y > 0,
+    x + y == z,
+    A \%in\% letters[1:2],
+    B \%in\% letters[2:3],
+    if ( A == 'a') B == 'b',
+    if ( A == 'b') x >= 0,
+    u + v == w,
+    if ( u == 0 ) w >= 0
+))
+E
+summary(E)
+as.data.frame(E)
+getVars(E)
+getVars(E,type='cat')
+getVars(E,type='num')
+
+
+## see also editfile
+E <- editfile(system.file('script/edits/mixedits.R',package='editrules'))
+E
+summary(E)
+as.data.frame(E)
+getVars(E)
+getVars(E,type='cat')
+getVars(E,type='num')
 
 
 

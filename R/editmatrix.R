@@ -18,10 +18,9 @@
 #'       }
 #'      Typically these rules are stored in a external csv file (or database). 
 #' }
-#'
-#' The third form is the prefered form, because it allows the documentation of constraints. This
-#' may be very useful when the incorrect observations are analyzed.
-#' The function \code{\link{editrules}} creates/extracts the third form, which can be used to store edit rules
+#' 
+#' Numerical edits can also be read from a free-form file using \code{\link{editfile}}.
+#' The function \code{\link{as.data.frame}} extracts the third form, which can be used to store edit rules
 #' externally or to recreate an editmatrix later on. Functions \code{\link{as.character}} and \code{\link{as.expression}} extract
 #' the first and second form.
 #'
@@ -63,7 +62,7 @@ editmatrix <- function( editrules
     if ( length(edit) == 0 ) return(neweditmatrix(matrix(numeric(0)),ops=character(0),normalized=TRUE))
     edts <- parseEdits(edit, type="num")   
   	if (is.null(name)){
-  	   name <- paste("e", seq_along(edts),sep="")
+  	   name <- paste("num", seq_along(edts),sep="")
   	}
     rowedts <- lapply(edts, function(edt){parseNum(edt)})
     ops <- sapply(edts, function(e){deparse(e[[1]])})
@@ -154,7 +153,7 @@ as.editmatrix <- function( A
     }
     rn <- rownames(A)
     if ( is.null(rn) || length(unique(rn)) != length(rn) ){
-       rn <- paste("e", 1:nrow(A), sep="")
+       rn <- paste("num", 1:nrow(A), sep="")
     }
     A <- cbind(as.matrix(A), b)
     dimnames(A) <- list(rules=rn,var=c(cn,"CONSTANT"))
@@ -178,7 +177,14 @@ as.editmatrix <- function( A
 #' @return data.frame which can be converted to an editmatrix with \code{\link{editmatrix}}
 as.data.frame.editmatrix <- function(x,...){
     edts <- as.character(x,...)
-    data.frame(name=names(edts),edit=edts,description=character(length(edts)),row.names=NULL)
+    d <- data.frame(
+        name=names(edts),
+        edit=edts,
+        row.names=NULL,
+        stringsAsFactors=FALSE
+    )
+    if (!is.null(attr(x,'description'))) d$description <- attr(x,'description')
+    d
 }
 
 

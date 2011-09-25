@@ -19,10 +19,12 @@
   \code{expandEdits}}
 }
 \value{
+  \code{editset} with all edits if \code{type=all},
   \code{\link{editarray}} if \code{type='cat'},
   \code{\link{editmatrix}} if \code{type='num'},
-  \code{list} if \code{type=all}.  If the return value is a
-  \code{list}, the elements are named \code{numedits} and
+  \code{\link{editset}} with conditional edits if
+  \code{type='mix'}.  If the return value is a \code{list},
+  the elements are named \code{numedits} and
   \code{catedits}.
 }
 \description{

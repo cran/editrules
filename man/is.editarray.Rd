@@ -1,6 +1,6 @@
 \name{is.editarray}
 \alias{is.editarray}
-\title{check if an object is an editarray}
+\title{Check if an object is an \code{\link{editarray}}}
 \usage{
   is.editarray(x)
 }
@@ -11,9 +11,9 @@
   \code{TRUE} if \code{x} is an \code{\link{editarray}}
 }
 \description{
-  check if an object is an editarray
+  Check if an object is an \code{\link{editarray}}
 }
 \seealso{
-  \code{\link{editarray}}, \code{\link{is.editmatrix}}
+  \code{\link{is.editset}}, \code{\link{is.editmatrix}}
 }
 

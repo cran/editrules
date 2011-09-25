@@ -3,7 +3,7 @@
 #' For an \code{\link{editmatrix}}, variables with coefficients smaller than
 #' \code{tol} are considered not to be contained in an edit.
 #'
-#' @param E \code{\link{editarray}} or \code{\link{editmatrix}}
+#' @param E \code{\link{editarray}}, \code{\link{editmatrix}}, \code{\link{editset}}, or \code{matrix}
 #' @param var \code{character}, names of a categorical variables in \code{E}. If var=NULL, all variables are treated.
 #' @param ... arguments to be passed to other methods
 #' @return \code{logical} vector of length nrow(E), TRUE for edits containing \code{var}
@@ -11,6 +11,22 @@
 contains <- function(E,var=NULL,...){
     UseMethod('contains')
 }
+
+
+#' matrix method for contains
+#' 
+#' @method contains matrix
+#' @rdname contains
+#' @export
+#' @keywords internal
+contains.matrix <- function(E, var=NULL, tol=sqrt(.Machine$double.eps),...){
+    if ( is.null(var) && !is.null(colnames(E)) ) var <- colnames(E)
+    if ( is.null(var) ) var <- 1:ncol(E)
+    u <- abs(E[,var,drop=FALSE]) > tol
+    dimnames(u) <- dimnames(E[,var,drop=FALSE])
+    u
+}
+
 
 #' editmatrix method for contains
 #' 
@@ -22,14 +38,18 @@ contains <- function(E,var=NULL,...){
 contains.editmatrix <- function(E, var=NULL, tol=sqrt(.Machine$double.eps), ...){
     A <- getA(E)
     if (is.null(var)) var <- getVars(E)
-    abs(A)[,var] > tol 
+    
+    u <- abs(A[,var,drop=FALSE]) > tol
+    dimnames(u) <- list(edit=rownames(E),variable=var) 
+    u
 }
 
-#' editarray method for contains
+#' contains method for editarray
 #'
 #' @method contains editarray
 #' @rdname contains
 #' @export
+#' @keywords internal
 contains.editarray <- function(E,var=NULL,...){
     if ( !is.editarray(E) ) stop("Argument not of class editarray")
     ind <- getInd(E)
@@ -54,4 +74,49 @@ contains.boolmat <- function(A, ind, var){
     } 
   v
 }
+
+
+#' contains method for editset
+#'
+#' @method contains editset
+#' @rdname contains 
+#' @export
+#' @keywords internal
+contains.editset <- function(E,var=NULL,...){
+
+    if ( is.null(var) ) var <- getVars(E)
+    nedits <- nrow(E$num) + nrow(E$mixcat)
+    # create a boolean array holding the answer
+    T <- array(FALSE,
+        dim=c(nedits,length(var)),
+        dimnames=list(
+            edits=c(
+                rownames(E$num),
+                rownames(E$mixcat)
+            ),
+            variables=var
+        )
+    )
+    # contains for numerical variables
+    numvar <- var[var %in% getVars(E$num)]
+    nnum <- nrow(E$num)
+    if ( length(numvar) > 0 && nnum > 0 )  T[1:nrow(E$num),numvar] <- contains(E$num, var[var%in% numvar])
+
+    # contains for categorical variables in conditional edits (mix)
+    nmix <- nrow(E$mixcat)
+    if (nmix>0){
+        imix <- (nnum+1):(nnum+nmix) 
+        catvar <- var[var %in% getVars(E,type='cat')]
+        T[imix,catvar] <- contains(E$mixcat, catvar) 
+        # contains for numerical variables in mixed edits
+        vnm <- var[var %in% getVars(E$mixnum)]
+        vmc <- getVars(E$mixcat)
+        emn <- rownames(E$mixnum)
+        X <- contains(E$mixcat)[,vmc[vmc %in% emn],drop=FALSE]
+        Y <- contains(E$mixnum,vnm)
+        T[imix,vnm] <- X%*%Y >0
+    }
+    T
+}
+
 

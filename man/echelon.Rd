@@ -1,6 +1,7 @@
 \name{echelon}
 \alias{echelon}
 \alias{echelon.editmatrix}
+\alias{echelon.editset}
 \alias{echelon.matrix}
 \title{Bring an (edit) matrix to reduced row echelon form.}
 \usage{
@@ -10,6 +11,8 @@
 
   \method{echelon}{matrix} (E,
     tol = sqrt(.Machine$double.eps), ...)
+
+  \method{echelon}{editset} (E, ...)
 }
 \arguments{
   \item{E}{a matrix or editmatrix}

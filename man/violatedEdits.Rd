@@ -19,7 +19,7 @@
   \method{violatedEdits}{editarray} (E, dat,
     datamodel = TRUE, ...)
 
-  \method{violatedEdits}{editarray} (E, dat,
+  \method{violatedEdits}{editset} (E, dat,
     datamodel = TRUE, ...)
 }
 \arguments{

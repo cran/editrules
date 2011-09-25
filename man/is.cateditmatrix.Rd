@@ -1,6 +1,6 @@
 \name{is.cateditmatrix}
 \alias{is.cateditmatrix}
-\title{Check if object is a cateditmatrix}
+\title{Check if object is a \code{\link{cateditmatrix}}}
 \usage{
   is.cateditmatrix(x)
 }
@@ -16,4 +16,5 @@
 \seealso{
   \code{\link{cateditmatrix}}
 }
+\keyword{internal}
 

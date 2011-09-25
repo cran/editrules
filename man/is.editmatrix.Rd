@@ -1,6 +1,6 @@
 \name{is.editmatrix}
 \alias{is.editmatrix}
-\title{Check if object is an editmatrix}
+\title{Check if object is an\code{\link{editmatrix}}}
 \usage{
   is.editmatrix(x)
 }
@@ -11,9 +11,9 @@
   TRUE if \code{x} is an \code{editmatrix}
 }
 \description{
-  Check if object is an editmatrix
+  Check if object is an\code{\link{editmatrix}}
 }
 \seealso{
-  \code{\link{editmatrix}}
+  \code{\link{editarray}}, \code{\link{is.editset}}
 }
 

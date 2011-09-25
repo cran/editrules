@@ -2,10 +2,12 @@
 \alias{adjacency}
 \alias{adjacency.editarray}
 \alias{adjacency.editmatrix}
+\alias{adjacency.editset}
 \alias{as.igraph}
 \alias{as.igraph.editarray}
 \alias{as.igraph.editmatrix}
-\title{Derive adjecency matrix from set of edits}
+\alias{as.igraph.editset}
+\title{Derive adjecency matrix from collection of edits}
 \usage{
   adjacency(E, nodetype = c("all", "rules", "vars"),
     rules = rownames(E), vars = getVars(E), ...)
@@ -18,23 +20,33 @@
     nodetype = c("all", "rules", "vars"),
     rules = rownames(E), vars = getVars(E), ...)
 
+  \method{adjacency}{editset} (E,
+    nodetype = c("all", "rules", "vars"),
+    rules = c(rownames(E$num), rownames(E$mixcat)),
+    vars = getVars(E), ...)
+
   as.igraph(E, nodetype = c("all", "rules", "vars"),
-    rules = rownames(E), vars = getVars(E),
+    rules = editnames(E), vars = getVars(E),
     weighted = TRUE, ...)
 
   \method{as.igraph}{editmatrix} (E,
     nodetype = c("all", "rules", "vars"),
-    rules = rownames(E), vars = getVars(E),
+    rules = editnames(E), vars = getVars(E),
     weighted = TRUE, ...)
 
   \method{as.igraph}{editarray} (E,
     nodetype = c("all", "rules", "vars"),
-    rules = rownames(E), vars = getVars(E),
+    rules = editnames(E), vars = getVars(E),
+    weighted = TRUE, ...)
+
+  \method{as.igraph}{editset} (E,
+    nodetype = c("all", "rules", "vars"),
+    rules = editnames(E), vars = getVars(E),
     weighted = TRUE, ...)
 }
 \arguments{
-  \item{E}{\code{\link{editmatrix}} or
-  \code{\link{editarray}}}
+  \item{E}{\code{\link{editmatrix}},
+  \code{\link{editarray}} or \code{\link{editset}}}
 
   \item{nodetype}{adjacency between rules, vars or both?}
 
@@ -59,16 +71,8 @@
   vertex is an edit. Two vertices are connected if they
   have at least one variable in \code{vars} in common.
 
-  editmatrix method for calculating adjacency matrix
-
-  editmatrix method for calculating adjacency matrix
-
   graph.editmatrix derives adjacency matrix of \code{E} and
   converts it to an undirected igraph object.
-
-  method for converting editmatrix to igraph object
-
-  method for converting editmatrix to igraph object
 }
 \details{
   \code{adjacency} returns the adjacency matrix. The
@@ -184,6 +188,6 @@ adjacency(E,vars='employment')
 }
 \seealso{
   \code{\link{plot.editmatrix}},
-  \code{\link{plot.editarray}}
+  \code{\link{plot.editarray}}, \code{\link{plot.editset}}
 }
 

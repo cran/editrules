@@ -2,11 +2,14 @@
 \alias{getVars}
 \title{get names of variables in a set of edits}
 \usage{
-  getVars(E)
+  getVars(E, ...)
 }
 \arguments{
   \item{E}{\code{\link{editmatrix}} or
   \code{\link{editarray}}}
+
+  \item{...}{Arguments to be passed to or from other
+  methods}
 }
 \value{
   \code{character} vector with the names of the variables.

@@ -1,11 +1,14 @@
 \name{[.editmatrix}
 \alias{[.editarray}
 \alias{[.editmatrix}
+\alias{[.editset}
 \title{Row index operator for \code{editmatrix}}
 \usage{
   \method{[}{editmatrix} (x, i, j, ...)
 
   \method{[}{editarray} (x, i, j, ...)
+
+  \method{[}{editset} (x, i, j, ...)
 }
 \arguments{
   \item{x}{an object of class \code{\link{editmatrix}} or
@@ -23,5 +26,8 @@
   editarray object.
 
   Row index operator for \code{editarray}
+
+  Row index operator for \code{editset} Note: the datamodel
+  is not changed
 }
 

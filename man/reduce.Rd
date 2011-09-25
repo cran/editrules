@@ -2,6 +2,7 @@
 \alias{reduce}
 \alias{reduce.editarray}
 \alias{reduce.editmatrix}
+\alias{reduce.editset}
 \title{Remove empty rows and variables from set of edits}
 \usage{
   reduce(E, ...)
@@ -10,6 +11,8 @@
     tol = sqrt(.Machine$double.eps), ...)
 
   \method{reduce}{editarray} (E, ...)
+
+  \method{reduce}{editset} (E, ...)
 }
 \arguments{
   \item{E}{\code{\link{editmatrix}} or
