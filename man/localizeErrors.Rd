@@ -2,18 +2,19 @@
 \alias{localizeErrors}
 \title{Localize errors on records in a data.frame.}
 \usage{
-  localizeErrors(E, dat, useBlocks = TRUE, verbose = FALSE,
+  localizeErrors(E, dat, verbose = FALSE,
     weight = rep(1, ncol(dat)), maxduration = 600,
-    method = c("localizer", "mip"), ...)
+    method = c("localizer", "mip"), useBlocks = TRUE, ...)
 }
 \arguments{
-  \item{E}{an object of class \code{\link{editmatrix}} or
-  \code{\link{editarray}}}
+  \item{E}{an object of class \code{\link{editset}}
+  \code{\link{editmatrix}} or \code{\link{editarray}}}
 
   \item{dat}{a \code{data.frame} with variables in E.}
 
-  \item{useBlocks}{process error localization seperatly for
-  independent blocks in E?}
+  \item{useBlocks}{\code{DEPRECATED}. Process error
+  localization seperatly for independent blocks in \code{E}
+  (always \code{TRUE})?}
 
   \item{verbose}{print progress to screen?}
 
@@ -22,8 +23,7 @@
   same dimensions as \code{dat}.}
 
   \item{method}{should errorlocalizer ("localizer") or mix
-  integer programming ("mip") be used? NOTE: option "mip"
-  is currently experimental.}
+  integer programming ("mip") be used?}
 
   \item{maxduration}{maximum time for \code{$searchBest()}
   to find the best solution for a single record.}
@@ -35,34 +35,54 @@
   an object of class \code{\link{errorLocation}}
 }
 \description{
-  Loops over all records in \code{dat} and performs error
-  localization with \code{\link{errorLocalizer}}. For each
-  record it finds the smallest (weighted) number of
-  variables to be imputed or adapted such that all violated
-  edits can be satisfied, without violating new ones. If
-  there are multiple optimal (equally weighted) solutions a
-  random solution is chosen.
+  For each record in a \code{data.frame}, the least
+  (weighted) number of fields is determined which can be
+  adapted or imputed so that no edit in \code{E} is
+  violated. Anymore.
 }
 \details{
   For performance purposes, the edits are split in
   independent \code{\link{blocks}} which are processed
-  separately. The results are summarized in the output
-  object, causing some loss of information. For example,
-  the number of solutions per record (degeneracy) per block
-  is lost. To retain this information do someting like
-  \code{err <- list(); for ( b in blocks(E)) err <-
-  c(err,localizeErrors(b,dat))}
+  separately. Also, a quick vectorized check with
+  \code{\link{checkDatamodel}} is performed first to
+  exclude variables violating their one-dimensional bounds
+  from further calculations.
 
   By default, all weights are set equal to one (each
   variable is considered equally reliable). If a vector of
   weights is passed, the weights are assumed to be in the
   same order as the columns of \code{dat}. By passing an
-  array of weights (same dimension as \code{dat}) separate
-  weights can be specified for each record.
+  array of weights (of same dimensions as \code{dat})
+  separate weights can be specified for each record.
 
-  If \code{E} is a \code{\link{editarray}}, variables not
-  conforming to the datamodel specified vy \code{E} will be
-  detected as erroneous.
+  In general, the solotion to an error localiztion problem
+  need not be unique, especially when no weights are
+  defined. In such cases, \code{localizeErrors} chooses a
+  solution randomly. See \code{\link{errorLocalizer}} for
+  more control options.
+
+  Error localization can be performed by the Branch and
+  Bound method of De Waal (2003) (option
+  \code{method="localizer"}, the default) or by rewriting
+  the problem as a mixed-integer programming (MIP) problem
+  (\code{method="mip"}) which is parsed to the
+  \code{lpsolve} library. The former case uses
+  \code{\link{errorLocalizer}} and is very reliable in
+  terms of numerical stability, but may be slower in some
+  cases (see note below). The MIP approach is much faster,
+  but requires that upper and lower bounds are set on each
+  numerical variable. Sensible bounds are derived
+  automatically (see the vignette on error localization as
+  MIP), but could cause instabilities in very rare cases.
+}
+\note{
+  The Branch and Bound method is potentially slow for large
+  sets of connected edits, especially when conditional
+  edits are involved. Consider using \code{method="mip"} in
+  such cases. The run-time of the B&B algorithm is related
+  to the number of uquivalent solutions, so setting
+  different weights (reducing the number of unique
+  solutions) mey reduce computation time as well.
 }
 \examples{
 
@@ -115,7 +135,7 @@ plot(err)
 
 ## End(Not run)
 
-
+for ( d in dir("../pkg/R",full.names=TRUE)) dmp <- source(d)
 # Example with different weights for each record
 E <- editmatrix('x + y == z')
 dat <- data.frame(
@@ -135,12 +155,12 @@ localizeErrors(E,dat,weight=w)
 
 
 # an example with categorical variables
-E <- editarray(c(
-    "age \\\%in\\\% c('under aged','adult')",
-    "maritalStatus \\\%in\\\% c('unmarried','married','widowed','divorced')",
-    "positionInHousehold \\\%in\\\% c('marriage partner', 'child', 'other')",
-    "if( age == 'under aged' ) maritalStatus == 'unmarried'",
-    "if( maritalStatus \\\%in\\\% c('married','widowed','divorced')) !positionInHousehold \\\%in\\\% c('marriage partner','child')"
+E <- editarray(expression(
+    age \%in\% c('under aged','adult'),
+    maritalStatus \%in\% c('unmarried','married','widowed','divorced'),
+    positionInHousehold \%in\% c('marriage partner', 'child', 'other'),
+    if( age == 'under aged' ) maritalStatus == 'unmarried',
+    if( maritalStatus \%in\% c('married','widowed','divorced')) !positionInHousehold \%in\% c('marriage partner','child')
     )
 )
 E
@@ -161,8 +181,58 @@ localizeErrors(E,dat)
 localizeErrors(E,dat,weight=c(1,1,2))
 
 
+# an example with mixed data:
+
+E <- editset(expression(
+    x + y == z,
+    2*u  + 0.5*v == 3*w,
+    w >= 0,
+    if ( x > 0 ) y > 0,
+    x >= 0,
+    y >= 0,
+    z >= 0,
+    A \%in\% letters[1:4],
+    B \%in\% letters[1:4],
+    C \%in\% c(TRUE,FALSE),
+    D \%in\% letters[5:8],
+    if ( A \%in\% c('a','b') ) y > 0,
+    if ( A == 'c' ) B \%in\% letters[1:3],
+    if ( !C == TRUE) D \%in\% c('e','f')
+))
+
+set.seed(1)
+dat <- data.frame(
+    x = sample(-1:8),
+    y = sample(-1:8),
+    z = sample(10),
+    u = sample(-1:8),
+    v = sample(-1:8),
+    w = sample(10),
+    A = sample(letters[1:4],10,replace=TRUE),
+    B = sample(letters[1:4],10,replace=TRUE),
+    C = sample(c(TRUE,FALSE),10,replace=TRUE),
+    D = sample(letters[5:9],10,replace=TRUE),
+    stringsAsFactors=FALSE
+)
+
+(el <-localizeErrors(E,dat,verbose=TRUE))
 
 
+
+
+
+}
+\references{
+  T. De Waal (2003) Processing of Erroneous and Unsafe
+  Data. PhD thesis, University of Rotterdam.
+
+  E. De Jonge and Van der Loo, M. (2012) Error localization
+  as a mixed-integer program in editrules (included with
+  the package)
+
+  lp_solve and Kjell Konis. (2011). lpSolveAPI: R Interface
+  for lp_solve version 5.5.2.0. R package version
+  5.5.2.0-5.  http://CRAN.R-project.org/package=lpSolveAPI
 }
 \seealso{
   \code{\link{errorLocalizer}}

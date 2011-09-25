@@ -124,3 +124,29 @@ test_that("categorical edit violations are detected",{
             FALSE),byrow=TRUE,nrow=4)
     )
 })
+
+
+
+test_that("Empty editarray is handled correctly",{
+    expect_equivalent(
+        violatedEdits(editarray(expression()),data.frame(x="a",y="b"))[,,drop=FALSE],
+        array(logical(0),dim=c(1,0))
+    )
+    expect_equivalent(
+        violatedEdits(editarray(expression()),data.frame(x=c("a","a"),y=c("b","b")))[,,drop=FALSE],
+        array(logical(0),dim=c(2,0))
+    )
+
+})
+
+for ( d in dir("../../../pkg/R",full.names=TRUE) ) dmp <- source(d)
+test_that("Pure numerical editset",{
+    expect_true(
+        violatedEdits(
+            E = editset("x + y == z"),
+            dat = data.frame(x=1,y=1,z=1)
+        )[1,1]
+    )
+})
+
+

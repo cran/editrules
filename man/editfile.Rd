@@ -2,8 +2,7 @@
 \alias{editfile}
 \title{Read edits edits from free-form textfile}
 \usage{
-  editfile(file, type = c("all", "num", "cat", "mix"),
-    expandEdits = FALSE, ...)
+  editfile(file, type = c("all", "num", "cat", "mix"), ...)
 }
 \arguments{
   \item{file}{name of text file to read in}
@@ -12,14 +11,10 @@
   'num' (numerical), 'cat' (categorical) and 'all' are
   implemented.}
 
-  \item{expandEdits}{should edits be expanded with
-  \code{\link{expandEdits}}? (currently ignored)}
-
-  \item{...}{extra parameters that will be passed to
-  \code{expandEdits}}
+  \item{...}{extra parameters that are currently ignored}
 }
 \value{
-  \code{editset} with all edits if \code{type=all},
+  \code{\link{editset}} with all edits if \code{type=all},
   \code{\link{editarray}} if \code{type='cat'},
   \code{\link{editmatrix}} if \code{type='num'},
   \code{\link{editset}} with conditional edits if
@@ -31,9 +26,10 @@
   This utility function allows for free editrule definition
   in a file. One can extract only the numerical
   (\code{type='num'}), only the categorical
-  (\code{type='cat'}) or all editas (default) in which case
-  a list is returned. The function first parses all
-  assignments in the file. Every other statement is
-  considered to be an edit.
+  (\code{type='cat'}) or all edits (default) in which case
+  an \code{\link{editset}} is returned. The function first
+  parses all assignments in the file, so it is possible to
+  compute or read a list of categories defining a datamodel
+  for example.
 }
 

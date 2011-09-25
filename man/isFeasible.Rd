@@ -1,31 +1,36 @@
 \name{isFeasible}
 \alias{isFeasible}
-\title{Check consistency of editmatrix or editarray}
+\title{Check consistency of set of edits}
 \usage{
   isFeasible(E, warn = FALSE)
 }
 \arguments{
-  \item{E}{an \code{\link{editmatrix}} or
-  \code{\link{editarray}}}
+  \item{E}{an \code{\link{editmatrix}},
+  \code{\link{editarray}} or \code{\link{editset}}}
 
-  \item{warn}{logical: should a warning be raised when
+  \item{warn}{logical: should a warning be emitted when
   system is infeasible?}
 }
 \value{
   TRUE or FALSE
 }
 \description{
-  For linear edits, Fourier-Motzkin elimination is applied
-  untill either all variables are eliminated or the
-  editmatrix becomes obviously infeasible. The check rests
-  on the property (Farka's lemma) that a set of linear
-  inequalities is infeasible if and only if 0 < -1 can be
-  derived from it.
+  When variables are \code{\link[=eliminate]{eliminated}}
+  one by one from a set of edits, eventually either no
+  edits are left or an
+  \code{\link[=isObviouslyInfeasible]{obvious
+  contradiction}} is encountered. In the latter case no
+  records can obey all edits in the set which is therefore
+  \code{inFeasible}.
 }
-\details{
-  For categorical edits in an editarray, variables are
-  eliminated by category resolution untill all variables
-  are eliminated or an obvious infeasibility is
-  encountered.
+\note{
+  This function can potentially take a long time to
+  complete, especially when many connected (conditional)
+  edits are present. Consider using \code{\link{blocks}} to
+  check feasibility of indendent blocks.
+}
+\seealso{
+  \code{\link{isObviouslyInfeasible}},
+  \code{\link{isObviouslyRedundant}}
 }
 

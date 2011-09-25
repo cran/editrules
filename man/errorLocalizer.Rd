@@ -1,10 +1,14 @@
 \name{errorLocalizer}
 \alias{errorLocalizer}
 \alias{errorLocalizer.editarray}
+\alias{errorLocalizer.editlist}
 \alias{errorLocalizer.editmatrix}
-\title{Localize errors in numerical data based on the paradigm of Fellegi and Holt.}
+\alias{errorLocalizer.editset}
+\title{Create a backtracker object for error localization}
 \usage{
   errorLocalizer(E, x, ...)
+
+  \method{errorLocalizer}{editset} (E, x, ...)
 
   \method{errorLocalizer}{editmatrix} (E, x,
     weight = rep(1, length(x)), maxadapt = length(x),
@@ -13,14 +17,21 @@
   \method{errorLocalizer}{editarray} (E, x,
     weight = rep(1, length(x)), maxadapt = length(x),
     maxweight = sum(weight), maxduration = 600, ...)
+
+  \method{errorLocalizer}{editlist} (E, x,
+    weight = rep(1, length(x)), maxadapt = length(x),
+    maxweight = sum(weight), maxduration = 600, ...)
 }
 \arguments{
   \item{E}{an \code{\link{editmatrix}} or an
   \code{\link{editarray}}}
 
-  \item{x}{a named numerical vecor (if E is an editmatrix)
-  or a named character vector (if E is an editarray).  This
-  is the record for which errors will be localized.}
+  \item{x}{a named numerical \code{vector} or \code{list}
+  (if E is an editmatrix), a named character \code{vector}
+  or \code{list} (if E is an editarray), or a named
+  \code{list} if E is an \code{\link[=disjunct]{editlist}}
+  or \code{\link{editset}}.  This is the record for which
+  errors will be localized.}
 
   \item{...}{Arguments to be passed to other methods (e.g.
   reliability weights)}
@@ -49,28 +60,28 @@
   \code{$searchBest()} picks one at random.
 }
 \description{
-  Localize errors in a record based on Fellegi and Holt's
-  paradigm
-
-  Localize errors in numerical data
-
-  Localize errors in categorical data
+  Generate a \code{\link{backtracker}} object for error
+  localization in numerical, categorical, or mixed data.
+  This function generates the workhorse program, called by
+  \code{\link{localizeErrors}} with
+  \code{method=localizer}.
 }
 \details{
-  Returns a \code{\link{backtracker}} object for error
-  localization in numerical data. The returned backtracker
-  containts methods to search depth-first to the least
-  weighted number of variables that need to be adapted so
-  that all restrictions in E can be satisfied. (Generalized
-  principle of Fellegi and Holt (1976)).
+  The returned \code{\link{backtracker}} can be used to run
+  a branch-and-bound algorithm which finds the least
+  (weighted) number of variables in \code{x} that need to
+  be adapted so that all restrictions in \code{E} can be
+  satisfied. (Generalized principle of Fellegi and Holt
+  (1976)).
 
-  The search is excecuted with a branch-and-bound
-  algorithm, where in the left branche, a variable is
-  assumed correct and its value subsituted in \code{E},
-  while in the right branche a variable is assumed
-  incorrect and eliminated from \code{E} with
-  Fourier-Motzkin elimination. See De Waal (2003), chapter
-  8 for a consice description.
+  The B&B tree is set up so that in in one branche, a
+  variable is assumed correct and its value subsituted in
+  \code{E}, while in the other branche a variable is
+  assumed incorrect and
+  \code{\link[=eliminate]{eliminated}} from \code{E}. See
+  De Waal (2003), chapter 8 or De Waal, Pannekoek and
+  Scholtus (2011) for a concise description of the B&B
+  algorithm.
 
   Every call to \code{<backtracker>$searchNext()} returns
   one solution \code{list}, consisting of \itemize{
@@ -100,6 +111,13 @@
   the datamodel specified by \code{E}. The more
   user-friendly function \code{\link{localizeErrors}}
   circumvents this. See also \code{\link{checkDatamodel}}.
+}
+\note{
+  This method is potentially very slow for objects of class
+  \code{\link{editset}} that contain many conditional
+  restrictions.  Consider using
+  \code{\link{localizeErrors}} with the option
+  \code{method="mip"} in such cases.
 }
 \examples{
 #### examples with numerical edits
@@ -197,9 +215,15 @@ el$searchNext()
   data.  PhD thesis, Erasmus Research institute of
   management, Erasmus university Rotterdam.
   http://www.cbs.nl/nl-NL/menu/methoden/onderzoek-methoden/onderzoeksrapporten/proefschriften/2008-proefschrift-de-waal.htm
+
+  T. De Waal, Pannekoek, J. and Scholtus, S. (2011)
+  Handbook of Statistical Data Editing. Wiley Handbooks on
+  Survey Methodology.
 }
 \seealso{
+  \code{\link{errorLocalizer.mip}},
   \code{\link{localizeErrors}},
-  \code{\link{checkDatamodel}}, \code{\link{violatedEdits}}
+  \code{\link{checkDatamodel}},
+  \code{\link{violatedEdits}},
 }
 

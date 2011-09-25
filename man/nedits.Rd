@@ -13,4 +13,5 @@ Count the number of edits in a collection of edits.}
   Number of edits Count the number of edits in a collection
   of edits.
 }
+\keyword{internal}
 

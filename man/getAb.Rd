@@ -11,7 +11,9 @@
   \code{numeric} matrix \code{A|b}
 }
 \description{
-  Returns augmented matrix representation of edit set.
+  For a system of linear (in)equations of the form \eqn{Ax
+  \odot b}, \eqn{\odot\in\{<,\leq,=\}}, the matrix
+  \eqn{A|b} is called the augmented matrix.
 }
 \examples{
 

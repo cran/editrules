@@ -1,6 +1,6 @@
 \name{contains.boolmat}
 \alias{contains.boolmat}
-\title{determine if a boolean matrix contains var}
+\title{Determine if a boolean matrix contains \code{var}}
 \usage{
   contains.boolmat(A, ind, var)
 }
@@ -12,7 +12,7 @@
   \item{var}{variable name}
 }
 \description{
-  determine if a boolean matrix contains var
+  Determine if a boolean matrix contains \code{var}
 }
 \keyword{internal}
 

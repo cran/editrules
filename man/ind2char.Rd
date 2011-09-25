@@ -22,8 +22,5 @@
 \description{
   Derive textual representation from (partial) indices
 }
-\seealso{
-  as.character.editarray
-}
 \keyword{internal}
 

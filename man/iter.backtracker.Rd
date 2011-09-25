@@ -22,4 +22,5 @@
 \seealso{
   \code{iter} from the package iterators
 }
+\keyword{internal}
 

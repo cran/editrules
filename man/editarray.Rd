@@ -1,76 +1,91 @@
-\name{editarray}
+\name{as.matrix.editarray}
+\alias{as.character.editarray}
+\alias{as.data.frame.editarray}
+\alias{as.expression.editarray}
+\alias{as.matrix.editarray}
+\alias{c.editarray}
 \alias{editarray}
+\alias{str.editarray}
+\alias{summary.editarray}
 \title{Parse textual, categorical edit rules to an editarray}
 \usage{
+  \method{as.matrix}{editarray} (x, ...)
+
+  \method{c}{editarray} (...)
+
   editarray(editrules, sep = ":", env = parent.frame())
+
+  \method{as.character}{editarray} (x, useIf = TRUE,
+    datamodel = TRUE, ...)
+
+  \method{as.data.frame}{editarray} (x, ...)
+
+  \method{as.expression}{editarray} (x, ...)
+
+  \method{str}{editarray} (object, ...)
+
+  \method{summary}{editarray} (object, useBlocks = TRUE,
+    ...)
 }
 \arguments{
-  \item{editrules}{\code{character} vector}
+  \item{editrules}{\code{character} or \code{expression}
+  vector.}
 
   \item{sep}{textual separator, to be used internally for
   separating variable from category names.}
 
   \item{env}{environment to evaluate the rhs of '==' or
   '\%in\%' in.}
+
+  \item{x}{editarray object}
+
+  \item{useIf}{\code{logical}. Use if( <condition> )
+  <statement> or !<condition> | <statement> ?}
+
+  \item{datamodel}{\code{logical}. Include datamodel
+  explicitly?}
+
+  \item{...}{further arguments passed to or from other
+  methods}
+
+  \item{object}{an R object}
+
+  \item{useBlocks}{\code{logical} Summarize each block?}
 }
 \value{
-  editarray
+  \code{as.matrix}: The boolean matrix part of the
+  \code{editarray}.
+
+  \code{editarray} : An object of class \code{editarray}
+
+  \code{as.data.frame}: \code{data.frame} with columns
+  'name', 'edit' and 'description'.
 }
 \description{
-  Transforms a list of categorical edit rules to a boolean
-  array representation. An editarry is used to store
-  demands on purely categorical data.
+  An \code{editarray} is a boolean array (with some extra
+  attributes) where each row contains an edit restriction
+  on purely categorical data.
 }
 \details{
-  The purpose of this function is to turn human-readable
-  demands on categorical data to a boolean array.
-  Categorical edit rules state demands on a dataset in the
-  form of a quoted R expression. Allowed statements include
-  \code{if}, operators \code{\%in\%}, \code{==}, \code{!=},
-  \code{||}, \code{&&} and brackets \code{()} and
-  \code{\{\}}.
-
-  The datamodel is derived from the edit set. A data model
-  can be defined by simply adding univariate edits of the
-  form
-
-  \itemize{ \item{\code{"<variable> \%in\%
-  c('<cat1>','<cat2>',...,'<catN>')"}} }
-
-  Note the double quotes around the whole statement, and
-  the single quotes around the category levels. The right
-  hand side is evaluated when the editarray is generated,
-  so it may also be the name of a previously defined
-  variable. Also see the examples section.
-
-  Relations between variables can be written in the form
-
-  \itemize{ \item{\code{"if( <logical expression involving
-  categorical variables> ) <logical expression involving
-  categorical variables>"}} } See the example section for
-  some coded examples.
-
-  The result is an object of class \code{editarray}, which
-  contains a \eqn{m\times n} boolean array, representing
-  the multivariate edits. The columns are labeled with
-  \code{<variable><sep><category>}, for example
-  \code{gender:Male}. The column names represent the data
-  model for the data to be treated, the entries represent
-  the edit rules. For example. if the datamodel is
-  \code{"gender \%in\% c('male','female')"} and
-  \code{"pregnant \%in\% c(TRUE,FALSE)"}, the edit
-  \code{"if(gender == 'male') pregnant == FALSE"} is
-  represented by the boolean array
-  \code{c(gender:male=TRUE, gender:female=FALSE,
-  pregnant:TRUE=TRUE, pregnant:FALSE=FALSE)}.
+  The function \code{editarray} converts (a vector of)
+  edit(s) in \code{character} or \code{expression} from to
+  an \code{editarray} object. Edits may also be read from a
+  \code{\link{data.frame}}, in which case it must have at
+  least a \code{character} column with the name
+  \code{edit}. It is not strictly necessary, but hightly
+  recommended that the datamodel (i.e. the possible levels
+  for a variable) is included explicitly in the edits using
+  an \code{\%in\%} statement, as shown in the examples
+  below. The function \code{\link{editfile}} can read
+  categorical edits from a free-form text file.
 }
 \examples{
 
 # Here is the prototypical categorical edit: men cannot be pregnant.
-E <- editarray(c(
-    "gender \\\%in\\\% c('male','female')",
-    "pregnant \\\%in\\\% c('yes','no')",
-    "if( gender == 'male' ) pregnant == 'no'"
+E <- editarray(expression(
+    gender \%in\% c('male','female'),
+    pregnant \%in\% c('yes','no'),
+    if( gender == 'male' ) pregnant == 'no'
     )
 )
 E
@@ -80,13 +95,13 @@ summary(E)
 
 # A yes/no variable may also be modeled as a logical:
 editarray(expression(
-    gender \\\%in\\\% c('male','female'),
-    pregnant \\\%in\\\% c(TRUE, FALSE),
+    gender \%in\% c('male','female'),
+    pregnant \%in\% c(TRUE, FALSE),
     if( gender == 'male' ) pregnant == FALSE
     )
 )
 
-# or, shorter: 
+# or, shorter (and using a character vector as input): 
 editarray(c(
     "gender \\\%in\\\% c('male','female')",
     "pregnant \\\%in\\\% c(TRUE, FALSE)",
@@ -95,13 +110,56 @@ editarray(c(
 )
 
 # the \\\%in\\\% statement may be used at will
+editarray(expression(
+    gender \%in\% c('male','female'),
+    pregnant \%in\% c(TRUE, FALSE),
+    positionInHousehold \%in\% c('marriage partner', 'child', 'other'),
+    maritalStatus \%in\% c('unmarried','married','widowed','divorced'),
+    if( gender == 'male' ) !pregnant,
+    if( maritalStatus \%in\% c('unmarried','widowed','divorced')) !positionInHousehold \%in\% c('marriage partner','child')
+    )
+)
+
+
+
+
+
+# Here is the prototypical categorical edit: men cannot be pregnant.
+E <- editarray(expression(
+    gender \%in\% c('male','female'),
+    pregnant \%in\% c('yes','no'),
+    if( gender == 'male' ) pregnant == 'no'
+    )
+)
+E
+
+# an editarray has a summary method:
+summary(E)
+
+# A yes/no variable may also be modeled as a logical:
+editarray(expression(
+    gender \%in\% c('male','female'),
+    pregnant \%in\% c(TRUE, FALSE),
+    if( gender == 'male' ) pregnant == FALSE
+    )
+)
+
+# or, shorter (and using a character vector as input): 
 editarray(c(
     "gender \\\%in\\\% c('male','female')",
     "pregnant \\\%in\\\% c(TRUE, FALSE)",
-    "positionInHousehold \\\%in\\\% c('marriage partner', 'child', 'other')",
-    "maritalStatus \\\%in\\\% c('unmarried','married','widowed','divorced')",
-    "if( gender == 'male' ) !pregnant",
-    "if( maritalStatus \\\%in\\\% c('unmarried','widowed','divorced')) !positionInHousehold \\\%in\\\% c('marriage partner','child')"
+    "if( gender == 'male' ) !pregnant"
+    )
+)
+
+# the \\\%in\\\% statement may be used at will
+editarray(expression(
+    gender \%in\% c('male','female'),
+    pregnant \%in\% c(TRUE, FALSE),
+    positionInHousehold \%in\% c('marriage partner', 'child', 'other'),
+    maritalStatus \%in\% c('unmarried','married','widowed','divorced'),
+    if( gender == 'male' ) !pregnant,
+    if( maritalStatus \%in\% c('unmarried','widowed','divorced')) !positionInHousehold \%in\% c('marriage partner','child')
     )
 )
 
@@ -110,6 +168,14 @@ editarray(c(
 
 }
 \seealso{
-  \code{\link{editfile}}
+  \code{\link{editrules.plotting}},
+  \code{\link{violatedEdits}},
+  \code{\link{localizeErrors}}, \code{\link{editfile}},
+  \code{\link{editset}}, \code{\link{editmatrix}},
+  \code{\link{getVars}}, \code{\link{blocks}},
+  \code{\link{eliminate}}, \code{\link{substValue}},
+  \code{\link{isFeasible}} \code{\link{generateEdits}},
+  \code{\link{contains}}, \code{\link{is.editarray}},
+  \code{\link{isSubset}}
 }
 

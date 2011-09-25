@@ -21,8 +21,9 @@
 \description{
   \code{cateditmatrix} is an alternative representation of
   a categorial edit. The default representation in
-  editrules is \code{editarray}, but cateditmatrix is
-  useful for transforming and solving categorical edit into
-  a mixed integer programming problem
+  editrules is \code{\link{editarray}}, but cateditmatrix
+  is useful for transforming and solving categorical edit
+  into a mixed integer programming problem
 }
+\keyword{internal}
 

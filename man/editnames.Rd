@@ -1,7 +1,6 @@
 \name{editnames}
 \alias{editnames}
-\title{Names of edits
-Retrieve edit names from editset, -array or -matrix}
+\title{Names of edits}
 \usage{
   editnames(E)
 }
@@ -10,7 +9,6 @@ Retrieve edit names from editset, -array or -matrix}
   or \code{\link{editmatrix}}}
 }
 \description{
-  Names of edits Retrieve edit names from editset, -array
-  or -matrix
+  Retrieve edit names from editset, -array or -matrix
 }
 

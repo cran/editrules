@@ -1,11 +1,13 @@
 \name{violatedEdits}
+\alias{as.data.frame.violatedEdits}
+\alias{plot.violatedEdits}
+\alias{summary.violatedEdits}
 \alias{violatedEdits}
 \alias{violatedEdits.character}
-\alias{violatedEdits.data.frame}
 \alias{violatedEdits.editarray}
 \alias{violatedEdits.editmatrix}
 \alias{violatedEdits.editset}
-\title{Retrieve which rows of \code{data.frame dat} violate which constraints}
+\title{Check data against constraints}
 \usage{
   violatedEdits(E, dat, ...)
 
@@ -14,21 +16,28 @@
 
   \method{violatedEdits}{editmatrix} (E, dat, tol = 0, ...)
 
-  \method{violatedEdits}{data.frame} (E, dat, ...)
-
   \method{violatedEdits}{editarray} (E, dat,
     datamodel = TRUE, ...)
 
   \method{violatedEdits}{editset} (E, dat,
     datamodel = TRUE, ...)
+
+  \method{plot}{violatedEdits} (x, topn = min(10, ncol(x)),
+    ...)
+
+  \method{summary}{violatedEdits} (object, E = NULL,
+    minfreq = 1, ...)
+
+  \method{as.data.frame}{violatedEdits} (x, ...)
 }
 \arguments{
-  \item{E}{\code{\link{editmatrix}} containing the
-  constraints for \code{dat}}
+  \item{E}{\code{\link{character}} vector with
+  constraintsm, \code{\link{editset}},
+  \code{\link{editmatrix}} or \code{\link{editarray}}.}
 
   \item{dat}{\code{data.frame} with data that should be
   checked, if a named vector is supplied it will converted
-  internally to a data.frame}
+  internally to a \code{data.frame}}
 
   \item{...}{further arguments that can be used by methods
   implementing this generic function}
@@ -38,19 +47,24 @@
   \item{tol}{tolerance to check rules against.}
 
   \item{datamodel}{Also check against datamodel?}
+
+  \item{x}{\code{violatedEdits} object.}
+
+  \item{topn}{Top \code{n} edits to be plotted.}
+
+  \item{object}{\code{violatedEdits} object}
+
+  \item{minfreq}{minimum freq for edit to be printed}
 }
 \value{
-  a logical matrix where each row indicates which
-  contraints are violated
+  An object of class \code{violatedEdits}, which is a
+  logical \code{nrow(dat)Xnedits(E)} matrix with an extra
+  \code{class} attribute for overloading purposes.
 }
 \description{
-  This is an S3 generic function for checking rows of a
-  \code{data.frame} against a number of edit restrictions.
-  The edits can be entered either in \code{character}
-  \code{data.frame} or \code{editmatrix} format. The
-  returned value is a logical matrix with dimension (number
-  of records )\eqn{times}(number of edits), indicating
-  which record violates (\code{TRUE}) which edit.
+  Determine which record violates which edits. Returns
+  \code{NA} when edits cannot be checked because of missing
+  values in the data.
 
   \itemize{ \item{For rules of the form Ax == b |Ax - b| <=
   tol is returned.} \item{For rules of the form Ax < b, Ax
@@ -61,11 +75,10 @@
   alternative (\code{sqrt(.Machine\$double.eps)}). The
   editmatrix is \cite{\link[=normalize]{normalized}} before
   checks are performed.
-}
-\details{
-  This function can be used as an input for automatic
-  corrections methods. This method will fail if \code{E}
-  contains variables that are not available in \code{dat}
+
+  Plot summary statistics on violatedEdits
+
+  as.data.frame violatedEdits
 }
 \examples{
 # Using character vector to define contraints
@@ -111,6 +124,6 @@ violatedEdits(E,dat,datamodel=FALSE)
 
 }
 \seealso{
-  \code{\link{listViolatedEdits}}, \code{\link{checkRows}}
+  \code{\link{checkDatamodel}}
 }
 

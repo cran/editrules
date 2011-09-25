@@ -23,11 +23,14 @@
   coefficient equals zero.}
 }
 \description{
-  If E is a matrix, a matrix in reduced row echelon form is
-  returned. If E is an \code{\link{editmatrix}} the
-  equality part of E is transformed to reduced row echelon
-  form.
-
-  Write a system of equations in reduced row echelon form
+  If \code{E} is a matrix, a matrix in reduced row echelon
+  form is returned. If \code{E} is an
+  \code{\link{editmatrix}} the equality part of \code{E} is
+  transformed to reduced row echelon form. For an
+  \code{\link{editset}}, the numerical part is transformed
+  to reduced row echelon form.
+}
+\seealso{
+  \code{\link{eliminate}}, \code{\link{substValue}}
 }
 

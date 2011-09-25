@@ -67,12 +67,12 @@
   the variables in \code{vars}
 }
 \description{
-  A set of edits can be represented in a graph where every
+  A set of edits can be represented as a graph where every
   vertex is an edit. Two vertices are connected if they
   have at least one variable in \code{vars} in common.
 
   graph.editmatrix derives adjacency matrix of \code{E} and
-  converts it to an undirected igraph object.
+  converts it to an undirected \pkg{igraph} object.
 }
 \details{
   \code{adjacency} returns the adjacency matrix. The

@@ -5,14 +5,16 @@
   editType(E, m = NULL)
 }
 \arguments{
-  \item{E:}{editset}
+  \item{E}{editset}
 
-  \item{m:}{if you happen to have contains(E) handy, it
-  needs not be recalculated.}
+  \item{m}{if you happen to have \code{contains(E)} handy,
+  it needs not be recalculated.}
 }
 \description{
   Determines edittypes based on the variables they contain
   (not on names of edits).
 }
-\keyword{internal}
+\seealso{
+  \code{\link{contains}}
+}
 

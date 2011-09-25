@@ -1,7 +1,6 @@
 
 context("Error localization: numerical data.frames")
 
-
 test_that('localizeErrors works without specified weight',{
     
     expect_equivalent(localizeErrors(
@@ -109,6 +108,15 @@ test_that('localizeErrors handles data out-of-datamodel correctly',{
     )
 })
 
+test_that("localizeErrors works with TRUE/FALSE",{
+    E <- editarray(expression(
+        A %in% c(TRUE,FALSE),
+        B %in% letters[1:4],
+        if ( !A ) B %in% letters[1:2]
+    ))
 
+    # should run without errors...
+    localizeErrors(E,data.frame(A=c(TRUE,FALSE),B=c('c',"d")))
+})
 
 

@@ -14,9 +14,10 @@
   The edits in \code{E} parsed to R expressions.
 }
 \description{
-  This function wraps the native \code{\link{parse}}
-  function in a \code{\link{tryCatch}}. The function is
-  \code{editrules} internal. It tries to give a meaningfull
-  error message when parsing fails for some reason.
+  This function wraps the native \code{parse} function in a
+  \code{tryCatch}. The function is \code{editrules}
+  internal. It tries to give a meaningfull error message
+  when parsing fails for some reason.
 }
+\keyword{internal}
 

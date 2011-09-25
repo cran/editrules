@@ -1,6 +1,8 @@
 \name{substValue}
 \alias{substValue}
 \alias{substValue.editarray}
+\alias{substValue.editenv}
+\alias{substValue.editlist}
 \alias{substValue.editmatrix}
 \alias{substValue.editset}
 \title{Replace a variable by a value in a set of edits.}
@@ -15,10 +17,16 @@
 
   \method{substValue}{editset} (E, var, value,
     simplify = TRUE, ...)
+
+  \method{substValue}{editlist} (E, var, value, ...)
+
+  \method{substValue}{editenv} (E, var, value, ...)
 }
 \arguments{
-  \item{E}{\code{\link{editmatrix}} or
-  \code{\link{editarray}}}
+  \item{E}{\code{\link{editset}}, \code{\link{editmatrix}},
+  \code{\link{editarray}},
+  \code{\link[=disjunct]{editlist}} or
+  \code{\link[=disjunct]{editenv}}}
 
   \item{var}{\code{character} with name(s) of variable(s)
   to substitute}
@@ -28,48 +36,33 @@
   \item{...}{arguments to be passed to or from other
   methods}
 
-  \item{reduce}{\code{logical} should substituted variables
-  be removed?}
+  \item{reduce}{\code{logical} should the result be
+  simplified? For \code{\link{editmatrix}} this has the
+  same effect as calling the function \code{\link{reduce}}.
+  For \code{\link{editarray}}, the datamodel of the
+  substituted variable is reduced to a single value, and
+  the variable itself is not removed.}
 
-  \item{removeredundant}{\code{logical} should empty rows
+  \item{removeredundant}{\code{logical}. Should empty rows
   be removed?}
 
   \item{simplify}{Simplify editset by moving logical edits
-  containing a simple numerical statement to the pure
-  numerical part?}
+  containing a single numerical statement to the pure
+  numerical part? (This is mostly for internal purposes and
+  overwriting the default should normally not be necessary
+  for package users).}
 }
 \value{
   \code{E}, with variables replaced by values
 }
 \description{
   Replace a variable by a value in a set of edits.
-
-  Given a set of linear restrictions \eqn{E: {\bf Ax}\odot
-  {\bf b}} with \eqn{\odot\in\{<,\leq,==\}}, and matrix
-  \eqn{{\bf A}} with columns \eqn{{\bf a}_1,{\bf
-  a}_2,\ldots,{\bf a}_n}. Substituting variable \eqn{x_j}
-  with a value \eqn{\tilde{\bf x}_j} means setting
-  \eqn{{\bf a}_j=0} and \eqn{{\bf b}={\bf a}_j\tilde{x}_j}.
-
-  For editarrays, only rows with \code{<var>:<value>==TRUE}
-  are kept. In the kept rows, categories not equal to
-  <value> are set to \code{FALSE} If \code{reduce=TRUE},
-  columns corresponding to categories which are set to
-  \code{FALSE} will be removed. Note that the function
-  \code{\link{reduce}} has a different effect (it removes
-  complete variables).
-
-  For an \code{\link{editset}}, purely numerical variables
-  are substitutes as in an \code{\link{editmatrix}} and
-  categorical as in an \code{\link{editarray}}. Numerical
-  variables appearing logical constraints are substituted
-  and if truth values can be derived these are substituted
-  in the logical constraint.
 }
-\details{
-  Note that the resulting \code{\link{editmatrix}} may be
-  inconsistent because of inconsistencies in
-  \eqn{\tilde{\bf x}}.
+\note{
+  At the moment, objects of class
+  \code{\link[=disjunct]{editenv}} are converted to
+  \code{list} prior to processing (so no performance is
+  gained there) and reconverted afterwards.
 }
 \examples{
 
@@ -115,6 +108,10 @@ substValue(E,'x',3)
 
 
 
+}
+\references{
+  Value substitution is extensively described in the
+  package vignettes.
 }
 \seealso{
   \code{\link{eliminate}}

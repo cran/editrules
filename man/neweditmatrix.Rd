@@ -23,4 +23,5 @@
   \code{\link{editmatrix}} for creating an editmatrix
   object.
 }
+\keyword{internal}
 

@@ -5,7 +5,7 @@
   datamodel(E)
 }
 \arguments{
-  \item{E}{editarray}
+  \item{E}{\code{\link{editarray}}}
 }
 \value{
   \code{data.frame} describing the categorical variables
@@ -16,14 +16,17 @@
 }
 \examples{
 
-E <- editarray(c(
-    "age \\\%in\\\% c('under aged','adult')",
-    "positionInHouseholda  \\\%in\\\% c('marriage partner', 'child', 'other')",
-    "maritalStatus \\\%in\\\% c('unmarried','married','widowed','divorced')",
-    "if (maritalStatus \\\%in\\\% c('married','widowed','divorced') ) positionInHousehold != 'child'",
-    "if ( age == 'under aged') maritalStatus == 'unmarried'"
+E <- editarray(expression(
+    age \%in\% c('under aged','adult'),
+    positionInHouseholda  \%in\% c('marriage partner', 'child', 'other'),
+    maritalStatus \%in\% c('unmarried','married','widowed','divorced'),
+    if (maritalStatus \%in\% c('married','widowed','divorced') ) positionInHousehold != 'child',
+    if ( age == 'under aged') maritalStatus == 'unmarried'
     )
 )
 datamodel(E)
+}
+\seealso{
+  \code{\link{checkDatamodel}}
 }
 

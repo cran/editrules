@@ -1,15 +1,20 @@
 \name{eliminate}
 \alias{eliminate}
 \alias{eliminate.editarray}
+\alias{eliminate.editlist}
 \alias{eliminate.editmatrix}
-\title{eliminate a variable from a set of edit rules}
+\alias{eliminate.editset}
+\title{Eliminate a variable from a set of edit rules}
 \usage{
   eliminate(E, var, ...)
 
-  \method{eliminate}{editmatrix} (E, var,
-    fancynames = FALSE, ...)
+  \method{eliminate}{editmatrix} (E, var, ...)
 
   \method{eliminate}{editarray} (E, var, ...)
+
+  \method{eliminate}{editset} (E, var, ...)
+
+  \method{eliminate}{editlist} (E, var, ...)
 }
 \arguments{
   \item{E}{\code{\link{editmatrix}} or
@@ -19,29 +24,47 @@
 
   \item{...}{argumemts to be passed to or from other
   methods}
-
-  \item{fancynames}{\code{logical} If true, the derived
-  restrictions have rownames derived from the original
-  restrictions (slower).}
 }
 \value{
-  An editmatrix with an extra (hidden) attributes
-  describing how the new restrictions were derived from the
-  original ones.  These attributes are used to remove
-  redundancies when variables are repeatedly eliminated.
+  If \code{E} is an \code{\link{editmatrix}} or
+  \code{\link{editarray}}, an object of the same class is
+  returned. A returned \code{\link{editmatrix}} contains an
+  extra \code{history} attribute which is used to reduce
+  the number of generated edits in consecutive eliminations
+  (see \code{\link{getH}}). If \code{E} is an
+  \code{\link{editset}}, an object of class
+  \code{\link[=disjunct]{editlist}} is returned.
 }
 \description{
-  eliminate a variable from a set of edit rules
+  Eliminating a variable amounts to deriving all
+  (non-redundant) edits not containing that variable.
+  Geometrically, it can be seen as a projection of the
+  solution space (records obeying all edits) along the
+  eliminated variable's axis. If the solution space is
+  non-concex (as is the usually case when conditional edits
+  are involved), multiple projections of convex subregions
+  are performed.
 
-  Uses Fourier-Motzkin elimination to eliminate a variable
-  from a set of linear (in)equality restrictions,
-  represented as an \code{\link{editmatrix}}. An
+  For objects of class \code{\link{editmatrix}},
+  Fourier-Motzkin elimination is used to eliminate a
+  variable from the of linear (in)equality restrictions. An
   observation of Kohler (1967) is used to reduce the number
   of implied restrictions. Obvious redundancies of the type
   0 < 1 are removed as well.
 
-  The elimination method is based on repeated logical
-  reduction on categories.
+  For categorical edits in an \code{\link{editarray}}, the
+  elimination method is based on repeated logical reduction
+  on categories. See Van der Loo (2012) for a description.
+
+  For an \code{\link{editset}}, \code{E} is transformed to
+  an \code{\link[=disjunct]{editlist}}. Each element of an
+  \code{\link[=disjunct]{editlist}} describes a convex
+  subregion of the total solution space of the
+  \code{\link{editset}}. After this, the elimination method
+  for \code{\link[=disjunct]{editlist}} is called.
+
+  For an \code{\link[=disjunct]{editlist}}, the variable is
+  eliminated from each consituting \code{\link{editset}}.
 }
 \examples{
 
@@ -112,10 +135,6 @@ E
 # by eliminating 'maritalStatus' we can deduce that under aged persones cannot be partner in marriage.
 eliminate(E,"maritalStatus")
 
-
-for ( f in dir('../pkg/R',full.names=TRUE)) dmp <- source(f)
-
-
 E <- editarray(c(
     "age \\\%in\\\% c('under aged','adult')",
     "positionInHousehold \\\%in\\\% c('marriage partner', 'child', 'other')",
@@ -143,11 +162,15 @@ eliminate(E,"maritalStatus")
   H.P. Williams (1986) Fourier's method of linear
   programming and its dual, The American Mathematical
   Monthly 93, 681-695
+
+  M.P.J. van der Loo (2012) Variable elimination and edit
+  generation with a flavour of semigroup algebra
+  (submitted).
 }
 \seealso{
-  \code{\link{substValue}}
-
-  \code{\link{editmatrix}}
-  \code{\link{isObviouslyInfeasible}}
+  \code{\link{substValue}},
+  \code{\link{isObviouslyInfeasible}},
+  \code{\link{isObviouslyRedundant}},
+  \code{\link{generateEdits}}
 }
 

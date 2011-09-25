@@ -1,10 +1,11 @@
 \name{contains}
 \alias{contains}
+\alias{contains.cateditmatrix}
 \alias{contains.editarray}
 \alias{contains.editmatrix}
 \alias{contains.editset}
 \alias{contains.matrix}
-\title{determine which edits in an editmatrix contain a variable.}
+\title{Determine which edits contain which variable(s)}
 \usage{
   contains(E, var = NULL, ...)
 
@@ -15,6 +16,8 @@
     tol = sqrt(.Machine$double.eps), ...)
 
   \method{contains}{editarray} (E, var = NULL, ...)
+
+  \method{contains}{editset} (E, var = NULL, ...)
 
   \method{contains}{editset} (E, var = NULL, ...)
 }
@@ -45,6 +48,8 @@
   editmatrix method for contains
 
   contains method for editarray
+
+  contains method for cateditmatrix
 
   contains method for editset
 }

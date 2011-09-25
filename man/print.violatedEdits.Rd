@@ -6,10 +6,9 @@
 }
 \arguments{
   \item{x}{violatedEdits}
-
-  \item{...}{not used}
 }
 \description{
   Print violatedEdits
 }
+\keyword{internal}
 
