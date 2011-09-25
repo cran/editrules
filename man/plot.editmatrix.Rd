@@ -2,7 +2,7 @@
 \alias{plot.editarray}
 \alias{plot.editmatrix}
 \alias{plot.editset}
-\title{Graphical representation of editmatrix}
+\title{Graphical representation of edits}
 \usage{
   \method{plot}{editmatrix} (x, nodetype = "all",
     rules = editnames(x), vars = getVars(x),
@@ -22,7 +22,7 @@
     varcolor = "lightblue1", violatedcolor = "sienna1",
     adaptcolor = "sienna1", ...)
 
-  \method{plot}{editarray} (x, nodetype = "all",
+  \method{plot}{editset} (x, nodetype = "all",
     rules = editnames(x), vars = getVars(x),
     violated = logical(nedits(x)),
     adapt = logical(length(getVars(x))), nabbreviate = 5,
@@ -72,14 +72,19 @@
   \item{...}{further arguments to be passed to plot.}
 }
 \description{
-  Depending on the chosen \code{nodetype}, this function
-  can plot three types of graphs based on an edit set.
+  Plots a graph, showing which variables occur in what
+  edits. By default, squares represent edits, circles
+  represent variables and an edge connecing a variable with
+  an edit indicates that the edit contains the variable.
 
   plot method for editarray
 
   plot method for editset
 }
 \details{
+  Depending on the chosen \code{nodetype}, this function
+  can plot three types of graphs based on an edit set.
+
   \itemize{ \item{If \code{nodetype="all"} (default), the
   full bipartite graph is plotted. Each variable is
   represented by a square node while each edit is

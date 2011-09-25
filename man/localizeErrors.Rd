@@ -59,6 +59,10 @@
   same order as the columns of \code{dat}. By passing an
   array of weights (same dimension as \code{dat}) separate
   weights can be specified for each record.
+
+  If \code{E} is a \code{\link{editarray}}, variables not
+  conforming to the datamodel specified vy \code{E} will be
+  detected as erroneous.
 }
 \examples{
 
@@ -159,5 +163,8 @@ localizeErrors(E,dat,weight=c(1,1,2))
 
 
 
+}
+\seealso{
+  \code{\link{errorLocalizer}}
 }
 

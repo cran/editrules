@@ -5,7 +5,14 @@
   cateditmatrix(x, sep = ":", env = parent.frame())
 }
 \arguments{
-  \item{x}{\code{character} with categorical edits}
+  \item{x}{\code{character or expression} with categorical
+  edits}
+
+  \item{sep}{seperator to be used in naming categories
+  within variables.}
+
+  \item{env}{environment in which \code{x} will be
+  evaluated.}
 }
 \value{
   cateditmatrix object, which is a specialized
@@ -18,5 +25,4 @@
   useful for transforming and solving categorical edit into
   a mixed integer programming problem
 }
-\keyword{internal}
 

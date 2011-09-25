@@ -7,10 +7,8 @@
 \usage{
   isObviouslyRedundant(E, duplicates = TRUE, ...)
 
-  \method{isObviouslyRedundant}{matrix} (E,
-    duplicates = TRUE, operators,
-    tol = sqrt(.Machine$double.eps), duplicates.tol = tol,
-    ...)
+  \method{isObviouslyRedundant}{matrix} (E, operators,
+    tol = sqrt(.Machine$double.eps), ...)
 
   \method{isObviouslyRedundant}{editmatrix} (E,
     duplicates = TRUE, ...)
@@ -31,8 +29,6 @@
   in \code{<, <=, ==} of length \code{nrow(E)}}
 
   \item{tol}{tolerance to check for zeros.}
-
-  \item{duplicates.tol}{tolerance for duplicate search}
 }
 \value{
   logical vector indicating which edits are (obviously)
@@ -57,4 +53,5 @@
   \code{\link{isObviouslyRedundant}},
   \code{\link{isObviouslyRedundant.editmatrix}}
 }
+\keyword{internal}
 

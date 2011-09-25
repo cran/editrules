@@ -143,7 +143,7 @@ buildELMatrix.cateditmatrix <- function(E,x, weight=rep(1, length(x)), ...){
              , nrow = nvars
              , dimnames = list(NULL, c(lvls, adaptvars))
              )
-  
+
   for (i in seq_along(vx)){
     A[i,vx[i]] <- 1
     A[i,paste("adapt",names(vx[i]), sep=".")] <- 1
@@ -239,28 +239,39 @@ localize_mip_rec <- function( E
              , timeout = maxduration
              , epsint = 1e-8
              )
- 
+   #print(lps)
    statuscode <- solve(lps)
    degeneracy <- get.solutioncount(lps)
    
-   sol <- get.variables(lps)#[adaptidx]
+   sol <- get.variables(lps)
+   # lps may have optimized and removed redundant adapt.variables, so retrieve names of variable...
+   names(sol) <- colnames(lps)
    w <- get.objective(lps)
+   
+   # get the positions of the adapt.variables
+   aidx <- grepl("^adapt\\.", names(sol))
+   # split solution in a value and a adapt part
+   sol.values <- sol[!aidx]
+   sol.adapt <- sol[aidx]
+   names(sol.adapt) <- sub("^adapt\\.","",names(sol.adapt))
+   
+   #print(list(sol=sol, w=w, aidx=aidx, sol.values=sol.values, sol.adapt=sol.adapt))
    #write.lp(lps, "test.lp")
    
-   vars <- getVars(Ee)
-   idx <- match(vars[-adaptidx], names(x), nomatch=0)
-   names(sol) <- vars
    #print(list(idx=idx, sol=sol))
    
    adapt <- sapply(x, function(i) FALSE)
-   adapt[idx] <- (sol[adaptidx] > 0)
+   adapt[names(sol.adapt)] <- (sol.adapt > 0)
    
    x_feasible <- x
+   idx <- match(names(sol.values), names(x), nomatch=0)
+   
    if (is.cateditmatrix(E)){
-     x_feasible[idx] <- asLevels(sol[-adaptidx])
+     x_feasible[idx] <- asLevels(sol.values)
    } else {
-     x_feasible[idx] <- sol[-adaptidx]
+     x_feasible[idx] <- sol.values
    }
+   
    t.stop <- proc.time()
    duration <- t.stop - t.start
    list( w=w
@@ -273,23 +284,33 @@ localize_mip_rec <- function( E
        )
 }
 
+# assumes that E is normalized!
 as.lp.editmatrix <- function(E){
    require(lpSolveAPI)
+   epsb <- 1e-8
    A <- getA(E)
-   ops <- getOps(E)
-   ops[ops=="=="] <- "="
    lps <- make.lp(nrow(A), ncol(A))
-   dimnames(lps) <- dimnames(A)
+   dimnames(lps) <- dimnames(A)   
    for (v in 1:ncol(A)){
      set.column(lps, v, A[,v])
    }
+   ops <- getOps(E)
+   ops[ops=="=="] <- "="
+   lt <- ops == "<"
+   ops[lt] == "<="
    set.constr.type(lps,types=ops)
-   set.constr.value(lps, getb(E))
+
+   b <- getb(E)
+   maxA <- max(abs(getAb(E)))
+   # adjust boundaries for less than 
+   b[lt] <- (b[lt] - maxA*epsb)
+   set.constr.value(lps, b)
+   #print(list(maxA=maxA, lps=lps))
    lps
 }
 
 asCat <- function(x){
-  nms <- paste(names(x),x, sep=":")
+  nms <- ifelse(x == "TRUE", names(x), paste(names(x),x, sep=":"))
   is.na(nms) <- is.na(x)
   names(nms) <- names(x)
   nms

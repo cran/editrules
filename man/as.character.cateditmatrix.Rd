@@ -13,5 +13,4 @@
 \description{
   Derives readable editrules from an editmatrix.
 }
-\keyword{internal}
 

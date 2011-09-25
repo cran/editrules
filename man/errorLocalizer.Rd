@@ -94,6 +94,12 @@
   The backtracker is prepared such that missing data in the
   input record \code{x} is already set to adapt, and
   missing variables have been eliminated already.
+
+  The backtracker will crash when \code{E} is an
+  \code{\link{editarray}} and one or more values are not in
+  the datamodel specified by \code{E}. The more
+  user-friendly function \code{\link{localizeErrors}}
+  circumvents this. See also \code{\link{checkDatamodel}}.
 }
 \examples{
 #### examples with numerical edits
@@ -193,6 +199,7 @@ el$searchNext()
   http://www.cbs.nl/nl-NL/menu/methoden/onderzoek-methoden/onderzoeksrapporten/proefschriften/2008-proefschrift-de-waal.htm
 }
 \seealso{
-  \code{\link{localizeErrors}}
+  \code{\link{localizeErrors}},
+  \code{\link{checkDatamodel}}, \code{\link{violatedEdits}}
 }
 

@@ -97,6 +97,6 @@ E <- editmatrix(E.df)
 print(E)
 }
 \seealso{
-  \code{\link{editrules}} \code{\link{as.editmatrix}}
+  \code{\link{as.editmatrix}}
 }
 
