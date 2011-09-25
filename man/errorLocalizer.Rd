@@ -25,7 +25,9 @@
   \item{...}{Arguments to be passed to other methods (e.g.
   reliability weights)}
 
-  \item{weight}{a \code{lengt(x)} positive weight vector}
+  \item{weight}{a \code{lengt(x)} positive weight vector.
+  The weights are assumed to be in the same order as the
+  variables in \code{x}.}
 
   \item{maxadapt}{maximum number of variables to adapt}
 

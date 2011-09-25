@@ -11,7 +11,7 @@ test_that("Numerical edit violations are detected",{
                    x = c(0,2,1),
                    y = c(0,0,1),
                    z = c(0,1,1))
-        ),
+        )[,,drop=FALSE],
         matrix(c(FALSE,FALSE,TRUE,FALSE,TRUE,FALSE),nrow=3)
     )
     # with a tolerance
@@ -23,7 +23,7 @@ test_that("Numerical edit violations are detected",{
                 y = c(0,0,1),
                 z = c(0,1,1)),
             tol=100
-        ),
+        )[,,drop=FALSE],
         matrix(c(FALSE,FALSE,FALSE,FALSE,FALSE,FALSE),nrow=3)
     )
 })
@@ -36,7 +36,7 @@ test_that("An empty editmatrix is always valid",{
                    x = c(0,2,1),
                    y = c(0,0,1),
                    z = c(0,1,1))
-        ),
+        )[,,drop=FALSE],
         matrix(nrow=3, ncol=0)
     )
 })
@@ -49,10 +49,47 @@ test_that("violation of inequalities are detected",{
     expect_true(all(
         violatedEdits(
         editmatrix("x < y"),
-        data.frame(x=c(1,2),y=c(-1,3))==c(TRUE,FALSE))
-    ))
+        data.frame(x=c(1,2),y=c(-1,3)))==c(TRUE,FALSE))
+    )
 })
 
+
+test_that("NA's in data are handled correctly by violatededits.editmatrix",{
+    expect_identical(
+        violatedEdits(editmatrix(c('x==0','y==0')),c(x=NA,y=1))[,],
+        c(e1=NA,e2=TRUE)
+    )
+    expect_identical(
+        violatedEdits(editmatrix(c('x>0','y==0')),c(x=NA,y=1))[,],
+        c(e1=NA,e2=TRUE)
+    )
+    expect_identical(
+        violatedEdits(editmatrix(c('x>0','y==0','x+y>=1')),c(x=NA,y=1))[,],
+        c(e1=NA,e2=TRUE,e3=NA)
+    )
+    expect_identical(
+        violatedEdits(editmatrix(c('x==0','y==0')),data.frame(x=c(NA,1),y=c(1,NA)))[,],
+        array(c(NA,TRUE,TRUE,NA),dim=c(2,2),dimnames=list(record=1:2,edit=c('e1','e2')))
+    )
+
+    expect_identical(
+        violatedEdits(editmatrix(c('x==0','y==0')),c(x=NA,y=1),tol=0.1)[,],
+        c(e1=NA,e2=TRUE)
+    )
+    expect_identical(
+        violatedEdits(editmatrix(c('x>0','y==0')),c(x=NA,y=1),tol=0.1)[,],
+        c(e1=NA,e2=TRUE)
+    )
+    expect_identical(
+        violatedEdits(editmatrix(c('x>0','y==0','x+y>=1')),c(x=NA,y=1),tol=0.1)[,],
+        c(e1=NA,e2=TRUE,e3=NA)
+    )
+    expect_identical(
+        violatedEdits(editmatrix(c('x==0','y==0')),data.frame(x=c(NA,1),y=c(1,NA)),tol=0.1)[,],
+        array(c(NA,TRUE,TRUE,NA),dim=c(2,2),dimnames=list(record=1:2,edit=c('e1','e2')))
+    )
+
+})
 
 test_that("categorical edit violations are detected",{
     E <-  editarray(c(
@@ -64,7 +101,7 @@ test_that("categorical edit violations are detected",{
         pregnant=c(TRUE,FALSE,TRUE,TRUE)
     )
     expect_equivalent(
-        violatedEdits(E,dat), 
+        violatedEdits(E,dat)[,,drop=FALSE], 
         matrix(c(
             FALSE, FALSE,  TRUE,
             FALSE, FALSE, FALSE,
@@ -72,7 +109,7 @@ test_that("categorical edit violations are detected",{
             TRUE,  FALSE, FALSE),byrow=TRUE,nrow=4)
     )
     expect_equivalent(
-        violatedEdits(E,dat,datamodel=FALSE), 
+        violatedEdits(E,dat,datamodel=FALSE)[,,drop=FALSE], 
         matrix(c(
              TRUE,
             FALSE,

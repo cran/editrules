@@ -1,6 +1,6 @@
 \name{print.editmatrix}
 \alias{print.editmatrix}
-\title{print edit matrix}
+\title{print editmatrix}
 \usage{
   \method{print}{editmatrix} (x, ...)
 }
@@ -11,7 +11,7 @@
   methods.}
 }
 \description{
-  print edit matrix
+  print editmatrix
 }
 \keyword{internal}
 
