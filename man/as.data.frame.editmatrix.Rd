@@ -11,11 +11,15 @@
   methods.}
 }
 \value{
-  data.frame with the coefficient matrix representation of
-  \code{x}, an operator column and CONSTANT column.
+  data.frame which can be converted to an editmatrix with
+  \code{\link{editmatrix}}
 }
 \description{
   Coerces an editmatrix to a \code{data.frame}. Useful for
-  storing/viewing the matrix representation of editrules.
+  storing manipulated edits. NOTE: since version 2.0-0, the
+  behaviour of this function changed to be more symmetrical
+  with \code{editmatrix.data.frame} and
+  \code{as.data.frame.editarray}. Use
+  \code{\link{toDataFrame}} for the old behaviour.
 }
 
