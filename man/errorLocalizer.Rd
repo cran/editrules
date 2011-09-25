@@ -12,7 +12,8 @@
 
   \method{errorLocalizer}{editmatrix} (E, x,
     weight = rep(1, length(x)), maxadapt = length(x),
-    maxweight = sum(weight), maxduration = 600, ...)
+    maxweight = sum(weight), maxduration = 600,
+    tol = sqrt(.Machine$double.eps), ...)
 
   \method{errorLocalizer}{editarray} (E, x,
     weight = rep(1, length(x)), maxadapt = length(x),
@@ -50,6 +51,10 @@
   \code{$searchNext()}, \code{$searchAll()} (not for
   \code{$searchBest}, use
   \code{$searchBest(maxdration=<duration>)} in stead)}
+
+  \item{tol}{tolerance passed to
+  \code{link{isObviouslyInfeasible}} (used to check for
+  bound conditions).}
 }
 \value{
   an object of class \code{\link{backtracker}}. Each
@@ -60,13 +65,22 @@
   \code{$searchBest()} picks one at random.
 }
 \description{
+  Create a backtracker object for error localization
+}
+\note{
+  This method is potentially very slow for objects of class
+  \code{\link{editset}} that contain many conditional
+  restrictions.  Consider using
+  \code{\link{localizeErrors}} with the option
+  \code{method="mip"} in such cases.
+}
+\section{Details}{
   Generate a \code{\link{backtracker}} object for error
   localization in numerical, categorical, or mixed data.
   This function generates the workhorse program, called by
   \code{\link{localizeErrors}} with
   \code{method=localizer}.
-}
-\details{
+
   The returned \code{\link{backtracker}} can be used to run
   a branch-and-bound algorithm which finds the least
   (weighted) number of variables in \code{x} that need to
@@ -112,12 +126,15 @@
   user-friendly function \code{\link{localizeErrors}}
   circumvents this. See also \code{\link{checkDatamodel}}.
 }
-\note{
-  This method is potentially very slow for objects of class
-  \code{\link{editset}} that contain many conditional
-  restrictions.  Consider using
-  \code{\link{localizeErrors}} with the option
-  \code{method="mip"} in such cases.
+
+\section{Numerical stability issues}{
+  For records with a large numerical range (\emph{eg}
+  1-1E9), the error locations represent solutions that will
+  allow repairing the record to within roundoff errors. We
+  highly recommend that you round near-zero values (for
+  example, everything \code{<= sqrt(.Machine$double.eps)})
+  and scale a record with values larger than or equal to
+  1E9 with a constant factor.
 }
 \examples{
 #### examples with numerical edits

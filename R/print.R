@@ -3,18 +3,21 @@
 #'
 #' @method print editarray
 #' @param x an \code{\link{editarray}}
+#' @param textOnly If \code{FALSE}, also print internal structure
 #' @param ... arguments to be passed to or from other methods.
 #' @keywords internal
 #' @export
-print.editarray <- function(x, ...){
+print.editarray <- function(x, textOnly=FALSE, ...){
     d <- datamodel(x)
     A <- getArr(x)
     if ( ncol(A) > 0 ){
         cn <- paste(abbreviate(d$variable),":",abbreviate(d$value),sep="")
         colnames(A) <- cn
     }
-    cat("Edit array:\n")
-    print(A)
+    if( !textOnly ){ 
+      print(A)
+      cat("Edit array:\n")
+    }
     cat("\nEdit rules:\n")
     desc <- attr(x,'description')
     if ( is.null(desc) ){ 
@@ -36,12 +39,15 @@ print.editarray <- function(x, ...){
 #' @method print editmatrix
 #'
 #' @param x editmatrix object to be printed
+#' @param textOnly If \code{FALSE}, also print internal structure
 #' @param ... further arguments passed to or from other methods.
 #' @keywords internal
-print.editmatrix <- function(x, ...){
-    cat("Edit matrix:\n")
-    print(toDataFrame(x), ...)
-    cat("\nEdit rules:\n")
+print.editmatrix <- function(x, textOnly=FALSE, ...){
+    if (!textOnly){
+      cat("Edit matrix:\n")
+      print(toDataFrame(x), ...)
+      cat("\nEdit rules:\n")
+    }
     desc <- attr(x,'description')
     if ( is.null(desc) ){ 
         desc <- rep("",nrow(x))
@@ -50,7 +56,7 @@ print.editmatrix <- function(x, ...){
     }
     u <- as.character(x)
     nm <- names(u)
-    pr <- paste(format(nm,width=max(nchar(nm))),':',paste(u,desc),collapse='\n')
+    pr <- paste(format(nm,width=max(nchar(nm))),':', paste(u,desc), collapse='\n')
     cat(pr,'\n')
 }
 
@@ -62,10 +68,12 @@ print.editmatrix <- function(x, ...){
 #' @param x cateditmatrix object to be printed
 #' @param ... further arguments passed to or from other methods.
 #' @keywords internal
-print.cateditmatrix <- function(x, ...){
-    cat("Edit matrix:\n")
-    print(as.data.frame(x), ...)
-    cat("\nEdit rules:\n")
+print.cateditmatrix <- function(x, textOnly=TRUE, ...){
+    if (!textOnly) {
+      cat("Edit matrix:\n")
+      print(as.data.frame(x), ...)
+      cat("\nEdit rules:\n")
+    }
     desc <- attr(x,'description')
     if ( is.null(desc) ){ 
         desc <- rep("",nrow(x))

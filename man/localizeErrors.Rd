@@ -19,8 +19,9 @@
   \item{verbose}{print progress to screen?}
 
   \item{weight}{Vector of positive weights for every
-  variable in \code{dat}, or an array of weights with the
-  same dimensions as \code{dat}.}
+  variable in \code{dat}, or an \code{array} or
+  \code{data.frame} of weights with the same dimensions as
+  \code{dat}.}
 
   \item{method}{should errorlocalizer ("localizer") or mix
   integer programming ("mip") be used?}

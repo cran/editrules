@@ -20,7 +20,7 @@
   to \code{solve} lpSolveAPI}
 
   \item{...}{other arguments that will be passed on to
-  \code{solve} or to generateXlims.}
+  \code{solve}.}
 }
 \value{
   list with solution weight \code{w}, \code{logical}
@@ -28,12 +28,20 @@
   the lp problem (an \code{lpExtPtr} object)
 }
 \description{
+  Localize errors using a MIP approach.
+}
+\section{Details}{
   \code{errorLocalizer.mip} uses \code{E} and \code{x} to
   define a mixed integer problem and solves this problem
   using \code{lpSolveApi}. This function can be much faster
   then \code{\link{errorLocalizer}} but does not return the
   degeneracy of a solution. However it does return an
   bonus: \code{x_feasible}, a feasible solution.
+}
+
+\section{Note}{
+  If the maximim absolute value of \eqn{x\geq 10^9} 1E9, it
+  is pre-scaled with a factor of \eqn{\sqrt{\max(|x|)}}.
 }
 \references{
   E. De Jonge and Van der Loo, M. (2012) Error localization

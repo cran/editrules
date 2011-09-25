@@ -18,8 +18,8 @@
   \item{pretext}{\code{character} text to print before
   progress report}
 
-  \item{weight}{either \code{1xncol(dat)} or
-  \code{nrow(dat)xncol(dat)} array of weights}
+  \item{weight}{a \code{nrow(dat)xncol(dat)} array of
+  weights}
 
   \item{method}{should errorlocalizer ("localizer") or mix
   integer programming ("mip") be used?}

@@ -3,7 +3,7 @@
 \title{Derive editmatrix with soft constraints based on boundaries of variables. This is a utility function that is used for
 constructing a mip/lp problem.}
 \usage{
-  softEdits(E, xlim, prefix = ".se.")
+  softEdits(E, prefix = "adapt.")
 }
 \arguments{
   \item{E}{normalized \code{editmatrix}}

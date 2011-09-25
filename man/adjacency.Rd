@@ -3,7 +3,6 @@
 \alias{adjacency.editarray}
 \alias{adjacency.editmatrix}
 \alias{adjacency.editset}
-\alias{as.igraph}
 \alias{as.igraph.editarray}
 \alias{as.igraph.editmatrix}
 \alias{as.igraph.editset}
@@ -25,21 +24,17 @@
     rules = c(rownames(E$num), rownames(E$mixcat)),
     vars = getVars(E), ...)
 
-  as.igraph(E, nodetype = c("all", "rules", "vars"),
-    rules = editnames(E), vars = getVars(E),
-    weighted = TRUE, ...)
-
-  \method{as.igraph}{editmatrix} (E,
+  \method{as.igraph}{editmatrix} (x,
     nodetype = c("all", "rules", "vars"),
     rules = editnames(E), vars = getVars(E),
     weighted = TRUE, ...)
 
-  \method{as.igraph}{editarray} (E,
+  \method{as.igraph}{editarray} (x,
     nodetype = c("all", "rules", "vars"),
     rules = editnames(E), vars = getVars(E),
     weighted = TRUE, ...)
 
-  \method{as.igraph}{editset} (E,
+  \method{as.igraph}{editset} (x,
     nodetype = c("all", "rules", "vars"),
     rules = editnames(E), vars = getVars(E),
     weighted = TRUE, ...)
@@ -57,10 +52,11 @@
   \item{...}{arguments to be passed to or from other
   methods}
 
-  \item{weighted}{Should the number of variables connecting
-  two edits be counted as weight?  Passed as
-  \code{weighted} argument to
-  \code{igraph::graph.adjacency}}
+  \item{x}{An object of class \code{\link{editmatrix}},
+  \code{\link{editarray}} or \code{\link{editset}}}
+
+  \item{weighted}{see
+  \code{\link[igraph]{graph.adjacency}}}
 }
 \value{
   the adjacency matrix of edits in \code{E} with resect to
@@ -70,9 +66,6 @@
   A set of edits can be represented as a graph where every
   vertex is an edit. Two vertices are connected if they
   have at least one variable in \code{vars} in common.
-
-  graph.editmatrix derives adjacency matrix of \code{E} and
-  converts it to an undirected \pkg{igraph} object.
 }
 \details{
   \code{adjacency} returns the adjacency matrix. The

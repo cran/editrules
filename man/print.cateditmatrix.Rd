@@ -2,7 +2,7 @@
 \alias{print.cateditmatrix}
 \title{print cateditmatrix}
 \usage{
-  \method{print}{cateditmatrix} (x, ...)
+  \method{print}{cateditmatrix} (x, textOnly = TRUE, ...)
 }
 \arguments{
   \item{x}{cateditmatrix object to be printed}

@@ -3,7 +3,7 @@ library(lpSolveAPI)
 
 context("Localize errors using MIP")
 
-test_that("localizeError_mip",{
+test_that("localizeError.mip",{
   Et <- editmatrix(expression( p + c == t
                              , c - 0.6*t >= 0
                              , c>=0
@@ -16,7 +16,7 @@ test_that("localizeError_mip",{
   sol <- errorLocalizer.mip(Et, x)
   expect_equal(sol$w, 1)
   expect_equivalent(sol$adapt, c(TRUE, FALSE, FALSE))
-  expect_equivalent(sol$x_feasible, c(75, 125, 200))
+  expect_equal(unname(sol$x_feasible[1:3]), c(75, 125, 200), tolerance=1e-10)
 })
 
 test_that('localizeErrors works without specified weight',{
@@ -32,7 +32,7 @@ test_that('localizeErrors works without specified weight',{
                        , method="mip"
                        )
   
-  #print(loc)
+#   print(loc)
   expect_equivalent( loc$adapt
                    , matrix(c(
                       TRUE , FALSE, FALSE,
@@ -74,7 +74,7 @@ test_that('localizeErrors works with single specified weight',{
 
 
 test_that('localizeErrors works with different weights per record',{
-  expect_equivalent(localizeErrors(
+  le <- localizeErrors(
     E       = editmatrix('x+y==z'),
     dat     = data.frame(
       x = c(1,1,1),
@@ -89,7 +89,8 @@ test_that('localizeErrors works with different weights per record',{
                      byrow=TRUE
                      ),
     method="mip"
-    )$adapt,
+    )
+    expect_equivalent(le$adapt,
                     matrix(c(
                       TRUE , FALSE, FALSE,
                       FALSE, TRUE , FALSE ,
@@ -333,6 +334,84 @@ test_that("localizeErrors works with TRUE/FALSE",{
   # should run without errors...
   localizeErrors(E,data.frame(A=c(TRUE,FALSE),B=c('c',"d")), method="mip")
 })
+
+
+context("MIP-based error localization numerical stability tests")
+
+test_that("Records of range 1-1e9",{
+   p <- 1:9
+   x <- 10^(sqrt(p))
+   
+   names(x) <- paste("x",p,sep="")
+   e <- editmatrix(expression(
+      x1 + x2 == x3,
+      x4 + x5 + x6 == x7,
+      x7 + x3 + x8 == x9
+   ))
+   expect_equal(
+      errorLocalizer.mip(e,x)$w,
+      errorLocalizer(e,x)$searchBest()$w
+   )
+   
+   x[] <- 10^(p)
+   # MIP is sensitive to (very) large differences in values (mvdl/ejne 11.08.2012)
+   expect_true(
+     errorLocalizer.mip(e,x)$w != errorLocalizer(e,x)$searchBest()$w
+   )
+})
+
+
+test_that("Consistency with B&B algorithm",{
+# generated from smoketest. Used to generate bug in weight count.
+   r <- c(
+      x1 = -0.556503362667066,
+      x2 = -0.0839342133749159,
+      x3 = 0.775427129507229,
+      x4 = -1.94883105542653,
+      x5 = 1.11931659004076,
+      x6 = -1.453437500466,
+      x7 = 0.47278745357947
+   )
+   e <- editmatrix(expression(
+      x1 + x2 == x3
+      ,x3 + x4 == x5
+      ,x3 + x5 == x7
+      ,0 <= x1
+      ,0 <= x2
+      ,0 <= x3
+      ,0 <= x4
+      ,0 <= x5
+      ,0 <= x6
+      ,0 <= x7
+   ))
+
+   expect_equal(
+      errorLocalizer(e,r)$searchBest()$w, 
+      errorLocalizer.mip(e,r)$w
+   )
+   X <- as.data.frame(t(r))
+   expect_equal(
+      localizeErrors(e,X)$status$weight[1],
+      localizeErrors(e,X,method="mip")$status$weight[1]
+   )
+})
+
+
+test_that("strict inequalities are treated correctly", {
+  E <- editmatrix("x > 0")
+  expect_that(errorLocalizer.mip(E, c(x=0))$adapt, is_equivalent_to(TRUE))
+  expect_that(errorLocalizer.mip(E, c(x=1e-4))$adapt, is_equivalent_to(TRUE))
+
+  expect_that(errorLocalizer.mip(E, c(x=1e-3))$adapt, is_equivalent_to(FALSE))
+})
+
+
+
+
+
+
+
+
 
 
 

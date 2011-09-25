@@ -80,6 +80,11 @@
 
   as.data.frame violatedEdits
 }
+\note{
+  When summarizing an object of class \code{violatedEdits},
+  every empty value is counted as one edit violation when
+  counting violations per record.
+}
 \examples{
 # Using character vector to define contraints
 E <- editmatrix(c( "x+3*y==2*z"

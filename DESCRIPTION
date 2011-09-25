@@ -16,26 +16,26 @@ Description: Facilitates reading and manipulating (multivariate) data
         rules and erroneous fields can be found based on Fellegi and
         Holt's generalized principle. Rules dependencies can be
         visualized with using the igraph package.
-Version: 2.5-0
-Depends: R (>= 2.12.0)
+Version: 2.7
+Depends: R (>= 2.12.0), igraph
 URL: http://code.google.com/p/editrules/
 Date: 2011-09-25
-Suggests: lpSolveAPI, iterators, igraph0
+Suggests: lpSolveAPI, iterators
 Collate: 'adjacency.R' 'as.igraph.R' 'editset.R' 'editarray.R'
-        'editmatrix.R' 'as.matrix.R' 'backtracker.R' 'blocks.R'
-        'buildELMatrix.R' 'cateditmatrix.R' 'checkDatamodel.R'
-        'checkRows.R' 'contains.R' 'c.R' 'disjunct.R' 'duplicated.R'
-        'echelon.R' 'editarrayAttr.R' 'editAttr.R' 'editfile.R'
-        'editmatrixAttr.R' 'editrules-data.R' 'eliminate.R'
-        'errorLocalizer_mip.R' 'errorLocalizer.R' 'errorLocation.R'
-        'expandEdits.R' 'generateEdits.R' 'getH.R' 'getUpperBounds.R'
-        'getVars.R' 'isFeasible.R' 'isObviouslyInfeasible.R'
-        'isObviouslyRedundant.R' 'is.R' 'isSubset.R' 'list2env.R'
-        'localizeErrors.R' 'parseCat.R' 'parseEdits.R' 'parseMix.R'
-        'parseNum.R' 'perturbWeights.R' 'pkg.R' 'plot_errorLocation.R'
-        'plot.R' 'print.R' 'reduce.R' 'softEdits.R' 'str.R'
-        'subsetting.R' 'substValue.R' 'summary.R' 'violatedEdits.R'
-        'zzz.R'
-Packaged: 2012-06-05 14:10:22 UTC; mark
+        'editmatrix.R' 'as.matrix.R' 'backtracker.R' 'blocks.R' 'c.R'
+        'cateditmatrix.R' 'checkDatamodel.R' 'checkRows.R' 'contains.R'
+        'disjunct.R' 'duplicated.R' 'echelon.R' 'editarrayAttr.R'
+        'editAttr.R' 'editfile.R' 'editmatrixAttr.R' 'editrules-data.R'
+        'eliminate.R' 'errorLocalizer.R' 'errorLocalizer_mip.R'
+        'errorLocation.R' 'expandEdits.R' 'generateEdits.R' 'getH.R'
+        'getUpperBounds.R' 'getVars.R' 'is.R' 'isFeasible.R'
+        'isObviouslyInfeasible.R' 'isObviouslyRedundant.R' 'isSubset.R'
+        'list2env.R' 'localizeErrors.R' 'parseCat.R' 'parseEdits.R'
+        'parseMix.R' 'parseNum.R' 'perturbWeights.R' 'pkg.R' 'plot.R'
+        'plot_errorLocation.R' 'print.R' 'reduce.R' 'softEdits.R'
+        'str.R' 'subsetting.R' 'substValue.R' 'summary.R'
+        'violatedEdits.R' 'writeELAsMip.R' 'zzz.R'
+Packaged: 2013-03-01 14:52:19 UTC; ejne
+NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2012-06-05 14:45:57
+Date/Publication: 2013-03-01 17:38:09

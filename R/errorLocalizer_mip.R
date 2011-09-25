@@ -9,18 +9,22 @@ checklpSolveAPI <- function(){
 
 #' Localize errors using a MIP approach.
 #' 
+#' @section Details:
 #' \code{errorLocalizer.mip} uses \code{E} and \code{x} to define a mixed integer problem
 #' and solves this problem using \code{lpSolveApi}. This function can be much faster then \code{\link{errorLocalizer}} 
 #' but does not return the degeneracy of a solution. However it does return an bonus: 
 #' \code{x_feasible}, a feasible solution.
 #'
+#' @section Note:
+#' If the maximim absolute value of \eqn{x\geq 10^9} 1E9, it is pre-scaled with
+#' a factor of \eqn{\sqrt{\max(|x|)}}.
 #'
 #' @param E an \code{\link{editset}}, \code{\link{editmatrix}}, or \code{\link{editarray}}
 #' @param x named \code{numeric} with data
 #' @param weight  \code{numeric} with weights
 #' @param maxduration number of seconds that is spent on finding a solution
 #' @param verbose verbosity argument that will be passed on to \code{solve} lpSolveAPI
-#' @param ... other arguments that will be passed on to \code{solve} or to generateXlims.
+#' @param ... other arguments that will be passed on to \code{solve}.
 #' @return list with solution weight \code{w}, \code{logical} \code{adapt} stating what to adapt,  
 #'  \code{x_feasible} and the lp problem (an \code{lpExtPtr} object)
 #'
@@ -44,37 +48,28 @@ errorLocalizer.mip <- function( E
 
    vars <- getVars(E)
    E <- as.editset(E)
-
-    # perturb weights for randomized selection from equivalent solutions
+   DUMP <- FALSE
+   
    wp <- perturbWeights(as.vector(weight))
    
    t.start <- proc.time()
-   elm <- buildELMatrix(E=E, x=x, weight=wp, ...)
    
-   Ee <- elm$E
-   objfn <- elm$objfn
-   ops <- getOps(Ee)
-   lps <- as.lp.editmatrix(Ee, obj=elm$objfn, xlim=elm$xlim)
-   # TODO move this code into as.lp.editmatrix
-    ## the following code...
-    #   set.bounds(lps, lower=elm$xlim[,1], upper=elm$xlim[,2], columns=1:nrow(elm$xlim))
-    ## attempted to set bounds at non-existent columns 
-    ## this is better solved in buildELMatrix (mvdl)
-   icol <- match(rownames(elm$xlim),colnames(lps),nomatch=0)
-   lo <- elm$xlim[icol>0,1]
-   up <- elm$xlim[icol>0,2]
-   set.bounds(lps, lower=lo, upper=up, columns=icol[icol>0]) 
-   set.type(lps, columns=elm$binvars , "binary")
-   set.objfn(lps, objfn)
+   elm <- writeELAsMip(E=E, x=x, weight=wp, ...)
+   
+   lps <- as.lp.mip(elm)
    # end TODO
    lp.control( lps
-             , presolve = "rows"    # move univariate constraints into bounds
+#             , presolve = "rows"    # move univariate constraints into bounds
              , timeout = maxduration
-             , epsint = 1e-8
-             )
-   #print(lps)
+             , epsint = 1e-15
+#             , epssel = 1e-15
+#            , epsb = 1e-15
+#              , epsd = 1e-15
+#              , epspivot = 1e-15
+   )
 
-    
+   if (DUMP) write.lp(lps, "test3.lp")
+   
    statuscode <- solve(lps)
    degeneracy <- get.solutioncount(lps)
    
@@ -91,22 +86,25 @@ errorLocalizer.mip <- function( E
    
    cat.idx <- names(sol.values) %in% names(elm$binvars)
    sol.cat <- asLevels(sol.values[cat.idx])
-   sol.num <- sol.values[!cat.idx]
+   
+   delta.idx <- grepl("^delta\\.", names(sol.values))
+   sol.num <- sol.values[!cat.idx & !delta.idx]
    
    #print(list(sol.cat=sol.cat, sol.num=sol.num))
    
    names(sol.adapt) <- sub("^adapt\\.","",names(sol.adapt))
    
-   #write.lp(lps, "test.lp")
+   if (DUMP) write.lp(lps, "test4.lp")
    #print(list(idx=idx, sol=sol))
    adapt <- sapply(x, function(i) FALSE)
    adapt[names(sol.adapt)] <- (sol.adapt > 0)
-
+   #browser()
+   
    x_feasible <- x
    idx <- match(names(sol.values), names(x), nomatch=0)
    
-   x_feasible[names(sol.num)] <- sol.num
-   
+   x_feasible[names(sol.num)] <- sol.num 
+    
    if (length(sol.cat))
       x_feasible[names(sol.cat)] <- sol.cat
 #    if (is.cateditmatrix(E)){
@@ -129,36 +127,45 @@ errorLocalizer.mip <- function( E
        )
 }
 
+
+# scale a numeric vector
+scale_fac <- function(x){
+   sc <- 1
+   m <- max(abs(x),na.rm=TRUE)
+   if (is.finite(m) && m >= 1E9 ) sc <- 1/sqrt(m)
+   sc   
+}
+
 # assumes that E is normalized!
-as.lp.editmatrix <- function(E, obj, xlim, type){
-   require(lpSolveAPI)
-   epsb <- 1e-7
+as.lp.mip <- function(mip){
+   if (!require(lpSolveAPI)){
+     stop("This function needs lpSolveAPI which can be installed from CRAN")
+   }
+   
+   E <- mip$E
+   
    A <- getA(E)
    lps <- make.lp(nrow(A), ncol(A))
+   
    dimnames(lps) <- dimnames(A)   
    for (v in 1:ncol(A)){
      set.column(lps, v, A[,v])
    }
+   
    ops <- getOps(E)
    ops[ops=="=="] <- "="
    lt <- ops == "<"
    ops[lt] == "<="
    set.constr.type(lps,types=ops)
-
+   
+   set.objfn(lps, mip$objfn)
+   set.type(lps, columns=mip$binvars , "binary")
+   set.bounds(lps, lower=rep(-Inf, length(mip$numvars)), columns=mip$numvars)
+   
    b <- getb(E)
-   Ab <- abs(getAb(E))
-   
-   maxA <- max(Ab)
-   rangeA <- range(Ab[Ab>0])
-   m <- rangeA[1]/rangeA[2]
-   
-   #print(epsb/m)
-   #print(range(Ab[Ab>0]))
-   # adjust boundaries for less than 
-   
-   b[lt] <- (b[lt] - m)
+   b[lt] <- (b[lt] - mip$epsilon)
    set.constr.value(lps, b)
-   #print(list(maxA=maxA, lps=lps))
+   
    lps
 }
 
@@ -182,7 +189,7 @@ asLevels <- function(x){
   names(lvls) <- vars
   lvls[x > 0 | logicals]
 }
-   
+
 #testing...
 
 # Et <- editmatrix(expression(

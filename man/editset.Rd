@@ -1,4 +1,4 @@
-\name{c.editset}
+\name{editset}
 \alias{as.character.editset}
 \alias{as.data.frame.editset}
 \alias{c.editset}
@@ -6,14 +6,14 @@
 \alias{summary.editset}
 \title{Read general edits}
 \usage{
-  \method{c}{editset} (...)
-
   editset(editrules, env = new.env())
 
   \method{as.character}{editset} (x, datamodel = TRUE,
     useIf = TRUE, dummies = FALSE, ...)
 
   \method{as.data.frame}{editset} (x, ...)
+
+  \method{c}{editset} (...)
 
   \method{summary}{editset} (object, useBlocks = TRUE, ...)
 }
@@ -71,7 +71,7 @@ E <- editset(expression(
     if ( A == 'a') B == 'b',
     if ( A == 'b') x >= 0,
     u + v == w,
-    if ( u == 0 ) w >= 0
+    if ( u >= 0 ) w >= 0
 ))
 E
 summary(E)
@@ -102,7 +102,7 @@ E <- editset(expression(
     if ( A == 'a') B == 'b',
     if ( A == 'b') x >= 0,
     u + v == w,
-    if ( u == 0 ) w >= 0
+    if ( u >= 0 ) w >= 0
 ))
 E
 summary(E)
