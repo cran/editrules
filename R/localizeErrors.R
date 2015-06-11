@@ -11,7 +11,7 @@
 #' of weights is passed, the weights are assumed to be in the same order as the columns of \code{dat}. By passing
 #' an array of weights (of same dimensions as \code{dat}) separate weights can be specified for each record.
 #'
-#' In general, the solotion to an error localiztion problem need not be unique, especially when no weights 
+#' In general, the solution to an error localization problem need not be unique, especially when no weights 
 #' are defined. In such cases, \code{localizeErrors} chooses a solution randomly. See \code{\link{errorLocalizer}}
 #' for more control options.
 #'
@@ -22,10 +22,8 @@
 #' but requires that upper and lower bounds are set on each numerical variable. Sensible bounds are derived
 #' automatically (see the vignette on error localization as MIP), but could cause instabilities in very rare cases.
 #'
-#' @note The Branch and Bound method is potentially slow for large sets of connected edits, especially
-#'      when conditional edits are involved. Consider using \code{method="mip"} in such cases. The run-time
-#'      of the B&B algorithm is related to the number of uquivalent solutions, so setting different weights
-#'      (reducing the number of unique solutions) mey reduce computation time as well.
+#' @note As of version 2.8.1 method 'bb' is not available for conditional numeric (e.g: \code{if (x>0) y>0})
+#'  or conditional edits of mixed type (e.g. \code{if (A=='a') x>0}).
 #'
 #' @param E an object of class \code{\link{editset}} \code{\link{editmatrix}} or \code{\link{editarray}}
 #' @param dat a \code{data.frame} with variables in E.
@@ -36,7 +34,8 @@
 #' @param method should errorlocalizer ("bb") or mix integer programming ("mip") be used? 
 #' @param retrieve Return the first found solution or the best solution? ("bb" method only).
 #' @param maxduration maximum time for \code{$searchBest()} to find the best solution for a single record.
-#' @param ... Further options to be passed to \code{\link{errorLocalizer}}
+#' @param ... Further options to be passed to \code{\link{errorLocalizer}} or \code{\link{errorLocalizer_mip}}. Specifically, when
+#'   \code{method='mip'}, the parameter \code{lpcontrol} is a list of options passed to \code{lpSolveAPI}.
 #'  
 #' @seealso \code{\link{errorLocalizer}}
 #' @return an object of class \code{\link{errorLocation}}
@@ -57,16 +56,24 @@ localizeErrors <- function(E, dat, verbose=FALSE, weight=rep(1,ncol(dat)), maxdu
   useBlocks=TRUE, retrieve=c("best","first"), ...){
     stopifnot(is.data.frame(dat))
     retrieve <- match.arg(retrieve)
+    method <- match.arg(method)
     if ( any(is.na(weight)) ) stop('Missing weights detected')    
     if ( is.data.frame(weight) ) weight <- as.matrix(weight)
     if (is.array(weight) && !all(dim(weight) == dim(dat)) ) 
         stop("Weight must be vector or array with dimensions equal to argument 'dat'")
     # TODO: does not produce right weight vector ico vector of unequal weights.
 
+    if ( is.editset(E) && any(editType(E) == 'mix') && method == "bb"){
+      method <- "mip"
+      message("Method 'bb' is not available for conditional edits on numerical or mixed data. Switching to 'mip'.")
+    }
+    
+    
     if ( is.vector(weight) )  weight  <- t(array(weight,dim=dim(dat)[2:1]))
     if ( is.null(colnames(weight)) ) colnames(weight) <- names(dat)
 
     # convert logical and factor to character (except for complete NA-columns)
+    
     dat <- data.frame(
         rapply(
             dat, f=function(x){
@@ -76,13 +83,11 @@ localizeErrors <- function(E, dat, verbose=FALSE, weight=rep(1,ncol(dat)), maxdu
                     x
                 }
             }, 
-            classes=c('logical','factor'), 
+            classes=if(method=="mip") 'factor' else c('logical','factor'), 
             how='replace'
         ),
         stringsAsFactors=FALSE
     )
-    # check for lpSolveApi 
-    if ( match.arg(method) == "mip" ) checklpSolveAPI()
 
     # separate E in independent blocks
     if ( is.editset(E) && !method=="mip"){
@@ -104,7 +109,6 @@ localizeErrors <- function(E, dat, verbose=FALSE, weight=rep(1,ncol(dat)), maxdu
             i <- i + 1
             blockCount <- paste('Processing block ',format(i,width=nchar(n)), ' of ',n,',',sep="")
         }
-
         err <- err %+% localize(
             b, 
             dat, 
@@ -200,7 +204,7 @@ localize <- function(E, dat, verbose, pretext="Processing", call=sys.call(), wei
         }
         r <- as.list(dat[i,vars,drop=FALSE])
         wt <- weight[i,]
-        le <- errorLocalizer.mip(E, r, weight=wt, ...)
+        le <- errorLocalizer_mip(E, r, weight=wt, maxduration=maxduration, ...)
         if (!le$maxdurationExceeded){
           err[i,vars] <- le$adapt
           wgt[i] <- le$w

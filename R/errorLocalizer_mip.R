@@ -1,29 +1,21 @@
-# test for presence of lpSolveAPI package.
-checklpSolveAPI <- function(){
-    nolpSolveAPI <- paste(
-        "The lpSolveAPI package is required for this function.", 
-        "If you have access to an internet connection it can be installed",
-        "with install.packages('lpSolveAPI')",sep="\n")
-    require(lpSolveAPI) || stop(nolpSolveAPI)
-}
 
 #' Localize errors using a MIP approach.
 #' 
 #' @section Details:
-#' \code{errorLocalizer.mip} uses \code{E} and \code{x} to define a mixed integer problem
+#' \code{errorLocalizer_mip} uses \code{E} and \code{x} to define a mixed integer problem
 #' and solves this problem using \code{lpSolveApi}. This function can be much faster then \code{\link{errorLocalizer}} 
 #' but does not return the degeneracy of a solution. However it does return an bonus: 
 #' \code{x_feasible}, a feasible solution.
 #'
-#' @section Note:
-#' If the maximim absolute value of \eqn{x\geq 10^9} 1E9, it is pre-scaled with
-#' a factor of \eqn{\sqrt{\max(|x|)}}.
+#' 
 #'
 #' @param E an \code{\link{editset}}, \code{\link{editmatrix}}, or \code{\link{editarray}}
 #' @param x named \code{numeric} with data
 #' @param weight  \code{numeric} with weights
 #' @param maxduration number of seconds that is spent on finding a solution
 #' @param verbose verbosity argument that will be passed on to \code{solve} lpSolveAPI
+#' @param lpcontrol named \code{list}  of arguments that will be passed on to \code{\link[lpSolveAPI]{lp.control}}. \code{maxduration} will override
+#'  \code{lpSolve}'s \code{timeout} argument.
 #' @param ... other arguments that will be passed on to \code{solve}.
 #' @return list with solution weight \code{w}, \code{logical} \code{adapt} stating what to adapt,  
 #'  \code{x_feasible} and the lp problem (an \code{lpExtPtr} object)
@@ -37,12 +29,13 @@ checklpSolveAPI <- function(){
 #'  lp_solve and Kjell Konis. (2011). lpSolveAPI: R Interface for
 #'  lp_solve version 5.5.2.0. R package version 5.5.2.0-5.
 #'  http://CRAN.R-project.org/package=lpSolveAPI
-#'
-errorLocalizer.mip <- function( E
+#' @export
+errorLocalizer_mip <- function( E
                             , x
                             , weight=rep(1, length(x))
-                            , maxduration=600
+                            , maxduration=600L
                             , verbose="neutral"
+                            , lpcontrol = getOption("er.lpcontrol")
                             , ...
                             ){
 
@@ -54,19 +47,15 @@ errorLocalizer.mip <- function( E
    
    t.start <- proc.time()
    
-   elm <- writeELAsMip(E=E, x=x, weight=wp, ...)
+   #elm <- writeELAsMip(E=E, x=x, weight=wp, ...)
+   elm <- as.mip(E=E, x=x, weight=wp, prefix="adapt.",...)
    
    lps <- as.lp.mip(elm)
    # end TODO
-   lp.control( lps
-#             , presolve = "rows"    # move univariate constraints into bounds
-             , timeout = maxduration
-             , epsint = 1e-15
-#             , epssel = 1e-15
-#            , epsb = 1e-15
-#              , epsd = 1e-15
-             , epspivot = 1e-15
-   )
+
+   lpcontrol$timeout <- maxduration
+   lpcontrol$lprec <- lps
+   do.call(lp.control,lpcontrol)
 
    if (DUMP) write.lp(lps, "test3.lp")
    
@@ -139,10 +128,16 @@ scale_fac <- function(x){
 }
 
 # assumes that E is normalized!
+#' Coerces a \code{mip} object into an lpsolve object
+#' 
+#' \code{as.lp.mip} transforms a mip object into a lpSolveApi object.
+#' @param mip object of type \code{mip}.
+#' @seealso \code{\link{as.mip}}, \code{\link{make.lp}}
+#' @export
 as.lp.mip <- function(mip){
-   if (!require(lpSolveAPI)){
-     stop("This function needs lpSolveAPI which can be installed from CRAN")
-   }
+#    if (!require(lpSolveAPI)){
+#      stop("This function needs lpSolveAPI which can be installed from CRAN")
+#    }
    E <- mip$E
    
    A <- getA(E)
@@ -155,19 +150,43 @@ as.lp.mip <- function(mip){
    
    ops <- getOps(E)
    ops[ops=="=="] <- "="
-   lt <- ops == "<"
-   ops[lt] == "<="
+   ops[ops=="<"] <- "<="
    set.constr.type(lps,types=ops)
-   
+   #print(list(lps=lps, objfn=mip$objfn, mip=mip, b=getb(E)))
    set.objfn(lps, mip$objfn)
    set.type(lps, columns=mip$binvars , "binary")
    set.bounds(lps, lower=rep(-Inf, length(mip$numvars)), columns=mip$numvars)
    
-   b <- getb(E)
-   b[lt] <- (b[lt] - mip$epsilon)
-   set.constr.value(lps, b)
+   # should improve performance quite a lot: a SOS1 makes bin variables exclusive.
+   for (sos in asSOS(colnames(lps))){
+     add.SOS( lps, sos$name, 
+              type=1, priority=1, 
+              columns=sos$columns, 
+              weights=sos$weights
+            )
+   }
    
+   b <- getb(E)
+   set.constr.value(lps, b)
    lps
+}
+
+# splits category names (<variable>:<category>) into variable column groups needed
+# for SOS1 constraints
+asSOS <- function(vars){
+  CAT <- ":\\w+"
+  
+  idx <- grepl(CAT, vars)
+  var <- sub(CAT, "", vars)
+  
+  sosname <- unique(var[idx])
+  sapply(sosname, function(sos){
+    columns = which(var == sos)
+    list( name=sos
+        , columns=columns
+        , weights = rep(1, length(columns))
+    )
+  }, simplify=FALSE)
 }
 
 asCat <- function(x, sep=":", useLogicals=TRUE){
@@ -203,14 +222,14 @@ asLevels <- function(x){
 # 
 # x <- c(p=755,c=125,t=200)
 # 
-# errorLocalizer.mip(Et, x)
+# errorLocalizer_mip(Et, x)
 # 
 # Et2 <- editmatrix(expression(
 #   p + c == t    
 #   ))
 # x <- c(p=75,c=125,t=300)
-# errorLocalizer.mip(Et2, x)  # random?
-# errorLocalizer.mip(Et2, x, weight=c(1,1,1))  # random?
+# errorLocalizer_mip(Et2, x)  # random?
+# errorLocalizer_mip(Et2, x, weight=c(1,1,1))  # random?
 # 
 # 
 # 
@@ -232,7 +251,7 @@ asLevels <- function(x){
 # r <- c(age = 'under aged', maritalStatus='married', positionInHousehold='child')
 # # buildELMatrix(Et,x)
 # # buildELMatrix(Ec,r)
-#   errorLocalizer.mip(Et, x)
-#   errorLocalizer.mip(Ec, r)
+#   errorLocalizer_mip(Et, x)
+#   errorLocalizer_mip(Ec, r)
 # # # asCat(r)
 # #  

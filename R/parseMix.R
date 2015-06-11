@@ -41,7 +41,7 @@ parseMix <- function(e, editname="", numid=0, negate=TRUE){
       }
       
       numid <<- numid + 1
-      numvar <- paste(editname, ".num.",numid,sep="")
+      numvar <- paste(editname, ".l",numid,sep="")
       #replace numeric edit with generated dummy boolean edit name and handle normal form
       dum <- as.name(numvar)
       if (neg){ 
@@ -66,7 +66,10 @@ parseMix <- function(e, editname="", numid=0, negate=TRUE){
   
   negNums <- nums
   negNums[] <- sapply(nums, negateEdit)
-  names(negNums) <- paste("!",names(negNums), sep="")
+  
+  if (length(negNums)){
+    names(negNums) <- paste("!",names(negNums), sep="")
+  }
   
   list( cat  = cat # parseCat(cat)
       , nums = nums # lapply(nums, parseNum)

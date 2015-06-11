@@ -1,4 +1,6 @@
 
+#' Combine editmatrices 
+#'
 #' @method c editmatrix
 #' @rdname editmatrix
 #' @export
@@ -6,7 +8,10 @@
 c.editmatrix <- function(...){
   ems <- list(...)
   ems <- ems[!sapply(ems,is.null)]
+  ems <- ems[!sapply(ems,function(e) nedits(e)==0)]
 
+  if (length(ems)==0) return(editmatrix(expression()))
+  
   ems <- lapply(ems, as.editmatrix)
   vars <- sort(unique(unlist(lapply(ems, getVars.editmatrix))))
   
@@ -32,11 +37,10 @@ c.editmatrix <- function(...){
   as.editmatrix(A=A, ops=ops, b=b)
 }
 
-#' 
-#' @rdname editarray
+#' Combine editarrays
 #' @method c editarray
 #' @export
-#' 
+#' @rdname editarray
 c.editarray <- function(...){
   ems <- list(...)
   ems <- ems[!sapply(ems,is.null)]

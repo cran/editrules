@@ -1,6 +1,5 @@
 # 
 removeRedundant <- function(E){
-  checklpSolveAPI()
   
   m <- as.mip(E)
   A <- -getA(m$E)
@@ -18,13 +17,14 @@ removeRedundant <- function(E){
     lps <- as.lp.mip(m1)
     statuscode <- solve(lps)
     
-    o <- -get.objective(lps)
+    o <- -1*get.objective(lps)
     
     keep[r] <<- (b[r] <= o) 
     c(o=o, t=b[r])
   })
-  keep
+  structure(E[names(keep)[keep],], removed=E[names(keep)[!keep],])
 }
 
 # E <- editmatrix(c(A="x>2", B="y > x", C="y>1" , D="x>1"))
-# removeRedundant(E)
+# Er <- removeRedundant(E)
+# Er

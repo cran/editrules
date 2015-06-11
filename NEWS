@@ -1,3 +1,18 @@
+version 2.9.0
+- some updates on the NAMESPACE to comply to new CRAN policies.
+- bugfix: MIP method for error localisation ignored time constraint
+- bugfix: edge case in c.editmatrix for empty edit matrices.
+- bugfix: editfile w/type='num' would crash on empty file input.
+- bugfix in as.igraph methods for editmatrix, editarray, editset
+- bugfix: edge case in substValue methods
+- bugfix: contains.editmatrix crashed on editmatrix containing 0 variables
+- bugfix: user-defined M was ignored in MIP version of error localizer.
+- mixed typed edits now have naming convention used in paper
+- added SOS1 type edits for categorical constraint. Should improve mip performance.
+- editset subsetting now support negative row index
+- printing an empty cateditmatrix doesn't fail anymore
+- fix a bug in parsing a mix edit with no numeric constraint in the premisse (thanks to Alois Haslinger)
+
 version 2.7.2
 - Suggest-dependency on iterators removed
 - now depends on lpSolveAPI (instead of suggests) 
