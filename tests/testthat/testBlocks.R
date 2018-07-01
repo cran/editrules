@@ -1,5 +1,3 @@
-
-
 context("Detecting blocks")
 
 

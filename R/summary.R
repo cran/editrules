@@ -117,6 +117,7 @@ print.editsummary <- function(x,...){
 #' @rdname errorLocation
 #' @export
 #' @example ../examples/localizeErrors.R
+#' @importFrom stats quantile
 summary.errorLocation <- function(object,...){
     prb <- c(0,0.5,1)
      

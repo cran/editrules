@@ -1,5 +1,3 @@
-
-require(testthat)
 context("Obvious redundancy")
 
 test_that("Obviously redundant rows are detected",{

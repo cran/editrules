@@ -41,10 +41,11 @@ getnames <- function(E) rownames(E)
 #' @return \code{data.frame} describing the categorical variables and their levels.
 #' @example ../examples/datamodel.R
 #' @seealso \code{\link{checkDatamodel}}
+#' @importFrom utils stack
 #' @export
 datamodel <- function(E){
     if (ncol(E) == 0 ) return(data.frame(variable=character(0),value=character(0)))
-    st <- stack(getInd(E))
+    st <- utils::stack(getInd(E))
     vals <- do.call(c,lapply(getInd(E),names))
     data.frame(variable=as.character(st[,2]),value=vals,row.names=1:nrow(st))
 }

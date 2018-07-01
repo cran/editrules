@@ -55,14 +55,14 @@ errorLocalizer_mip <- function( E
 
    lpcontrol$timeout <- maxduration
    lpcontrol$lprec <- lps
-   do.call(lp.control,lpcontrol)
+   do.call(lpSolveAPI::lp.control,lpcontrol)
 
-   if (DUMP) write.lp(lps, "test3.lp")
+   if (DUMP) lpSolveAPI::write.lp(lps, "test3.lp")
    
    statuscode <- solve(lps)
-   degeneracy <- get.solutioncount(lps)
+   degeneracy <- lpSolveAPI::get.solutioncount(lps)
    
-   sol <- get.variables(lps)
+   sol <- lpSolveAPI::get.variables(lps)
    # lps may have optimized and removed redundant adapt.variables, so retrieve names of variable...
    names(sol) <- colnames(lps)
    
@@ -85,7 +85,7 @@ errorLocalizer_mip <- function( E
    
    names(sol.adapt) <- sub("^adapt\\.","",names(sol.adapt))
    
-   if (DUMP) write.lp(lps, "test4.lp")
+   if (DUMP) lpSolveAPI::write.lp(lps, "test4.lp")
    #print(list(idx=idx, sol=sol))
    adapt <- sapply(x, function(i) FALSE)
    adapt[names(sol.adapt)] <- (sol.adapt > 0)
@@ -141,25 +141,25 @@ as.lp.mip <- function(mip){
    E <- mip$E
    
    A <- getA(E)
-   lps <- make.lp(nrow(A), ncol(A))
+   lps <- lpSolveAPI::make.lp(nrow(A), ncol(A))
    
    dimnames(lps) <- dimnames(A)   
    for (v in 1:ncol(A)){
-     set.column(lps, v, A[,v])
+     lpSolveAPI::set.column(lps, v, A[,v])
    }
    
    ops <- getOps(E)
    ops[ops=="=="] <- "="
    ops[ops=="<"] <- "<="
-   set.constr.type(lps,types=ops)
+   lpSolveAPI::set.constr.type(lps,types=ops)
    #print(list(lps=lps, objfn=mip$objfn, mip=mip, b=getb(E)))
-   set.objfn(lps, mip$objfn)
-   set.type(lps, columns=mip$binvars , "binary")
-   set.bounds(lps, lower=rep(-Inf, length(mip$numvars)), columns=mip$numvars)
+   lpSolveAPI::set.objfn(lps, mip$objfn)
+   lpSolveAPI::set.type(lps, columns=mip$binvars , "binary")
+   lpSolveAPI::set.bounds(lps, lower=rep(-Inf, length(mip$numvars)), columns=mip$numvars)
    
    # should improve performance quite a lot: a SOS1 makes bin variables exclusive.
    for (sos in asSOS(colnames(lps))){
-     add.SOS( lps, sos$name, 
+     lpSolveAPI::add.SOS( lps, sos$name, 
               type=1, priority=1, 
               columns=sos$columns, 
               weights=sos$weights
@@ -167,7 +167,7 @@ as.lp.mip <- function(mip){
    }
    
    b <- getb(E)
-   set.constr.value(lps, b)
+   lpSolveAPI::set.constr.value(lps, b)
    lps
 }
 

@@ -1,6 +1,3 @@
-require(testthat)
-
-
 context("Parsing")
 
 test_that("parseEdits all works",{

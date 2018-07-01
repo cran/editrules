@@ -1,5 +1,3 @@
-library(testthat)
-
 context("Editmatrix")
 
 test_that("editmatrix works correcly with character",{

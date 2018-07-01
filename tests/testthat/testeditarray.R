@@ -1,7 +1,3 @@
-
-
-library(testthat)
-
 context("Editarray")
 
 

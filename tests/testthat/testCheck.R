@@ -1,5 +1,3 @@
-library(testthat)
-
 context("Edit checking")
 
 test_that("Checking a data set works",{

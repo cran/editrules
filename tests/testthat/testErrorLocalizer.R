@@ -1,4 +1,3 @@
-require(testthat)
 context("Error Localization: numerical data")
 
 test_that("errorLocalizer for numerical data",{

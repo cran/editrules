@@ -1,6 +1,3 @@
-
-require(testthat)
-
 context("getVars")
 
 test_that("getVars.editmatrix works",{

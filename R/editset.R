@@ -300,6 +300,7 @@ simplify <- function(E, m=NULL){
 #'
 #' @param E \code{\link{editset}}
 #' @param tol positive number
+#' @importFrom stats dist
 #' @keywords internal
 #'
 removeRedundantDummies <- function(E, tol=1e-8){
