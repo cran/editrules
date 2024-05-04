@@ -4,8 +4,15 @@
 \alias{errorLocalizer_mip}
 \title{Localize errors using a MIP approach.}
 \usage{
-errorLocalizer_mip(E, x, weight = rep(1, length(x)), maxduration = 600L,
-  verbose = "neutral", lpcontrol = getOption("er.lpcontrol"), ...)
+errorLocalizer_mip(
+  E,
+  x,
+  weight = rep(1, length(x)),
+  maxduration = 600L,
+  verbose = "neutral",
+  lpcontrol = getOption("er.lpcontrol"),
+  ...
+)
 }
 \arguments{
 \item{E}{an \code{\link{editset}}, \code{\link{editmatrix}}, or \code{\link{editarray}}}

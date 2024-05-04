@@ -1,5 +1,11 @@
 #' An overview of the function of package \code{editrules}
 #'
+#' @section NOTE:
+#' This package is no longer under active development. The package is superseded
+#' by R packages \href{https://CRAN.R-project.org/package=validate}{validate}
+#' for data validation and
+#' \href{https://CRAN.R-project.org/package=errorlocate}{errorlocate}
+#' for error localization. We urge new users to use those packages instead.
 #' 
 #' The \code{editrules} package aims to provide an environment to conveniently
 #' define, read and check recordwise data constraints including 
@@ -70,9 +76,13 @@
 #'
 #' @import lpSolveAPI
 #' @importFrom igraph as.igraph
-#' @name editrules-package 
+#' @importFrom graphics  axis barplot grid lines mtext par plot
+#' @importFrom stats  density dist quantile runif
+#' @importFrom utils flush.console ls.str stack str
+#'
+#' @name editrules_package 
 #' @docType package 
-{}
+"_PACKAGE"
 
 
 # not on imports: we need to DEPEND on igraph since are exporting methods of an igraph

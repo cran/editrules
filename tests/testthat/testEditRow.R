@@ -1,3 +1,5 @@
+library(testthat)
+
 context("Linear editrow derivarions")
 
 test_that("Various rows work",{

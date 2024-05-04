@@ -24,7 +24,7 @@ getSep <- function(E) attr(E,"sep")
 getArr <- function(E) unclass(E)[,,drop=FALSE]
 
 #' retrieve level names from editarray
-#' @param editarray \code{\link{editarray}}
+#' @param E \code{\link{editarray}}
 #' @return character vector
 #' @keywords internal
 getlevels <- function(E) colnames(E)
@@ -41,11 +41,10 @@ getnames <- function(E) rownames(E)
 #' @return \code{data.frame} describing the categorical variables and their levels.
 #' @example ../examples/datamodel.R
 #' @seealso \code{\link{checkDatamodel}}
-#' @importFrom utils stack
 #' @export
 datamodel <- function(E){
     if (ncol(E) == 0 ) return(data.frame(variable=character(0),value=character(0)))
-    st <- utils::stack(getInd(E))
+    st <- stack(getInd(E))
     vals <- do.call(c,lapply(getInd(E),names))
     data.frame(variable=as.character(st[,2]),value=vals,row.names=1:nrow(st))
 }

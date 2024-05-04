@@ -61,18 +61,6 @@ strictly necessary, but hightly recommended that the datamodel (i.e. the possibl
 for a variable) is included explicitly in the edits using an \code{\%in\%} statement, as shown
 in the examples below. The function \code{\link{editfile}} can read categorical edits from a 
 free-form text file.
-
-Convert to character
-
-convert to data.frame
-
-Convert to expression
-
-convert to matrix
-
-Combine editarrays
-
-summary
 }
 \examples{
 
@@ -104,7 +92,7 @@ editarray(expression(
     )
 )
 
-# the \\\%in\\\% statement may be used at will
+# the \\%in\\% statement may be used at will
 editarray(expression(
     gender \%in\% c('male','female'),
     pregnant \%in\% c(TRUE, FALSE),
@@ -151,7 +139,7 @@ editarray(expression(
     )
 )
 
-# the \\\%in\\\% statement may be used at will
+# the \\%in\\% statement may be used at will
 editarray(expression(
     gender \%in\% c('male','female'),
     pregnant \%in\% c(TRUE, FALSE),

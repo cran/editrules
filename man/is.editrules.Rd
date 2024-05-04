@@ -5,9 +5,6 @@
 \alias{is.editset}
 \alias{is.editmatrix}
 \alias{is.editarray}
-\alias{is.editset}
-\alias{is.editmatrix}
-\alias{is.editarray}
 \title{Check object class}
 \usage{
 is.editset(x)

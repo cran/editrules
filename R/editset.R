@@ -300,7 +300,6 @@ simplify <- function(E, m=NULL){
 #'
 #' @param E \code{\link{editset}}
 #' @param tol positive number
-#' @importFrom stats dist
 #' @keywords internal
 #'
 removeRedundantDummies <- function(E, tol=1e-8){
@@ -337,7 +336,7 @@ removeRedundantDummies <- function(E, tol=1e-8){
     while( length(dups) > 0 ){
         dup <- dups[1]
         org <- names(dup)
-        iM <- contains.boolmat(A, ind, dup)
+        iM <- contains.boolmat(A, dup, ind = ind)
         A[iM,ind[[org]]] <- A[iM,ind[[dup]],drop=FALSE]
         dups <- dups[-1]
     }

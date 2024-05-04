@@ -29,14 +29,5 @@
 }
 \description{
 Use this operator to select edits from an editmatrix or editarray object.
-
-Row index operator for \code{cateditmatrix}
-
-Row index operator for \code{editarray}
-
-Row index operator for \code{editset}
-Note: the datamodel is not changed
-
-Index operator for \code{editlist}
 }
 \keyword{internal}

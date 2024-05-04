@@ -30,6 +30,7 @@
 #'  lp_solve version 5.5.2.0. R package version 5.5.2.0-5.
 #'  http://CRAN.R-project.org/package=lpSolveAPI
 #' @export
+#' @import lpSolveAPI
 errorLocalizer_mip <- function( E
                             , x
                             , weight=rep(1, length(x))
@@ -133,6 +134,7 @@ scale_fac <- function(x){
 #' \code{as.lp.mip} transforms a mip object into a lpSolveApi object.
 #' @param mip object of type \code{mip}.
 #' @seealso \code{\link{as.mip}}, \code{\link{make.lp}}
+#' @importFrom lpSolveAPI make.lp set.column
 #' @export
 as.lp.mip <- function(mip){
 #    if (!require(lpSolveAPI)){
@@ -160,10 +162,10 @@ as.lp.mip <- function(mip){
    # should improve performance quite a lot: a SOS1 makes bin variables exclusive.
    for (sos in asSOS(colnames(lps))){
      lpSolveAPI::add.SOS( lps, sos$name, 
-              type=1, priority=1, 
-              columns=sos$columns, 
-              weights=sos$weights
-            )
+                       type=1, priority=1, 
+                       columns=sos$columns, 
+                       weights=sos$weights
+                       )
    }
    
    b <- getb(E)

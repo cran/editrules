@@ -1,3 +1,6 @@
+
+require(testthat)
+
 context("Detect violated edits")
 
 test_that("Numerical edit violations are detected",{

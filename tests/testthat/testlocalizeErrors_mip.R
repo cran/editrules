@@ -1,3 +1,5 @@
+require(testthat)
+
 context("Localize errors using MIP")
 
 test_that("localizeError.mip",{

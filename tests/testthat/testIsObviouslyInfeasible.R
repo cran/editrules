@@ -1,3 +1,5 @@
+library(testthat)
+
 context("Obvious infeasibility")
 
 test_that("Obvious infeasibility is detected",{

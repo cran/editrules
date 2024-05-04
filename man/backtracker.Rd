@@ -5,8 +5,15 @@
 \alias{choicepoint}
 \title{Backtracker: a flexible and generic binary search program}
 \usage{
-backtracker(isSolution, choiceLeft, choiceRight, list = NULL,
-  maxdepth = Inf, maxduration = Inf, ...)
+backtracker(
+  isSolution,
+  choiceLeft,
+  choiceRight,
+  list = NULL,
+  maxdepth = Inf,
+  maxduration = Inf,
+  ...
+)
 }
 \arguments{
 \item{isSolution}{\code{expression} that should evaluate to \code{TRUE} when a solution is found.}

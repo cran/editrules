@@ -4,9 +4,17 @@
 \alias{localizeErrors}
 \title{Localize errors on records in a data.frame.}
 \usage{
-localizeErrors(E, dat, verbose = FALSE, weight = rep(1, ncol(dat)),
-  maxduration = 600, method = c("bb", "mip", "localizer"),
-  useBlocks = TRUE, retrieve = c("best", "first"), ...)
+localizeErrors(
+  E,
+  dat,
+  verbose = FALSE,
+  weight = rep(1, ncol(dat)),
+  maxduration = 600,
+  method = c("bb", "mip", "localizer"),
+  useBlocks = TRUE,
+  retrieve = c("best", "first"),
+  ...
+)
 }
 \arguments{
 \item{E}{an object of class \code{\link{editset}} \code{\link{editmatrix}} or \code{\link{editarray}}}
@@ -39,7 +47,7 @@ determined which can be adapted or imputed so that no edit in \code{E} is violat
 \details{
 For performance purposes, the edits are split in independent \code{\link{blocks}} which are processed
 separately. Also, a quick vectorized check with \code{\link{checkDatamodel}} is performed first to
-exclude variables violating their one-dimensional bounds from further calculations.
+exclude variables violating their one-dimensional bounds from further calculations. 
 
 By default, all weights are set equal to one (each variable is considered equally reliable). If a vector 
 of weights is passed, the weights are assumed to be in the same order as the columns of \code{dat}. By passing

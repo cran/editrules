@@ -8,10 +8,9 @@
 \usage{
 getVars(E, ...)
 
-\method{getVars}{editset}(E, type = c("all", "num", "cat", "mix", "dummy"),
-  ...)
+\method{getVars}{editset}(E, type = c("all", "num", "cat", "mix", "dummy"), ...)
 
-\method{getVars}{NULL}(E, ...)
+\method{getVars}{`NULL`}(E, ...)
 }
 \arguments{
 \item{E}{\code{\link{editset}}, \code{\link{editmatrix}}, or \code{\link{editarray}}}

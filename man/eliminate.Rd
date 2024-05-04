@@ -37,23 +37,6 @@ that variable. Geometrically, it can be seen as a projection of the solution spa
 (records obeying all edits) along the eliminated variable's axis. If the solution space
 is non-concex (as is the usually case when conditional edits are involved), multiple
 projections of convex subregions are performed.
-
-For objects of class \code{\link{editmatrix}}, Fourier-Motzkin elimination 
-is used to eliminate a variable from the of linear (in)equality restrictions.
-An observation of Kohler (1967) is used to reduce the number of implied 
-restrictions. Obvious redundancies of the type 0 < 1 are removed as well.
-
-For categorical edits in an \code{\link{editarray}}, the elimination 
-method is based on repeated logical reduction on categories. See Van der Loo (2012) for 
-a description.
-
-For an \code{\link{editset}}, \code{E} is transformed to an \code{\link[=disjunct]{editlist}}.
-Each element of an \code{\link[=disjunct]{editlist}} describes a convex subregion of the 
-total solution space of the \code{\link{editset}}. After this, the elimination method for 
-\code{\link[=disjunct]{editlist}} is called.
-
-For an \code{\link[=disjunct]{editlist}}, the variable is eliminated from each
-consituting \code{\link{editset}}.
 }
 \examples{
 

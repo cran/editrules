@@ -4,8 +4,6 @@
 \alias{echelon}
 \alias{echelon.editmatrix}
 \alias{echelon.matrix}
-\alias{echelon.editmatrix}
-\alias{echelon.matrix}
 \alias{echelon.editset}
 \title{Bring an (edit) matrix to reduced row echelon form.}
 \usage{

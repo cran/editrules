@@ -10,26 +10,64 @@
 \alias{as.igraph.editset}
 \title{Derive adjecency matrix from collection of edits}
 \usage{
-adjacency(E, nodetype = c("all", "rules", "vars"), rules = rownames(E),
-  vars = getVars(E), ...)
+adjacency(
+  E,
+  nodetype = c("all", "rules", "vars"),
+  rules = rownames(E),
+  vars = getVars(E),
+  ...
+)
 
-\method{adjacency}{editmatrix}(E, nodetype = c("all", "rules", "vars"),
-  rules = rownames(E), vars = getVars(E), ...)
+\method{adjacency}{editmatrix}(
+  E,
+  nodetype = c("all", "rules", "vars"),
+  rules = rownames(E),
+  vars = getVars(E),
+  ...
+)
 
-\method{adjacency}{editarray}(E, nodetype = c("all", "rules", "vars"),
-  rules = rownames(E), vars = getVars(E), ...)
+\method{adjacency}{editarray}(
+  E,
+  nodetype = c("all", "rules", "vars"),
+  rules = rownames(E),
+  vars = getVars(E),
+  ...
+)
 
-\method{adjacency}{editset}(E, nodetype = c("all", "rules", "vars"),
-  rules = c(rownames(E$num), rownames(E$mixcat)), vars = getVars(E), ...)
+\method{adjacency}{editset}(
+  E,
+  nodetype = c("all", "rules", "vars"),
+  rules = c(rownames(E$num), rownames(E$mixcat)),
+  vars = getVars(E),
+  ...
+)
 
-\method{as.igraph}{editmatrix}(x, nodetype = c("all", "rules", "vars"),
-  rules = editnames(x), vars = getVars(x), weighted = TRUE, ...)
+\method{as.igraph}{editmatrix}(
+  x,
+  nodetype = c("all", "rules", "vars"),
+  rules = editnames(x),
+  vars = getVars(x),
+  weighted = TRUE,
+  ...
+)
 
-\method{as.igraph}{editarray}(x, nodetype = c("all", "rules", "vars"),
-  rules = editnames(x), vars = getVars(x), weighted = TRUE, ...)
+\method{as.igraph}{editarray}(
+  x,
+  nodetype = c("all", "rules", "vars"),
+  rules = editnames(x),
+  vars = getVars(x),
+  weighted = TRUE,
+  ...
+)
 
-\method{as.igraph}{editset}(x, nodetype = c("all", "rules", "vars"),
-  rules = editnames(x), vars = getVars(x), weighted = TRUE, ...)
+\method{as.igraph}{editset}(
+  x,
+  nodetype = c("all", "rules", "vars"),
+  rules = editnames(x),
+  vars = getVars(x),
+  weighted = TRUE,
+  ...
+)
 }
 \arguments{
 \item{E}{\code{\link{editmatrix}}, \code{\link{editarray}} or \code{\link{editset}}}

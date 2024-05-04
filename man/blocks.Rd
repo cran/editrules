@@ -23,8 +23,6 @@ list of independent subobjects of \code{M}.
 \description{
 \code{blocks} returns a \code{list} of independent blocks \eqn{M_i} such that
 \eqn{M=M_1\oplus M_2\oplus\cdots\oplus M_n}.
-
-\code{blockIndex} returns a list of row indices in a \code{logical} matrix \code{D} designating independent blocks.
 }
 \examples{
 # three seperate blocks

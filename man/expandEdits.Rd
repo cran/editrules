@@ -4,8 +4,14 @@
 \alias{expandEdits}
 \title{Expand an edit expression}
 \usage{
-expandEdits(s, prefix = "_", useSum = TRUE, asExpression = is.language(s),
-  env = parent.frame(), ...)
+expandEdits(
+  s,
+  prefix = "_",
+  useSum = TRUE,
+  asExpression = is.language(s),
+  env = parent.frame(),
+  ...
+)
 }
 \arguments{
 \item{s}{edit expression, can be a \code{character} or \code{expression} vector}

@@ -10,8 +10,7 @@
 \usage{
 editset(editrules, env = new.env())
 
-\method{as.character}{editset}(x, datamodel = TRUE, useIf = TRUE,
-  dummies = FALSE, ...)
+\method{as.character}{editset}(x, datamodel = TRUE, useIf = TRUE, dummies = FALSE, ...)
 
 \method{as.data.frame}{editset}(x, ...)
 
@@ -47,8 +46,6 @@ editset(editrules, env = new.env())
 An \code{editset} combines numerical (linear), categorical and conditional restrictions
 in a single object. Internally, it consists of two \code{\link[=editmatrix]{editmatrices}} 
 and an \code{\link{editarray}}.
-
-summary
 }
 \details{
 The function \code{editset} converts a \code{character} or \code{expression} vector to an editset.

@@ -76,7 +76,7 @@ cateditmatrix <- function(x, sep=":", env=parent.frame()){
 as.character.cateditmatrix <- function(x, asIfStatement=FALSE, ...){
   # empty cateditmatrix?
   if (length(x) == 0) 
-    return(str.editmatrix(x))
+    return(str(x))
   
   if (isTRUE(asIfStatement)){
     A <- getA(x)
@@ -138,7 +138,7 @@ toCat <- function(categories, sep=":"){
 
 #' parse categorial edit
 
-#' @param e \code{expression} with a single edit
+#' @param el \code{expression} with a single edit
 #' @return named \code{numeric} with coefficients
 #' @keywords internal
 parseCatEdit <- function(el){

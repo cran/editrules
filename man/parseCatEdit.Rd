@@ -7,7 +7,7 @@
 parseCatEdit(el)
 }
 \arguments{
-\item{e}{\code{expression} with a single edit}
+\item{el}{\code{expression} with a single edit}
 }
 \value{
 named \code{numeric} with coefficients

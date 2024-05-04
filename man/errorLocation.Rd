@@ -23,8 +23,6 @@ By default the top-20 variables with the most errors are shown.}
 }
 \description{
 Object storing information on error locations in a dataset.
-
-summary
 }
 \details{
 The \code{errorlocation} objects consists of the following slots wich can be 

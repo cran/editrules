@@ -11,8 +11,7 @@
 \usage{
 substValue(E, var, value, ...)
 
-\method{substValue}{editmatrix}(E, var, value, reduce = FALSE,
-  removeredundant = TRUE, ...)
+\method{substValue}{editmatrix}(E, var, value, reduce = FALSE, removeredundant = TRUE, ...)
 
 \method{substValue}{editarray}(E, var, value, reduce = FALSE, ...)
 

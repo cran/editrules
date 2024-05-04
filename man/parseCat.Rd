@@ -4,8 +4,14 @@
 \alias{parseCat}
 \title{Parse a categorical edit expression}
 \usage{
-parseCat(x, val = NA, edit = logical(0), sep = ":", useLogical = FALSE,
-  env = parent.frame())
+parseCat(
+  x,
+  val = NA,
+  edit = logical(0),
+  sep = ":",
+  useLogical = FALSE,
+  env = parent.frame()
+)
 }
 \arguments{
 \item{x}{a valid R expression}

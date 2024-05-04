@@ -1,3 +1,4 @@
+require(testthat)
 context("datamodel")
 
 test_that("datamodel works",{

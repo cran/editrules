@@ -1,3 +1,7 @@
+
+
+library(testthat)
+
 context("Editarray")
 
 

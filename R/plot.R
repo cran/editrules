@@ -226,4 +226,10 @@ plotEditGraph <- function(
 }
 
 
+#library(editrules)
+#set.seed(1)
+#data(edits)
+#plot(editmatrix(edits))
+
+
 

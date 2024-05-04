@@ -64,10 +64,6 @@ cannot be checked because of missing values in the data.
 For numerical records, the default tolerance is 0. When working with doubles, 
 the square root of machina accuracy is a resonable alternative (\code{sqrt(.Machine\$double.eps)}).
 The editmatrix is \cite{\link[=normalize]{normalized}} before checks are performed.
-
-Plot summary statistics on violatedEdits
-
-as.data.frame violatedEdits
 }
 \note{
 When summarizing an object of class \code{violatedEdits}, every 

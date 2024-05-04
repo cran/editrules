@@ -4,14 +4,14 @@
 \alias{contains.boolmat}
 \title{Determine if a boolean matrix contains \code{var}}
 \usage{
-\method{contains}{boolmat}(A, ind, var)
+\method{contains}{boolmat}(E, var = NULL, ind, ...)
 }
 \arguments{
-\item{A}{array}
-
-\item{ind}{index}
+\item{E}{array}
 
 \item{var}{variable name}
+
+\item{ind}{index}
 }
 \description{
 Determine if a boolean matrix contains \code{var}

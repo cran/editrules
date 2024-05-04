@@ -4,8 +4,7 @@
 \alias{writeELAsMip}
 \title{Rewrite an editset and reported values into the components needed for a mip solver}
 \usage{
-writeELAsMip(E, x, weight = rep(1, length(x)), M = 1e+07, epsilon = 0.001,
-  ...)
+writeELAsMip(E, x, weight = rep(1, length(x)), M = 1e+07, epsilon = 0.001, ...)
 }
 \arguments{
 \item{E}{\code{\link{editset}} or any object that is coercable to an editset.}

@@ -1,3 +1,5 @@
+require(testthat)
+
 context("FM elimination")
 
 # test: the first example of eliminate

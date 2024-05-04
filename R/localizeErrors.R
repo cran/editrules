@@ -138,7 +138,7 @@ localizeErrors <- function(E, dat, verbose=FALSE, weight=rep(1,ncol(dat)), maxdu
 #' @param method should branch and bound ("bb") or mix integer programming ("mip") be used?
 #' @param retrieve return \code{best} or \code{first} found solution (bb method only) 
 #' @param maxduration max time for searchBest()
-#' @importFrom utils flush.console
+#' 
 #' @keywords internal
 localize <- function(E, dat, verbose, pretext="Processing", call=sys.call(), weight, maxduration, method=c("bb", "mip", "localizer"), retrieve, ...){
     vars <- getVars(E)

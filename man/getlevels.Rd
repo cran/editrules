@@ -7,7 +7,7 @@
 getlevels(E)
 }
 \arguments{
-\item{editarray}{\code{\link{editarray}}}
+\item{E}{\code{\link{editarray}}}
 }
 \value{
 character vector

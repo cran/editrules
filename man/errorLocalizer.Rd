@@ -12,15 +12,36 @@ errorLocalizer(E, x, ...)
 
 \method{errorLocalizer}{editset}(E, x, ...)
 
-\method{errorLocalizer}{editmatrix}(E, x, weight = rep(1, length(x)),
-  maxadapt = length(x), maxweight = sum(weight), maxduration = 600,
-  tol = sqrt(.Machine$double.eps), ...)
+\method{errorLocalizer}{editmatrix}(
+  E,
+  x,
+  weight = rep(1, length(x)),
+  maxadapt = length(x),
+  maxweight = sum(weight),
+  maxduration = 600,
+  tol = sqrt(.Machine$double.eps),
+  ...
+)
 
-\method{errorLocalizer}{editarray}(E, x, weight = rep(1, length(x)),
-  maxadapt = length(x), maxweight = sum(weight), maxduration = 600, ...)
+\method{errorLocalizer}{editarray}(
+  E,
+  x,
+  weight = rep(1, length(x)),
+  maxadapt = length(x),
+  maxweight = sum(weight),
+  maxduration = 600,
+  ...
+)
 
-\method{errorLocalizer}{editlist}(E, x, weight = rep(1, length(x)),
-  maxadapt = length(x), maxweight = sum(weight), maxduration = 600, ...)
+\method{errorLocalizer}{editlist}(
+  E,
+  x,
+  weight = rep(1, length(x)),
+  maxadapt = length(x),
+  maxweight = sum(weight),
+  maxduration = 600,
+  ...
+)
 }
 \arguments{
 \item{E}{an \code{\link{editmatrix}} or an \code{\link{editarray}}}

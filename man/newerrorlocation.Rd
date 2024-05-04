@@ -4,8 +4,14 @@
 \alias{newerrorlocation}
 \title{Generate new errorlocation object}
 \usage{
-newerrorlocation(adapt, status, call = sys.call(-1), method,
-  user = Sys.info()["user"], timestamp = date())
+newerrorlocation(
+  adapt,
+  status,
+  call = sys.call(-1),
+  method,
+  user = Sys.info()["user"],
+  timestamp = date()
+)
 }
 \arguments{
 \item{adapt}{Logical array of same dimensions of dataset, indicating which variable have to be changed per record}

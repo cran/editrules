@@ -4,8 +4,18 @@
 \alias{localize}
 \title{Workhorse function for localizeErrors}
 \usage{
-localize(E, dat, verbose, pretext = "Processing", call = sys.call(), weight,
-  maxduration, method = c("bb", "mip", "localizer"), retrieve, ...)
+localize(
+  E,
+  dat,
+  verbose,
+  pretext = "Processing",
+  call = sys.call(),
+  weight,
+  maxduration,
+  method = c("bb", "mip", "localizer"),
+  retrieve,
+  ...
+)
 }
 \arguments{
 \item{E}{\code{\link{editmatrix}} or \code{\link{editarray}}}

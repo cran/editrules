@@ -6,14 +6,16 @@ LazyData: no
 Type: Package
 LazyLoad: yes
 Author: Edwin de Jonge, Mark van der Loo
-Description: Facilitates reading and manipulating (multivariate) data restrictions
-    (edit rules) on numerical and categorical data. Rules can be defined with common R syntax
-    and parsed to an internal (matrix-like format). Rules can be manipulated with
-    variable elimination and value substitution methods, allowing for feasibility checks
-    and more. Data can be tested against the rules and erroneous fields can be found based
-    on Fellegi and Holt's generalized principle. Rules dependencies can be visualized with 
-    using the 'igraph' package.
-Version: 2.9.3
+Description: Please note: active development has moved to packages 'validate'
+    and 'errorlocate'. Facilitates reading and manipulating (multivariate) data
+    restrictions (edit rules) on numerical and categorical data. Rules can be
+    defined with common R syntax and parsed to an internal (matrix-like format).
+    Rules can be manipulated with variable elimination and value substitution
+    methods, allowing for feasibility checks and more. Data can be tested against
+    the rules and erroneous fields can be found based on Fellegi and Holt's
+    generalized principle. Rules dependencies can be visualized with using the
+    'igraph' package. 
+Version: 2.9.5
 Depends: R (>= 2.12.0), igraph
 Imports: lpSolveAPI
 Suggests: testthat
@@ -34,8 +36,9 @@ Collate: 'adjacency.R' 'as.igraph.R' 'editset.R' 'editarray.R'
         'plot_errorLocation.R' 'print.R' 'reduce.R' 'removeRedundant.R'
         'softEdits.R' 'str.R' 'subsetting.R' 'substValue.R' 'summary.R'
         'violatedEdits.R' 'writeELAsMip.R' 'zzz.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 7.3.1
+Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2018-07-01 21:06:29 UTC; edwin
+Packaged: 2024-05-03 14:25:49 UTC; edwin
 Repository: CRAN
-Date/Publication: 2018-07-01 21:30:03 UTC
+Date/Publication: 2024-05-04 05:50:22 UTC

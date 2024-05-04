@@ -52,19 +52,14 @@ If the input editmatrix has a \code{description} attribute a third column is ret
 }
 \description{
 An \code{editmatrix} is a numerical matrix and a set of comparison operators representing
-a linear system of (in)equations.  
+a linear system of (in)equations.
+}
+\details{
 The function \code{editmatrix} generates an editmatrix from a \code{character} vector, an \code{expression}
 vector or a \code{data.frame} with at least the column \code{edit}. The function \code{\link{editfile}} 
 reads edits from a free-form textfile, function \code{\link{as.editmatrix}} converts a matrix, a vector of
 constants and a vector of operators to an \code{editmatrix}
 
-convert to matrix
-
-Combine editmatrices
-
-summary
-}
-\details{
 By default, the \code{editmatrix} is normalized, meaning that all comparison operators are converted
 to one of \code{<}, \code{<=}, or \code{==}. Users may specify edits using any of the operators
 \code{<, <=, ==, >=, >} (see examples below). However it is highly recommended to let \code{editmatrix} parse them into normal

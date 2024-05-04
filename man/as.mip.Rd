@@ -4,8 +4,15 @@
 \alias{as.mip}
 \title{Write an editset into a mip representation}
 \usage{
-as.mip(E, x = NULL, weight = NULL, M = 1e+07, epsilon = 0.001,
-  prefix = "delta.", ...)
+as.mip(
+  E,
+  x = NULL,
+  weight = NULL,
+  M = 1e+07,
+  epsilon = 0.001,
+  prefix = "delta.",
+  ...
+)
 }
 \arguments{
 \item{E}{an \code{link{editset}} or an object that is coerciable to an 

@@ -1,3 +1,5 @@
+require(testthat)
+
 context("Feasibility checks: numerical")
 
 test_that("isFeasible",{

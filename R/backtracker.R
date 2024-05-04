@@ -33,7 +33,7 @@
 #' @return backtracker object, see Methods for a description of the methods
 #' @aliases backtracker choicepoint
 #' @export backtracker choicepoint
-#' @importFrom utils ls.str
+#'
 backtracker <- function(isSolution, choiceLeft, choiceRight, list=NULL, maxdepth=Inf, maxduration=Inf, ...){
    
    isSolution <- substitute(isSolution)

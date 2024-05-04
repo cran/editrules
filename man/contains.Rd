@@ -11,15 +11,13 @@
 \usage{
 contains(E, var = NULL, ...)
 
-\method{contains}{matrix}(E, var = NULL, tol = sqrt(.Machine$double.eps),
-  ...)
+\method{contains}{matrix}(E, var = NULL, tol = sqrt(.Machine$double.eps), ...)
 
-\method{contains}{editmatrix}(E, var = NULL,
-  tol = sqrt(.Machine$double.eps), ...)
+\method{contains}{editmatrix}(E, var = NULL, tol = sqrt(.Machine$double.eps), ...)
 
 \method{contains}{editarray}(E, var = NULL, ...)
 
-\method{contains}{editset}(E, var = NULL, ...)
+\method{contains}{cateditmatrix}(E, var = NULL, ...)
 
 \method{contains}{editset}(E, var = NULL, ...)
 }
@@ -38,15 +36,5 @@ contains(E, var = NULL, ...)
 \description{
 For an \code{\link{editmatrix}}, variables with coefficients smaller than
 \code{tol} are considered not to be contained in an edit.
-
-matrix method for contains
-
-editmatrix method for contains
-
-contains method for editarray
-
-contains method for cateditmatrix
-
-contains method for editset
 }
 \keyword{internal}

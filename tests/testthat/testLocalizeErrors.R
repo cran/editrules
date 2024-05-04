@@ -1,3 +1,4 @@
+
 context("Error localization: numerical data.frames")
 
 test_that('localizeErrors works without specified weight',{
@@ -134,11 +135,9 @@ test_that("localizeErrors works with mixed edit",{
 })
 
 test_that("localizeErrors works for simple numerical if-else", {
-  skip("not working right now")
   le <- localizeErrors(
     editset("if ( x > 0 ) y > 0")
-    , data.frame(x=1,y=-1)
-    , method="mip"
+    , data.frame(x=1,y=0)
   )
   expect_equal(sum(le$adapt),1)
   le <- localizeErrors(

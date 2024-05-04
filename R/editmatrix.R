@@ -1,7 +1,6 @@
-#' Create an editmatrix
-#' 
 #' An \code{editmatrix} is a numerical matrix and a set of comparison operators representing
 #' a linear system of (in)equations.  
+#'
 #' The function \code{editmatrix} generates an editmatrix from a \code{character} vector, an \code{expression}
 #' vector or a \code{data.frame} with at least the column \code{edit}. The function \code{\link{editfile}} 
 #' reads edits from a free-form textfile, function \code{\link{as.editmatrix}} converts a matrix, a vector of
@@ -11,17 +10,21 @@
 #' to one of \code{<}, \code{<=}, or \code{==}. Users may specify edits using any of the operators
 #' \code{<, <=, ==, >=, >} (see examples below). However it is highly recommended to let \code{editmatrix} parse them into normal
 #' form as all functions operating on editmatrices expect or convert it to normal form anyway.
-#' @export
-#' @example ../examples/editmatrix.R
-#' @param editrules  A \code{character} or \code{expression} vecotr with (in)equalities written in R syntax.
-#'      Alternatively, a \code{data.frame} with a column named \code{edits}, see details.
-#' @param normalize \code{logical} specifying if all edits should be transformed (see description)
-#' @return \code{editmatrix} : An object of class \code{editmatrix} 
+#'
+#' @title Create an editmatrix
 #' @seealso 
 #'      \code{\link{editrules.plotting}}, \code{\link{violatedEdits}}, \code{\link{localizeErrors}},
 #'      \code{\link{normalize}}, \code{\link{contains}}, \code{\link{is.editmatrix}},
 #'      \code{\link{getA}}, \code{\link{getAb}}, \code{\link{getb}}, \code{\link{getOps}} \code{\link{getVars}},
 #'      \code{\link{eliminate}}, \code{\link{substValue}}, \code{\link{isFeasible}}
+#' @export
+#' @example ../examples/editmatrix.R
+#'
+#' @param editrules  A \code{character} or \code{expression} vecotr with (in)equalities written in R syntax.
+#'      Alternatively, a \code{data.frame} with a column named \code{edits}, see details.
+#' @param normalize \code{logical} specifying if all edits should be transformed (see description)
+#'
+#' @return \code{editmatrix} : An object of class \code{editmatrix} 
 editmatrix <- function( editrules
                       , normalize = TRUE
 					       ){   

@@ -5,8 +5,6 @@
 #'      By default the top-20 variables with the most errors are shown.
 #' @param ... other arguments that will be transferred to \code{barplot}
 #' @rdname errorLocation
-#' @importFrom graphics plot par axis barplot grid lines mtext par
-#' @importFrom stats density quantile runif
 #' @export
 plot.errorLocation <- function(x, topn=min(10,ncol(x$adapt)), ...){
   lgcrit <- 50

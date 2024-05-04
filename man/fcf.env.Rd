@@ -9,9 +9,9 @@ fcf.env(E, totreat, env)
 \arguments{
 \item{E}{an editarray}
 
-\item{env}{an environment where all editmatrices will be stored}
+\item{totreat}{variable names still to be eliminated from E}
 
-\item{vars}{variable names still to be eliminated from E}
+\item{env}{an environment where all editmatrices will be stored}
 }
 \description{
 Workhorse function for \code{\link{generateEdits}}
