@@ -5,7 +5,15 @@ Title: Parsing, Applying, and Manipulating Data Cleaning Rules
 LazyData: no
 Type: Package
 LazyLoad: yes
-Author: Edwin de Jonge, Mark van der Loo
+Authors@R: c(person(given = "Edwin",
+                        family = "de Jonge",
+                        role = c("aut", "cre"),
+                        email = "edwindjonge@gmail.com",
+                        comment=c(ORCID="0000-0002-6580-4718")
+              ),
+                 person(given = "Mark",
+                        family = "van der Loo",
+                        role = "aut"))
 Description: Please note: active development has moved to packages 'validate'
     and 'errorlocate'. Facilitates reading and manipulating (multivariate) data
     restrictions (edit rules) on numerical and categorical data. Rules can be
@@ -15,7 +23,7 @@ Description: Please note: active development has moved to packages 'validate'
     the rules and erroneous fields can be found based on Fellegi and Holt's
     generalized principle. Rules dependencies can be visualized with using the
     'igraph' package. 
-Version: 2.9.5
+Version: 2.9.6
 Depends: R (>= 2.12.0), igraph
 Imports: lpSolveAPI
 Suggests: testthat
@@ -36,9 +44,12 @@ Collate: 'adjacency.R' 'as.igraph.R' 'editset.R' 'editarray.R'
         'plot_errorLocation.R' 'print.R' 'reduce.R' 'removeRedundant.R'
         'softEdits.R' 'str.R' 'subsetting.R' 'substValue.R' 'summary.R'
         'violatedEdits.R' 'writeELAsMip.R' 'zzz.R'
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.3
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2024-05-03 14:25:49 UTC; edwin
+Packaged: 2025-11-28 11:44:51 UTC; edwin
+Author: Edwin de Jonge [aut, cre] (ORCID:
+    <https://orcid.org/0000-0002-6580-4718>),
+  Mark van der Loo [aut]
 Repository: CRAN
-Date/Publication: 2024-05-04 05:50:22 UTC
+Date/Publication: 2025-11-28 12:10:02 UTC

@@ -1,6 +1,6 @@
-b60f59676e58ca3c97527ecc006d97b6 *DESCRIPTION
+15deb8a40a91cfa2d57db527d2e9044c *DESCRIPTION
 108152d60e36d4974d9fc7323366ebb7 *NAMESPACE
-47a91eb2624967f0b902136508c3ee7c *NEWS
+927381e02654ce75bc0c2f50d7659631 *NEWS
 2fa08ff65296f1f8392294177b673927 *R/adjacency.R
 1349f3da14c359cf6457bc8459cf0873 *R/as.igraph.R
 9fcf1d8c1b512a6009cc6c3b72bfa461 *R/as.matrix.R
@@ -24,7 +24,7 @@ e7ea06b589660af4513ee6ddae8429c1 *R/editfile.R
 704b74f7df4ad8ecdb5eb28739426e7e *R/editset.R
 7bf1d2eba425eb2397a279aa712538c7 *R/eliminate.R
 9b03d885c25f1c6e3af0963e4c6b5bcb *R/errorLocalizer.R
-3ca5b92711cfc17f4b03446a4363b0c6 *R/errorLocalizer_mip.R
+c8b2bf514709677b48fccff524ebba30 *R/errorLocalizer_mip.R
 ae45f4070b6d4262aa701e1e350955bd *R/errorLocation.R
 341165e56f34f37e4b4a929c783332e6 *R/expandEdits.R
 84b2d43a90d7afeb655243fbdeced4c5 *R/generateEdits.R
@@ -44,8 +44,8 @@ ca0bda19581aebaf97371080e3187ce1 *R/mip.R
 5cf3ca83353283a16d6da77b6b371a2a *R/parseMix.R
 b10d4c6c74f93fca3370d2726a1a1305 *R/parseNum.R
 ae9ad1360c3e010ff07fcc7e4b3eff3f *R/perturbWeights.R
-34f7f77d115f5bbe1daaff2232a978a9 *R/pkg.R
-a63b3445cdcbfaa62da34ed5ed767623 *R/plot.R
+60cba0f1f58ab5675f1d568bf24ff576 *R/pkg.R
+2314c0d8ebf3b7613aa4ec1813936302 *R/plot.R
 200e2fae29917743bd00db0e6bbac80a *R/plot_errorLocation.R
 7da449476428b086e08cd976665f4e99 *R/print.R
 f4e361e84c62b20f4e21886e91b8a736 *R/reduce.R
@@ -58,10 +58,10 @@ a52dba018e79ac0995d9b73e4bc467cc *R/softEdits.R
 884fdc25201c6335a33465e0c2f78761 *R/violatedEdits.R
 d8d4e14bb2bfbe753743495e4e98fdcc *R/writeELAsMip.R
 cb580fd67169dea71d70694e95ecfbde *R/zzz.R
-34d04d02ecb9cb85aa1594b4f2c43d2c *build/vignette.rds
+96ca7b10abb5e7a876af307f11ec9a5b *build/vignette.rds
 bc78a58c81d18969a63c537904488148 *data/edits.RData
 524cd24e20b0535aacca86ea45683fc6 *inst/doc/editrules-vignette.Rnw
-57e62b6bfeeedb195dfca1b6578e367b *inst/doc/editrules-vignette.pdf
+0aa5a2f7b43595fd94f27bbedb3ec589 *inst/doc/editrules-vignette.pdf
 d3324f8cde6f815bf31c487792fbc4bb *inst/script/bench/benchAB.R
 ead171000b9b096b9b22745bed1077ff *inst/script/bench/benchMIP.R
 e35ac8837a4f97790dc0834b64c19238 *inst/script/bench/benchmip_balance.R
@@ -78,7 +78,7 @@ a873a35a8a170156553da73893a81113 *man/adjacency.Rd
 9cdab6207198420d923d9ff787a87706 *man/as.character.cateditmatrix.Rd
 b521343f8053e6a36d582acf623e4008 *man/as.editmatrix.Rd
 53da5205d24e60e88ca4c88c52910f65 *man/as.editset.Rd
-93afe3b6bf349b2036651ef3282f5e68 *man/as.lp.mip.Rd
+fe9a1020f8c8a9bf2622e4b3b0e7c4ca *man/as.lp.mip.Rd
 f32e7e888754a1e5fe1a35901196d35c *man/as.mip.Rd
 f3781f816078dba90c7a77bfad5ad651 *man/asLevels.Rd
 9231b4fe7fcee8b32c6d09ed660fd1f7 *man/backtracker.Rd
@@ -98,8 +98,8 @@ ff70b1803925bbaad86aa5fe6c0f5efb *man/editarray.Rd
 86a0535928b84892eac830ea2b9a9de8 *man/editfile.Rd
 f46f636776e6928c456595b84bec7c57 *man/editmatrix.Rd
 6a8688db91fae4a0e4ba31bf152526bd *man/editnames.Rd
-758ed7942a634adb354deed3bfefa764 *man/editrules.plotting.Rd
-442e684e68437b5c4829b575fe8ddb1c *man/editrules_package.Rd
+04379151451a6fbe9b8c1c6a756bd6d9 *man/editrules.plotting.Rd
+64318d10458c8b4165606751e9e0648a *man/editrules_package.Rd
 60547193459abd3afa82b435efcf2321 *man/edits.Rd
 235d23f00e1ec6076c6a48bf8913f4f7 *man/editset.Rd
 f310a66182837fecad6e59a3ad33eab4 *man/eliminate.Rd

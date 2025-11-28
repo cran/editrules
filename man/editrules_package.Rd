@@ -87,7 +87,7 @@ Note that you can call \code{plot}, \code{summary} and \code{print}  on results 
 \code{editrules} provides several methods for plotting and coercion.
 \tabular{ll}{
   \code{\link{editrules.plotting}} \tab Plot edit-variable connectivity graph \cr
-  \code{\link{as.igraph}} \tab Coerce to edit-variable connectivity \code{igraph} object \cr
+  \code{\link[igraph]{as.igraph}} \tab Coerce to edit-variable connectivity \code{igraph} object \cr
   \code{as.character} \tab Coerce edits to \code{character} representation \cr
   \code{as.data.frame} \tab Store \code{character} representation in \code{data.frame} \cr
 }
@@ -98,6 +98,15 @@ Useful links:
 \itemize{
   \item \url{https://github.com/data-cleaning/editrules}
   \item Report bugs at \url{https://github.com/data-cleaning/editrules/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Edwin de Jonge \email{edwindjonge@gmail.com} (\href{https://orcid.org/0000-0002-6580-4718}{ORCID})
+
+Authors:
+\itemize{
+  \item Mark van der Loo
 }
 
 }

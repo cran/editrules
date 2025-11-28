@@ -13,5 +13,5 @@ as.lp.mip(mip)
 \code{as.lp.mip} transforms a mip object into a lpSolveApi object.
 }
 \seealso{
-\code{\link{as.mip}}, \code{\link{make.lp}}
+\code{\link{as.mip}}, \code{\link[lpSolveAPI]{make.lp}}
 }
